@@ -1,0 +1,11 @@
+# make the shell in every window as your login shell
+shell -$SHELL
+
+# from http://www.mattcutts.com/blog/screen-power-tips-screenrc/
+escape ^Bb # Instead of Control-a, make the escape/command character be Control-b
+autodetach on # Autodetach session on hangup instead of terminating screen completely
+startup_message off # Turn off the splash screen
+defscrollback 30000 # Use a 30000-line scrollback buffer
+
+# scroll back in the window with the mouse wheel
+termcapinfo xterm ti@:te@

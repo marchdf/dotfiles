@@ -1,0 +1,429 @@
+;;
+;; Written by Marc Henry de Frahan
+;;
+;; Extra files stored in .emacs_stuff directory
+;;
+
+;;================================================================================
+;;
+;; Set up some stuff
+;;
+;;================================================================================
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t)
+ '(kill-ring-max 70)
+ '(user-full-name "Marc Henry de Frahan"))
+(set-face-attribute 'default nil :height 110)
+
+;; syntax color
+(global-font-lock-mode t) 
+
+;; Parenthesis matching
+(show-paren-mode t)
+
+;; For accents. To toggle: C-\ 
+(setq default-input-method "latin-1-prefix") 
+
+;;Turn alarm completely off
+(setq ring-bell-function 'ignore ) 
+
+
+;;================================================================================
+;;
+;; Set up some directories
+;;
+;;================================================================================
+(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs_stuff")
+(setq make-backup-files nil) ;;Prevent Emacs from making backup files
+;; ;; Place backup files in specific directory
+;; ;;(setq make-backup-files t)
+;; ;;(setq backup-directory-alist (quote ((".*" ."c:/.emacs_backups/"))))
+
+
+;;================================================================================
+;;
+;; Customized commands (see end of this file for overwritting major modes)
+;;
+;;================================================================================
+(global-set-key (kbd "M-g") 'goto-line)
+(global-set-key (kbd "C-M-i") 'indent-region)
+;; (global-set-key (kbd "M-i") 'previous-line)
+;; (global-set-key (kbd "M-j") 'backward-char)
+;; (global-set-key (kbd "M-k") 'next-line)
+;; (global-set-key (kbd "M-l") 'forward-char) 
+(global-set-key (kbd "M-R") 'kill-rectangle) 
+(global-set-key (kbd "M-r") 'yank-rectangle) 
+(global-set-key (kbd "C-c C-z") 'comment-region) 
+(global-set-key (kbd "C-c M-z") 'uncomment-region) 
+(global-set-key (kbd "M-m") 'magit-status) ;; magit stuff
+(global-set-key (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
+(global-set-key (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
+(global-set-key (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
+
+;; Set hotkeys to navigate buffers easily
+(global-set-key (kbd "M-,") 'previous-buffer)
+(global-set-key (kbd "M-.") 'next-buffer)
+
+
+
+;;================================================================================
+;;
+;; Compile commands inspired from http://www.emacswiki.org/emacs/CompileCommand
+;;
+;;================================================================================
+(setq compilation-last-buffer nil)
+(setq compilation-scroll-output 'first-error)
+
+;; kill the compilation without prompt if recompile taken from
+;; http://user42.tuxfamily.org/compilation-always-kill/index.html I
+;; think this might exist in next versions of emacs already. though it
+;; doesn't seem to exist for v23
+(autoload 'compilation-always-kill-mode "./things_that_might_exist_in_next_emacs_versions/compilation-always-kill" nil t)
+(eval-after-load "compile" '(compilation-always-kill-mode 1))
+
+;; Compile using the last compile command. Blurb: "M-x recompile just
+;; executes the last compile command in the directory of the current
+;; buffer which can be different from the directory of the compile
+;; buffer. So you would have to manually switch to the compile buffer
+;; and do compile there. This is what the above command does."
+(defun compile-again (pfx)
+  """Run the same compile as the last time.
+
+If there was no last time, or there is a prefix argument, this acts like
+M-x compile.
+"""
+(interactive "p")
+(if (buffer-modified-p)
+    (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
+	(save-buffer)))
+(if (and (eq pfx 1)
+	 compilation-last-buffer)
+    (progn
+      (set-buffer compilation-last-buffer)
+      (revert-buffer t t))
+  (call-interactively 'compile)))
+
+;; Set the shortcut command
+(global-set-key (kbd "M-p") 'compile-again)
+
+;; Notifications that compile finished and close the compile buffer if
+;; successful.
+(setq success-message "\n Compilation Successful :-) \n ")
+(setq fail-message "\n Compilation Fail :-( \n ")
+(defun notify-compilation-result(buffer msg)
+  "Notify that the compilation is finished,
+close the *compilation* buffer if the compilation is successful,
+and set the focus back to Emacs frame"
+  (if (string-match "^finished" msg)
+      (progn
+	(delete-windows-on buffer)
+	(message success-message)
+	(when (display-graphic-p)
+	  (tooltip-show success-message))
+	)
+    (message fail-message)
+    (when (display-graphic-p)
+      (tooltip-show fail-message))
+    (setq compilation-last-buffer nil) ;; resets compile buffer so as
+				       ;; not to interfere with
+				       ;; 'compile-again
+    )
+  (setq current-frame (car (car (cdr (current-frame-configuration)))))
+  (select-frame-set-input-focus current-frame))
+
+(add-to-list 'compilation-finish-functions
+	     'notify-compilation-result)
+
+
+;;================================================================================
+;;
+;; Kill current buffer, but ask to save, but only if it has been modified
+;;
+;;================================================================================
+;; Based on
+;; http://ergoemacs.org/emacs/elisp_close_buffer_open_last_closed.html
+;; and
+;; http://stackoverflow.com/questions/2357881/emacs-cant-get-buffer-offer-save-working
+(defun kill-this-buffer-volatile ()
+    "Kill current buffer, even if it has been modified. But ask to save first"
+    (interactive)
+    (if (buffer-modified-p)
+    (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
+              (save-buffer)))
+    (kill-this-buffer))
+
+;; set the hotkey
+(global-set-key (kbd "C-x C-k") 'kill-this-buffer-volatile)
+
+;;================================================================================
+;;
+;; C/C++ stuff
+;;
+;;================================================================================
+(defun forloop (i imax)
+  "Build a C/C++ for loop"
+  (interactive "Miterator:\nMmax:")
+  (let ((beg (point)))
+    (insert "for(int " i "=0; " i "<" imax "; " i "++){\n\n}")
+    (indent-region beg (point))
+    (previous-line 1)
+    (c-indent-command)))
+(global-set-key "\M-l" 'forloop)
+
+(defun printf-binding (out vars)
+  "printf binding to make things easier"
+  (interactive "MOutput:\nMVariables:")
+  (let ((beg (point)))
+    (insert "printf(\"" out "\\n\"," vars ");")
+    (indent-region beg (point))))
+(global-set-key "\C-\M-p" 'printf-binding)
+
+;;================================================================================
+;;
+;; Matlab stuff
+;;
+;;================================================================================
+(autoload 'matlab-mode "~/.emacs_stuff/matlab.el" "Enter Matlab mode." t) 
+(setq auto-mode-alist (cons '("\\.m\\'" . matlab-mode) auto-mode-alist)) 
+(autoload 'matlab-shell "~/.emacs_stuff/matlab.el" "Interactive Matlab mode." t)
+;; User Level customizations (You need not use them all):
+(setq matlab-indent-function t)    ; if you want function bodies indented
+(setq matlab-verify-on-save-flag nil) ; turn off auto-verify on save
+(defun my-matlab-mode-hook () (setq fill-column 76))       ; where auto-fill should wrap
+(add-hook 'matlab-mode-hook 'my-matlab-mode-hook)
+(defun my-matlab-shell-mode-hook ()  '())
+(add-hook 'matlab-shell-mode-hook 'my-matlab-shell-mode-hook)
+
+
+;;================================================================================
+;;
+;; Latex stuff
+;;
+;;================================================================================
+
+;; force all files ending in .tex to be opened in LaTeX mode (not TeX)
+(add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode))
+
+;; custom latex mode
+(add-hook 'LaTeX-mode-hook
+	  '(lambda ()
+	     (define-key LaTeX-mode-map "\C-c\C-a"
+	       'compile)
+	     (setq compilation-read-command nil)
+	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
+	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8) 
+;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")
+;;	     (setq compile-command "pdflatex -shell-escape report.tex && evince report.pdf")
+	     (setq compile-command "./sh_latex.sh")
+	     (local-set-key (kbd "\C-c k") (lambda ()(interactive) (shell-command "rm report.aux" "*shell-command-out*" "*shell-command-err*") (kill-compilation)))
+	     (local-set-key (kbd "M-F") (lambda () (interactive) (insert "Figure\\,\\ref{fig:}") (backward-char 1)))
+	     (local-set-key (kbd "M-E") (lambda () (interactive) (insert "Equation\\,(\\ref{equ:})") (backward-char 2)))
+	     (local-set-key (kbd "M-T") (lambda () (interactive) (insert "Table\\,\\ref{tab:}") (backward-char 1)))
+	     (local-set-key (kbd "M-H") (lambda () (interactive) (insert "Chapter\\,\\ref{chap:}") (backward-char 1)))
+	     (local-set-key (kbd "M-G") (lambda () (interactive) (insert "Appendix\\,\\ref{app:}") (backward-char 1)))
+	     (local-set-key (kbd "M-L (") (lambda () (interactive) (insert "\\left( \\right)") (backward-char 8)))
+	     (local-set-key (kbd "M-L {") (lambda () (interactive) (insert "\\left\\{ \\right\\}") (backward-char 10)))
+	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))
+	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))))
+
+;; custom tex mode
+(add-hook 'tex-mode-hook
+	  '(lambda ()
+	     (define-key tex-mode-map "\C-c\C-a"
+	       'compile)
+	     (setq compilation-read-command nil)
+	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
+	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8) 
+;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")
+;;	     (setq compile-command "pdflatex -shell-escape report.tex && evince report.pdf")
+	     (setq compile-command "./sh_latex.sh")	     
+	     (local-set-key (kbd "\C-c k") (lambda ()(interactive) (shell-command "rm report.aux" "*shell-command-out*" "*shell-command-err*") (kill-compilation)))
+	     (local-set-key (kbd "M-F") (lambda () (interactive) (insert "Figure\\,\\ref{fig:}") (backward-char 1)))
+	     (local-set-key (kbd "M-E") (lambda () (interactive) (insert "Equation\\,(\\ref{equ:})") (backward-char 2)))
+	     (local-set-key (kbd "M-T") (lambda () (interactive) (insert "Table\\,\\ref{tab:}") (backward-char 1)))
+	     (local-set-key (kbd "M-H") (lambda () (interactive) (insert "Chapter\\,\\ref{chap:}") (backward-char 1)))
+	     (local-set-key (kbd "M-G") (lambda () (interactive) (insert "Appendix\\,\\ref{app:}") (backward-char 1)))
+	     (local-set-key (kbd "M-L (") (lambda () (interactive) (insert "\\left( \\right)") (backward-char 8)))
+	     (local-set-key (kbd "M-L {") (lambda () (interactive) (insert "\\left\\{ \\right\\}") (backward-char 10)))
+	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))
+	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))))
+
+
+
+;;================================================================================
+;;
+;; Dictionary stuff
+;;
+;;================================================================================
+(ispell-change-dictionary "english")
+(defun fd-switch-dictionary()
+  (interactive)
+  (let* ((dic ispell-current-dictionary)
+    	 (change (if (string= dic "francais") "english" "francais")))
+    (ispell-change-dictionary change)
+    (message "Dictionary switched from %s to %s" dic change)
+    ))
+(global-set-key (kbd "<f8>")   'fd-switch-dictionary)
+
+
+
+;;================================================================================
+;;
+;; Color theme
+;;
+;;================================================================================
+(require 'color-theme)
+(color-theme-initialize)
+(color-theme-clarity)
+
+;;================================================================================
+;;
+;; Gmsh stuff
+;;
+;;================================================================================
+(add-to-list 'auto-mode-alist '("\\.geo$" . c++-mode))
+
+;;================================================================================
+;;
+;; Cuda stuff
+;;
+;;================================================================================
+(add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
+
+
+
+
+;;================================================================================
+;;
+;; Word counting stuff
+;;
+;;================================================================================
+(setq load-path (cons (expand-file-name "~/.emacs_stuff") load-path))
+(autoload 'word-count-mode "word-count"
+  "Minor mode to count words." t nil)
+(global-set-key "\M-+" 'word-count-mode)
+;; How to use:
+;; 1). M-+ (word-count-mode) toggles word-count mode.
+;; 2). M-[space] (word-count-set-area) sets area for counting words.
+;; 3). M-x word-count-set-region sets region or paragraph for counting words.
+;; 4). M-x word-count-set-marker sets marker for counting words.
+
+;;================================================================================
+;;
+;; Octave stuff
+;;
+;;================================================================================
+(add-hook 'inferior-octave-mode-hook
+               (lambda ()
+                 (turn-on-font-lock)
+                 (define-key inferior-octave-mode-map [up]
+                   'comint-previous-input)
+                 (define-key inferior-octave-mode-map [down]
+                   'comint-next-input)))
+
+
+;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph (M-q)
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+;;================================================================================
+;;
+;; Auto-indentation: http://www.emacswiki.org/emacs/AutoIndentation
+;;
+;;================================================================================
+(defun set-newline-and-indent ()
+  (local-set-key (kbd "RET") 'newline-and-indent))
+(add-hook 'lisp-mode-hook 'set-newline-and-indent)
+(add-hook 'c-mode-common-hook 'set-newline-and-indent)
+
+;;================================================================================
+;;
+;; fun startup message
+;;
+;;================================================================================
+(defconst animate-n-steps 0)
+(defun emacs-reloaded()
+ (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
+			(substring (emacs-version) 0 16)
+			".")
+		 0 0)
+ (newline-and-indent) (newline-and-indent))
+(add-hook 'after-init-hook 'emacs-reloaded)
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
+
+;;================================================================================
+;;
+;; Minor mode shortcuts
+;;
+;;================================================================================
+;; If a global-set-key didn't work because it was overwritten by a major mode, 
+;; add it here. (from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs)
+;; "I use a minor mode for all my "override" key bindings"
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+(define-key my-keys-minor-mode-map (kbd "C-c C-z") 'comment-region)
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t " my-keys" 'my-keys-minor-mode-map)
+(my-keys-minor-mode 1)
+
+;; Turn off the custom mode in the minibuffer
+(defun my-minibuffer-setup-hook ()
+  (my-keys-minor-mode 0))
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
+
+;;================================================================================
+;;
+;; Org-mode stuff
+;;
+;;================================================================================
+(setq org-startup-truncated nil)
+
+
+;;================================================================================
+;;
+;; Yorick stuff
+;;
+;;================================================================================
+;;(load "~/Yorick/yorick.el" nil t)
+
+;;================================================================================
+;;
+;; Python stuff
+;;
+;;================================================================================
+;; ;;(autoload 'python-mode "python-mode" "Python Mode." t)
+;; ;;(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+;; ;;(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
+;;================================================================================
+;;
+;; AMPL setup
+;;
+;;================================================================================
+;; (setq auto-mode-alist
+;;       (cons '("\\.mod$" . ampl-mode) auto-mode-alist))
+;; (setq auto-mode-alist
+;;       (cons '("\\.dat$" . ampl-mode) auto-mode-alist))
+;; (setq auto-mode-alist
+;;       (cons '("\\.ampl$" . ampl-mode) auto-mode-alist))
+;; (setq interpreter-mode-alist
+;;       (cons '("ampl" . ampl-mode)
+;;             interpreter-mode-alist))
+;; (load "ampl-mode")
+;; ;; Enable syntax coloring
+;; (add-hook 'ampl-mode-hook 'turn-on-font-lock)
+
+
