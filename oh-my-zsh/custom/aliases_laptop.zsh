@@ -3,6 +3,6 @@
 # These are my laptop aliases
 #
 #================================================================================
-if [[ ${(%):-%M} = *navier* ]]; then
+if [[ ${(%):-%M} = *laptop* ]]; then
    alias wakenavier='wakeonlan 2C:41:38:4F:E8:47'
 fi
