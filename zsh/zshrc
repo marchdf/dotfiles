@@ -52,15 +52,32 @@ ENABLE_CORRECTION="true"
 plugins=(git)
 
 # User configuration
+
+
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
 source $ZSH/oh-my-zsh.sh
 
-# this is needed or things become a bit weird at the command prompt
-# (backspace moving forward but still deleting, etc)
-export TERM=xterm-256color 
+
+# better terminal colors
+export TERM=xterm-256color
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh

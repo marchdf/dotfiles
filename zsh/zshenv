@@ -3,7 +3,7 @@
 # I should be putting all the paths and things like that in this file
 
 
-# Set the default editor to /usr/bin/emacs if emaacs is installed
+# Set the default editor to /usr/bin/emacs if emacs is installed
 if [ -f /usr/bin/emacs ]; then
    export EDITOR='emacs -nw'
 fi
@@ -12,25 +12,35 @@ fi
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin:$HOME/mypython
 export PYTHONPATH=$PYTHONPATH:$HOME/mypython
-PATH=$PATH:$HOME/dg/code/scripts
-export PYTHONPATH=$PYTHONPATH:$HOME/dg/code/scripts
 
-# Visit bin dir
-PATH=$PATH:$HOME/visit/bin
 
-# Datathief bin dir
-PATH=$PATH:$HOME/datathief
+#================================================================================
+#
+# paths for navier
+#
+#================================================================================
+if [[ ${(%):-%M} = *navier* ]]; then
+    PATH=$PATH:$HOME/dg/code/scripts
+    export PYTHONPATH=$PYTHONPATH:$HOME/dg/code/scripts
 
-# Gmsh exec
-PATH=$PATH:$HOME/gmsh-2.8.2-source/build
+    # Visit bin dir
+    PATH=$PATH:$HOME/visit/bin
 
-# TAU stuff
-PATH=$PATH:$HOME/tau-2.23.1/x86_64/bin
-
-# SCALASCA/CUBE stuff
-PATH=$PATH:/opt/cube/bin
-
-# CUDA stuff
-export PATH=/usr/local/cuda/bin:/home/marchdf/MATLAB/R2011a/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-export PATH
+    # Datathief bin dir
+    PATH=$PATH:$HOME/datathief
+    
+    # Gmsh exec
+    PATH=$PATH:$HOME/gmsh-2.8.2-source/build
+    
+    # TAU stuff
+    PATH=$PATH:$HOME/tau-2.23.1/x86_64/bin
+    
+    # SCALASCA/CUBE stuff
+    PATH=$PATH:/opt/cube/bin
+    
+    # CUDA stuff
+    export PATH=/usr/local/cuda/bin:/home/marchdf/MATLAB/R2011a/bin:$PATH
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    export PATH
+    
+fi

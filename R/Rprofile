@@ -1,5 +1,5 @@
-local({
-  r <- getOption("repos")
-  r["CRAN"] <- "http://cran.cnr.berkeley.edu/"
-  options(repos = r)
+## Default repo
+local({r <- getOption("repos")
+       r["CRAN"] <- "https://cran.r-project.org" 
+       options(repos=r)
 })
