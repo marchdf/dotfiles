@@ -4,7 +4,7 @@
 
 
 # Set the default editor to /usr/bin/emacs if emacs is installed
-if [ -f /usr/bin/emacs ]; then
+if [ -f /usr/bin/emacs ] || [ -f /usr/local/bin/emacs ] ; then
    export EDITOR='emacs -nw'
 fi
 
