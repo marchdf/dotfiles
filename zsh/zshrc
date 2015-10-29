@@ -87,3 +87,30 @@ export TERM=xterm-256color
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+
+#
+# This is a bit sneaky... but nice!
+# Separate up arrow lookback for local and global ZSH history
+# http://superuser.com/questions/446594/separate-up-arrow-lookback-for-local-and-global-zsh-history/691603
+# up/down arrow steps through LOCAL terminal history
+# Ctrl-up/down steps through GLOBAL terminal history
+# Ctrl-R searches global terminal history
+bindkey "${terminfo[kpp]}" up-line-or-local-history
+bindkey "${terminfo[knp]}" down-line-or-local-history
+
+up-line-or-local-history() {
+    zle set-local-history 1
+    zle up-line-or-history
+    zle set-local-history 0
+}
+zle -N up-line-or-local-history
+down-line-or-local-history() {
+    zle set-local-history 1
+    zle down-line-or-history
+    zle set-local-history 0
+}
+zle -N down-line-or-local-history
+
+bindkey "^[[1;5A" up-line-or-history    # [CTRL] + Cursor up
+bindkey "^[[1;5B" down-line-or-history  # [CTRL] + Cursor down

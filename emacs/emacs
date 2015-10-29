@@ -37,7 +37,7 @@
 ;; Set up some directories
 ;;
 ;;================================================================================
-(add-to-list 'load-path "~/.emacs.d")
+;;(add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'load-path "~/.emacs_stuff")
 (setq make-backup-files nil) ;;Prevent Emacs from making backup files
 ;; ;; Place backup files in specific directory
