@@ -32,6 +32,9 @@
 ;;Turn alarm completely off
 (setq ring-bell-function 'ignore ) 
 
+;; Always follow symlinks (don't prompt to ask)
+(setq vc-follow-symlinks t)
+
 ;; Enable the MELPA package repo (http://melpa.org/#/getting-started)
 (require 'package)
 (package-initialize)
@@ -79,8 +82,6 @@
 ;; Set hotkeys to navigate buffers easily
 (global-set-key (kbd "M-,") 'previous-buffer)
 (global-set-key (kbd "M-.") 'next-buffer)
-
-
 
 ;;================================================================================
 ;;
