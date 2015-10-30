@@ -1,8 +1,6 @@
 ;;
 ;; Written by Marc Henry de Frahan
 ;;
-;; Extra files stored in .emacs_stuff directory
-;;
 
 ;;================================================================================
 ;;
@@ -50,7 +48,8 @@
 ;;
 ;;================================================================================
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(add-to-list 'load-path "~/.emacs_stuff")
+(add-to-list 'load-path "~/.emacs.d/personal")
+(add-to-list 'load-path "~/.emacs.d/emacs23") 
 (setq make-backup-files nil) ;;Prevent Emacs from making backup files
 ;; ;; Place backup files in specific directory
 ;; ;;(setq make-backup-files t)
@@ -95,7 +94,7 @@
 ;; http://user42.tuxfamily.org/compilation-always-kill/index.html I
 ;; think this might exist in next versions of emacs already. though it
 ;; doesn't seem to exist for v23
-(autoload 'compilation-always-kill-mode "./things_that_might_exist_in_next_emacs_versions/compilation-always-kill" nil t)
+(autoload 'compilation-always-kill-mode "~/.emacs.d/personal/compilation-always-kill" nil t)
 (eval-after-load "compile" '(compilation-always-kill-mode 1))
 
 ;; Compile using the last compile command. Blurb: "M-x recompile just
@@ -200,9 +199,9 @@ and set the focus back to Emacs frame"
 ;; Matlab stuff
 ;;
 ;;================================================================================
-(autoload 'matlab-mode "~/.emacs_stuff/matlab.el" "Enter Matlab mode." t) 
+(autoload 'matlab-mode "~/.emacs.d/personal/matlab.el" "Enter Matlab mode." t) 
 (setq auto-mode-alist (cons '("\\.m\\'" . matlab-mode) auto-mode-alist)) 
-(autoload 'matlab-shell "~/.emacs_stuff/matlab.el" "Interactive Matlab mode." t)
+(autoload 'matlab-shell "~/.emacs.d/personal/matlab.el" "Interactive Matlab mode." t)
 ;; User Level customizations (You need not use them all):
 (setq matlab-indent-function t)    ; if you want function bodies indented
 (setq matlab-verify-on-save-flag nil) ; turn off auto-verify on save
@@ -325,7 +324,7 @@ and set the focus back to Emacs frame"
 ;; Word counting stuff
 ;;
 ;;================================================================================
-(setq load-path (cons (expand-file-name "~/.emacs_stuff") load-path))
+(setq load-path (cons (expand-file-name "~/.emacs.d/personal") load-path))
 (autoload 'word-count-mode "word-count"
   "Minor mode to count words." t nil)
 (global-set-key "\M-+" 'word-count-mode)
