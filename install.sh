@@ -9,7 +9,7 @@
 # Setup
 
 # list of files/folders to symlink in homedir
-folders="bash emacs git R screen woof zsh"
+folders="bash git R screen woof zsh"
 
 # list of folders to symlink in homedir (with different src and tgt names)
 declare -A move_folders
@@ -55,6 +55,20 @@ for folder in $folders; do
 	ln -s $file ~/.$fname
     done
 done
+
+#================================================================================
+# We have to be a bit careful with emacs
+echo "Moving .emacs from ~ to $OLDDIR"
+mv ~/.emacs $OLDDIR
+echo "Creating symlink to .emacs in home directory."
+ln -s $DOTDIR/emacs/emacs ~/.emacs
+echo "Making sure .emacs.d exists"
+mkdir -p .emacs.d
+echo "Creating symlink to emacs23  in .emacs.d directory."
+ln -s $DOTDIR/emacs/emacs.d/emacs23 ~/.emacs.d/
+echo "Creating symlink to personal in .emacs.d directory."
+ln -s $DOTDIR/emacs/emacs.d/personal ~/.emacs.d/
+
 
 #================================================================================
 # These aren't really dotfiles but I want them version
