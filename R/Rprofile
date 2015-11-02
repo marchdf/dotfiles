@@ -3,3 +3,18 @@ local({r <- getOption("repos")
        r["CRAN"] <- "http://cran.us.r-project.org" 
        options(repos=r)
 })
+
+.First <- function(){
+#welcome message
+message("Welcome back ", Sys.getenv("USER"),"!\n","working directory is:", getwd())
+}
+
+# modify the prompt to show user and hostname
+options(prompt = paste(paste (Sys.info () [c ("user", "nodename")], collapse = "@"),"[R] "))
+
+# set the editor
+options(editor="emacs")
+
+# option to colorize the output
+if(Sys.getenv("TERM") == "xterm-256color")
+  library("colorout")
