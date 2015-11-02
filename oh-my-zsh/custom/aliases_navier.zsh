@@ -29,12 +29,15 @@ if [[ ${(%):-%M} = *navier* ]]; then
    alias rdp_bern='rdesktop -g 90% -a 32 -r clipboard:CLIPBOARD -u UMROOT\\marchdf -r disk:doc=/home/marchdf/Dropbox me-bernoulli.adsroot.itcs.umich.edu'
    alias empty_space='printf ''\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n'''
    alias mcfpl='sudo mount -t davfs https://ctools.umich.edu/dav/b4112ada-8342-4478-9bfc-d73ebd116e99 ~/mnt/ctools/cfpl/ '
+   alias list-repos='sudo yum repolist all'   
    alias enable-epel='sudo yum-config-manager --enable epel'
    alias disable-epel='sudo yum-config-manager --disable epel'
    alias enable-centos='sudo yum-config-manager --enable centos'
    alias disable-centos='sudo yum-config-manager --disable centos'
    alias enable-naulinux-school='sudo yum-config-manager --enable naulinux-school'
    alias disable-naulinux-school='sudo yum-config-manager --disable naulinux-school'
+   alias enable-elrepo='sudo yum-config-manager --enable elrepo'
+   alias disable-elrepo='sudo yum-config-manager --disable elrepo'
    alias mesr="cd /home/marchdf/.gvfs/software\ on\ me-dist.engin.umich.edu/"
    alias count_lines_of_code="find . -name '*.h' -o -name '*.cc' -o -name '*.cu' | xargs wc -l"
 
