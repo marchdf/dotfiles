@@ -10,7 +10,7 @@ message("Welcome back ", Sys.getenv("USER"),"!\n","working directory is:", getwd
 }
 
 # modify the prompt to show user and hostname
-options(prompt = paste(paste (Sys.info () [c ("user", "nodename")], collapse = "@"),"[R] "))
+options(prompt = paste(paste (Sys.info () [c ("user", "nodename")], collapse = "@"),"[R] > "))
 
 # set the editor
 options(editor="emacs")
@@ -18,4 +18,6 @@ options(editor="emacs")
 # option to colorize the output
 if(Sys.getenv("TERM") == "xterm-256color")
   library("colorout")
+
+
   
