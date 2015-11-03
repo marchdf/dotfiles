@@ -19,5 +19,4 @@ options(editor="emacs")
 if(Sys.getenv("TERM") == "xterm-256color")
   library("colorout")
 
-
-  
+message("n*** Successfully loaded .Rprofile ***n")
