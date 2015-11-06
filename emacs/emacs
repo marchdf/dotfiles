@@ -14,7 +14,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5e3fc08bcadce4c6785fc49be686a4a82a356db569f55d411258984e952f194a" "7153b82e50b6f7452b4519097f880d968a6eaf6f6ef38cc45a144958e553fbc6" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "bc40f613df8e0d8f31c5eb3380b61f587e1b5bc439212e03d4ea44b26b4f408a" "b571f92c9bfaf4a28cb64ae4b4cdbda95241cd62cf07d942be44dc8f46c491f4" "9ff70d8009ce8da6fa204e803022f8160c700503b6029a8d8880a7a78c5ff2e5" "cd03a600a5f470994ba01dd3d1ff52d5809b59b4a37357fa94ca50a6f7f07473" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "524c8884ab3635936c11344662e2c1b647203721855366facdf726010aed5cb1" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
+    ("03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5e3fc08bcadce4c6785fc49be686a4a82a356db569f55d411258984e952f194a" "7153b82e50b6f7452b4519097f880d968a6eaf6f6ef38cc45a144958e553fbc6" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "bc40f613df8e0d8f31c5eb3380b61f587e1b5bc439212e03d4ea44b26b4f408a" "b571f92c9bfaf4a28cb64ae4b4cdbda95241cd62cf07d942be44dc8f46c491f4" "9ff70d8009ce8da6fa204e803022f8160c700503b6029a8d8880a7a78c5ff2e5" "cd03a600a5f470994ba01dd3d1ff52d5809b59b4a37357fa94ca50a6f7f07473" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "524c8884ab3635936c11344662e2c1b647203721855366facdf726010aed5cb1" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
  '(inhibit-startup-screen t)
  '(kill-ring-max 70)
  '(user-full-name "Marc Henry de Frahan"))
@@ -296,7 +296,9 @@ and set the focus back to Emacs frame"
 
 ;; For emacs > 23, use the following
 (when (> emacs-major-version 23)
-  (load-theme 'reverse t))
+  (load-theme 'reverse t)
+  ;;(load-theme 'solarized-dark t)
+  )
 
 ;;================================================================================
 ;;
@@ -413,6 +415,35 @@ and set the focus back to Emacs frame"
 ;;================================================================================
 (setq org-startup-truncated nil)
 
+;;================================================================================
+;;
+;; ESS stuff
+;;
+;;================================================================================
+(require 'ess-site)
+(add-to-list 'auto-mode-alist '("\\.Rprofile\\'" . R-mode))
+
+;; inspiration for the following:
+;; http://stats.blogoverflow.com/2011/08/using-emacs-to-work-with-r/
+;; save more commands
+(setq comint-input-ring-size 1000)
+;; "This recalls the R statement from your R statement history, but it
+;; tries to match it with the one which is already on your line."
+(add-hook 'inferior-ess-mode-hook
+	  '(lambda nil
+	     (define-key inferior-ess-mode-map [\C-up]
+	       'comint-previous-matching-input-from-input)
+	     (define-key inferior-ess-mode-map [\C-down]
+	       'comint-next-matching-input-from-input)
+	     (define-key inferior-ess-mode-map [\C-x \t]
+	       'comint-dynamic-complete-filename)))
+
+;; To assign ":" to "<-" and to stop the assignment of underscore
+;; (underbar) "_" to "<-"
+(setq ess-smart-S-assign-key ":")
+(ess-toggle-S-assign nil)
+(ess-toggle-S-assign nil)
+(ess-toggle-underscore nil) ; leave underscore key alone!
 
 ;;================================================================================
 ;;
