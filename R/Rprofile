@@ -20,7 +20,6 @@ options(editor="emacs")
 if(Sys.getenv("TERM") == "xterm-256color")
   library("colorout")
 
-
 ## Create a invisible startup environment for all the functions to go in so it doesn't clutter your workspace.
 ## Ideas from http://stackoverflow.com/questions/1189759/expert-r-users-whats-in-your-rprofile
 ##            http://www.gettinggeneticsdone.com/2013/07/customize-rprofile.html
@@ -64,3 +63,5 @@ attach(.startup)
      savehistory(hist_file)
   }
 }
+
+message("n*** Successfully loaded .Rprofile ***n")
