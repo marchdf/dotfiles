@@ -172,6 +172,7 @@ and set the focus back to Emacs frame"
 ;; set the hotkey
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer-volatile)
 
+
 ;;================================================================================
 ;;
 ;; C/C++ stuff
@@ -218,6 +219,16 @@ and set the focus back to Emacs frame"
 ;;
 ;;================================================================================
 
+;; function to replace all \n with %\n in a region. Useful for latex
+;; when you are in the minipage environment.
+(defun replace-newlines-with-percent-in-region ()
+  "Replace newlines with %\n in region"
+  (interactive)
+  (save-restriction
+    (narrow-to-region (point) (mark))
+    (goto-char (point-min))
+        (while (search-forward "\n" nil t) (replace-match "%\n" nil t))))
+
 ;; force all files ending in .tex to be opened in LaTeX mode (not TeX)
 (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode))
 
@@ -227,6 +238,8 @@ and set the focus back to Emacs frame"
 	     (define-key LaTeX-mode-map "\C-c\C-a"
 	       'compile)
 	     (setq compilation-read-command nil)
+	     (add-hook 'replace-newlines-with-percent-in-region 'replace-newlines-with-percent-in-region nil 'make-it-local)
+	     (local-set-key (kbd "\C-c %") 'replace-newlines-with-percent-in-region)
 	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
 	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8) 
 ;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")
@@ -249,6 +262,8 @@ and set the focus back to Emacs frame"
 	     (define-key tex-mode-map "\C-c\C-a"
 	       'compile)
 	     (setq compilation-read-command nil)
+	     (add-hook 'replace-newlines-with-percent-in-region 'replace-newlines-with-percent-in-region nil 'make-it-local)
+	     (local-set-key (kbd "\C-c %") 'replace-newlines-with-percent-in-region)
 	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
 	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8) 
 ;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")

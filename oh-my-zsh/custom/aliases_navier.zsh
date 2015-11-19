@@ -38,6 +38,7 @@ if [[ ${(%):-%M} = *navier* ]]; then
    alias disable-naulinux-school='sudo yum-config-manager --disable naulinux-school'
    alias enable-elrepo='sudo yum-config-manager --enable elrepo'
    alias disable-elrepo='sudo yum-config-manager --disable elrepo'
+   alias update-only-security='sudo yum update-minimal --security -y ' # according to https://access.redhat.com/solutions/10021
    alias mesr="cd /home/marchdf/.gvfs/software\ on\ me-dist.engin.umich.edu/"
    alias count_lines_of_code="find . -name '*.h' -o -name '*.cc' -o -name '*.cu' | xargs wc -l"
 
