@@ -13,7 +13,7 @@ options(prompt = paste( paste(gsub("\\..*","",Sys.info () [c ("user", "nodename"
 options(editor="emacs")
 
 ## option to colorize the output
-## first install devtools: install.packages("devtools")
+## first comment the two lines below, then install devtools: install.packages("devtools")
 ## then install colorout from the git repo (https://github.com/jalvesaq/colorout):
 ##   > library(devtools)
 ##   > install_github('jalvesaq/colorout')
