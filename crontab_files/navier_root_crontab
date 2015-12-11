@@ -4,5 +4,12 @@
 #
 #================================================================================
 
+# system backup to datadrive and externaldrive every Saturday at 5:00 and 7:00
+00 1 * * 6     rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_system_excludes.txt /* /mnt/datadrive/backup_root
+00 7 * * 6     rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_system_excludes.txt /* /mnt/externaldrive/backup_root
 
-# system backup to datadrive, nas1, externaldrive every Saturday at 5:00
+
+
+
+# need an new line at the end of the file
+

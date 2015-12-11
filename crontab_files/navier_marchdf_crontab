@@ -14,16 +14,16 @@
 #================================================================================
 
 # home backup to data drive every day at 22:00
-00 22 * * *     rsync -avzAX --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/datadrive/backup
+00 22 * * *    rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/datadrive/marchdf/backup
 
 # home backup to nas1 every Saturday at 1:00
-00 1 * * 6     rsync -avzAX --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/nas1/backup
+00 1 * * 6     rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/nas1/backup
 
 # datadrive backup to externaldrive every Saturday at 3:00
-00 3 * * 6     rsync -avzAX --delete /mnt/datadrive/marchdf /mnt/externaldrive/backup_datadrive
+00 3 * * 6     rsync -avzu --delete /mnt/datadrive/marchdf /mnt/externaldrive/backup_datadrive
 
 # datadrive backup to nas1 every Wednesday at 3:00
-00 3 * * 3     rsync -avzAX --delete /mnt/datadrive/marchdf /mnt/nas1/backup_datadrive
+00 3 * * 3     rsync -avzu --delete /mnt/datadrive/marchdf /mnt/nas1/backup_datadrive
 
 
 #================================================================================

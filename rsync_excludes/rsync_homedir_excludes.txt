@@ -15,6 +15,7 @@
 
 ## This is my personal stuff
 /Downloads/*
+/builds/*
 /fluxscratch/*
 /lonestar_home/*
 /lonestar_scratch/*
