@@ -1,0 +1,39 @@
+
+#================================================================================
+#
+# Check for snow every night at 5h20
+#
+#================================================================================
+20 5 * * * cd ~/Dropbox/weather; ./snow_alert.py > snow_alert.out; cd
+
+
+#================================================================================
+#
+# Make some general backups
+#
+#================================================================================
+
+# home backup to data drive every day at 22:00
+00 22 * * *     rsync -avzAX --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/datadrive/backup
+
+# home backup to nas1 every Saturday at 1:00
+00 1 * * 6     rsync -avzAX --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/nas1/backup
+
+# datadrive backup to externaldrive every Saturday at 3:00
+00 3 * * 6     rsync -avzAX --delete /mnt/datadrive/marchdf /mnt/externaldrive/backup_datadrive
+
+# datadrive backup to nas1 every Wednesday at 3:00
+00 3 * * 3     rsync -avzAX --delete /mnt/datadrive/marchdf /mnt/nas1/backup_datadrive
+
+
+#================================================================================
+#
+# Make some backups to Box
+#
+#================================================================================
+
+# every day at 22:00
+#00 22 * * *     /usr/bin/python /home/marchdf/bin/backup_navier.py -t home -t data
+
+# need an new line at the end of the file
+

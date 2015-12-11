@@ -17,6 +17,7 @@ move_folders[bin]=bin
 move_folders[mypython]=mypython
 move_folders[oh-my-zsh/custom]=.oh-my-zsh/custom
 move_folders[rsync_excludes]=rsync_excludes
+move_folders[crontab_files]=crontab_files
 
 #================================================================================
 # Configure directories
