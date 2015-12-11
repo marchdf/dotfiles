@@ -16,6 +16,7 @@ declare -A move_folders
 move_folders[bin]=bin
 move_folders[mypython]=mypython
 move_folders[oh-my-zsh/custom]=.oh-my-zsh/custom
+move_folders[rsync_excludes]=rsync_excludes
 
 #================================================================================
 # Configure directories

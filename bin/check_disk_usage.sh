@@ -6,7 +6,7 @@
 # Get current percent usage
 HOSTNAME=$(hostname)
 CURRENT=$(df /home | tail -1 | awk '{ print $5}' | sed 's/%//g')
-THRESHOLD=95
+THRESHOLD=90
 if [ "$CURRENT" -gt "$THRESHOLD" ] ; then
     mail -s 'Disk Space Alert' marchdf@umich.edu <<EOF
 Your home partition on $HOSTNAME remaining free space is critically low. Used: $CURRENT%

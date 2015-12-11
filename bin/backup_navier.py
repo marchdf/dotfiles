@@ -1,12 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
+#
+# SCRIPT NOT IN USE!!! because it became too complex... it's not
+# necessary to be so complicated. Going to add things straight to the
+# crontab and put the exclude files in my dotfiles.
 #
 #
-# Backup navier.engin.umich.edu
+# Backup parts of navier.engin.umich.edu to a drive specified in the call
 #
 #
 __author__ = 'marchdf'
 def usage():
-    print '\nUsage: {0:s} [options ...]\nOptions:\n  -d, --dry-run\tdebug and dry run\n  -t, --type\ttype of backup to do (necessary)\n  -h, --help\tshow this message and exit\n'.format(sys.argv[0])
+    print '\nUsage: {0:s} [options ...]\nOptions:\n  -d, --dry-run\tdebug and dry run\n  -t, --type\ttype of backup to do (necessary)\n  -o, --out\tbackup destination (default nas1)\n  -h, --help\tshow this message and exit\n'.format(sys.argv[0])
 
 #================================================================================
 #
@@ -34,6 +38,8 @@ import copy
 # from: http://www.cyberciti.biz/faq/python-command-line-arguments-argv-example/
 
 
+rsync_cmd = ['rsync','-avz']
+destination = '/mnt/nas1/'
 # This rsync command is not ideal. Ideally you would just use rsync
 # -avz. However, Box.com is not very nice and, according to
 # http://unix.stackexchange.com/questions/78933/rsync-mkstemp-failed-invalid-argument-22-with-davfs-mount-of-box-com-cloud
@@ -45,9 +51,9 @@ import copy
 # (also speeds things up). We also are removing things like copying
 # symlinks and preserving permissions because the give us a lot of
 # errors on Box.
+#
+#rsync_cmd = ['rsync','-rtgoDvhP','--inplace','--size-only','--bwlimit=64']
 
-# rsync_cmd = ['rsync','-avz']
-rsync_cmd = ['rsync','-rtgoDvhP','--inplace','--size-only','--bwlimit=64']
 bkp_type = []
 try:
     myopts, args = getopt.getopt(sys.argv[1:],"hdt:",["help","dry-run","type="])
