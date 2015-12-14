@@ -1,3 +1,4 @@
+# Apply this file with: sudo crontab -u marchdf /home/marchdf/crontab_files/navier_marchdf_crontab
 
 #================================================================================
 #
@@ -9,21 +10,22 @@
 
 #================================================================================
 #
-# Make some general backups
+# Make some general backups. Save log files (remove them before each new run)
+# and email errors to myself
 #
 #================================================================================
 
 # home backup to data drive every day at 22:00
-00 22 * * *    rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/datadrive/marchdf/backup
+00 22 * * *    rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/datadrive/marchdf/backup 1>rsync.log 2>rsync.err; if [ -s rsync.err ] ; then mail -s "[cron] FAIL Backup home to data drive" marchdf@gmail.com < rsync.err ; else echo "Success" | mail -s "[cron] SUCCESS Backup home to data drive" marchdf@gmail.com ; fi
 
 # home backup to nas1 every Saturday at 1:00
-00 1 * * 6     rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/nas1/backup
+00 1 * * 6     rsync -avzu --delete --exclude-from=/home/marchdf/rsync_excludes/rsync_homedir_excludes.txt /home/marchdf /mnt/nas1/backup 1>rsync.log 2>rsync.err; if [ -s rsync.err ] ; then mail -s "[cron] FAIL Backup home to nas1" marchdf@gmail.com < rsync.err ; else echo "Success" | mail -s "[cron] SUCCESS Backup home to nas1" marchdf@gmail.com ; fi
 
 # datadrive backup to externaldrive every Saturday at 3:00
-00 3 * * 6     rsync -avzu --delete /mnt/datadrive/marchdf /mnt/externaldrive/backup_datadrive
+00 3 * * 6     rsync -avzu --delete /mnt/datadrive/marchdf /mnt/externaldrive/backup_datadrive 1>rsync.log 2>rsync.err; if [ -s rsync.err ] ; then mail -s "[cron] FAIL Backup data drive to external drive" marchdf@gmail.com < rsync.err ; else echo "Success" | mail -s "[cron] SUCCESS Backup data drive to external drive" marchdf@gmail.com ; fi
 
 # datadrive backup to nas1 every Wednesday at 3:00
-00 3 * * 3     rsync -avzu --delete /mnt/datadrive/marchdf /mnt/nas1/backup_datadrive
+00 3 * * 3     rsync -avzu --delete /mnt/datadrive/marchdf /mnt/nas1/backup_datadrive 1>rsync.log 2>rsync.err; if [ -s rsync.err ] ; then mail -s "[cron] FAIL Backup data drive to nas1" marchdf@gmail.com < rsync.err ; else echo "Success" | mail -s "[cron] SUCCESS Backup data drive to nas1" marchdf@gmail.com ; fi
 
 
 #================================================================================
