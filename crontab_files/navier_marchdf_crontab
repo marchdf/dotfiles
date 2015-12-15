@@ -10,6 +10,14 @@
 
 #================================================================================
 #
+# Prompt for upgrading every week at 8am on Mondays
+# 
+#================================================================================
+00 8 * * 1 /home/marchdf/bin/prompt_upgrade.sh
+
+
+#================================================================================
+#
 # Make some general backups. Save log files (remove them before each new run)
 # and email errors to myself
 #
