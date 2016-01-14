@@ -19,5 +19,4 @@ if [ -r "$HOME/.dbus/Xdbus" ]; then
 fi
 
 # Send the notification
-notify-send -i /home/marchdf/bin/shadow.png -u critical "You should upgrade your system.";
-
+notify-send -i /home/marchdf/bin/shadow.png -u critical "You should upgrade your system." "<b>- remove unused programs:</b> pacman -Rns \$(pacman -Qtdq)\\n<b>- upgrade:</b> pacman -Syu\\n<b>- merge pac files:</b> sudo DIFFPROG=meld pacdiff" ;
