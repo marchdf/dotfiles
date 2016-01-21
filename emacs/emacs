@@ -33,8 +33,10 @@
 ;;Turn alarm completely off
 (setq ring-bell-function 'ignore ) 
 
-;; Always follow symlinks (don't prompt to ask)
-(setq vc-follow-symlinks t)
+;; Never follow symlinks (don't prompt to ask). This allows me to keep
+;; the syntax coloring when editing a symlinked file (useful for the
+;; dotfiles thing)
+(setq vc-follow-symlinks nil)
 
 ;; Enable the MELPA package repo (http://melpa.org/#/getting-started)
 (require 'package)
@@ -476,6 +478,10 @@ and set the focus back to Emacs frame"
 ;; ;;(autoload 'python-mode "python-mode" "Python Mode." t)
 ;; ;;(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 ;; ;;(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
+;; Python autocompletion with jedi (http://tkf.github.io/emacs-jedi/latest/)
+(add-hook 'python-mode-hook 'jedi:setup)
+;;(setq jedi:complete-on-dot t) 
 
 ;;================================================================================
 ;;

@@ -29,9 +29,6 @@ if [[ ${(%):-%M} = *navier* ]]; then
     # Datathief bin dir
     PATH=$PATH:$HOME/datathief
     
-    # Gmsh exec
-    PATH=$PATH:$HOME/gmsh-2.8.2-source/build
-    
     # TAU stuff
     PATH=$PATH:$HOME/tau-2.23.1/x86_64/bin
     
