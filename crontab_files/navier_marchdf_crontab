@@ -9,10 +9,10 @@
 
 #================================================================================
 #
-# Prompt for upgrading every week at 8am on Mondays
+# Prompt for upgrading every week at 7am on Mondays
 # 
 #================================================================================
-00 8 * * 1 /home/marchdf/bin/prompt_upgrade.sh
+00 7 * * 1 /home/marchdf/bin/prompt_upgrade.sh
 
 #================================================================================
 #
