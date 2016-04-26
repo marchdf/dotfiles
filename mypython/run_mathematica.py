@@ -6,7 +6,7 @@ __author__ = 'marchdf'
 import subprocess as sp
 
 def run_mathematica_cmd(cmd):
-    print "Running Mathematica command: ", cmd
+    print("Running Mathematica command: ", cmd)
 
     # Launch the process
     proc = sp.Popen('run_mathematica.sh '+cmd, shell=True, stdout=sp.PIPE,stderr=sp.PIPE)
@@ -20,7 +20,7 @@ def run_mathematica_cmd(cmd):
     if errcode == 0:
         return out
     else:
-        print 'Failed to run Mathematica command. Exiting'
+        print('Failed to run Mathematica command. Exiting')
         exit
 
 #================================================================================
@@ -30,9 +30,9 @@ def check_mathematica_output(out,cmd):
     # Quiet mode of mathematica
 
     if '::' in out:
-        print 'The mathematica command ran but spit out some erros:'
+        print('The mathematica command ran but spit out some erros:')
         #print out
-        print 'Running the same command in Quiet mode to suppress error output.'
+        print('Running the same command in Quiet mode to suppress error output.')
         out = run_mathematica_cmd('Quiet['+cmd+']')
 
 
