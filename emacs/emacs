@@ -290,11 +290,50 @@ and set the focus back to Emacs frame"
 ;; Dictionary stuff
 ;;
 ;;================================================================================
-(ispell-change-dictionary "english")
+
+;; use aspell if there, if not use hunspell. Somewhat inspired by
+;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
+(cond
+ ((executable-find "aspell")
+  ;; you may also need `ispell-extra-args'
+  (setq ispell-program-name "aspell"))
+ ((executable-find "hunspell")
+  (setq ispell-program-name "hunspell")
+  
+  ;; Please note that `ispell-local-dictionary` itself will be passed to hunspell cli with "-d"
+  ;; it's also used as the key to lookup ispell-local-dictionary-alist
+  ;; if we use different dictionary
+  (setq ispell-local-dictionary "en_US")
+  (setq ispell-local-dictionary-alist
+	'(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
+ (t (setq ispell-program-name nil)))
+
+;; Automatically launch flyspell (check all text) for the following
+;; modes (https://www.emacswiki.org/emacs/FlySpell)
+(dolist (hook '(text-mode-hook
+		org-mode-hook
+		latex-mode-hook
+		tex-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+
+;; Spell check only comments in these programming languages
+(dolist (hook '(lisp-mode-hook
+		emacs-lisp-mode-hook
+		python-mode-hook
+		shell-mode-hook
+		php-mode-hook
+		css-mode-hook
+		crontab-mode-hook))
+  (add-hook hook 'flyspell-prog-mode))
+
+;; Better performance (https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-spelling.el)
+(setq flyspell-issue-message-flag nil)
+
+;; Convenient switching between dictionnaries.
 (defun fd-switch-dictionary()
   (interactive)
   (let* ((dic ispell-current-dictionary)
-    	 (change (if (string= dic "francais") "english" "francais")))
+    	 (change (if (string= dic "francais") "en_US" "francais")))
     (ispell-change-dictionary change)
     (message "Dictionary switched from %s to %s" dic change)
     ))
