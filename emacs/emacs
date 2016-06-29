@@ -534,7 +534,7 @@ and set the focus back to Emacs frame"
 
 ;; Python autocompletion with jedi (http://tkf.github.io/emacs-jedi/latest/)
 (add-hook 'python-mode-hook 'jedi:setup)
-;;(setq jedi:complete-on-dot t) 
+;;(setq jedi:complete-on-dot t)
 
 ;;================================================================================
 ;;
