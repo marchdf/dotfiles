@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #================================================================================
 #
 # Create symlinks of dotfiles
@@ -76,6 +76,7 @@ ln -s $DOTDIR/emacs/emacs.d/personal ~/.emacs.d/
 # controlled. Copy them straight to my home without the dot stuff
 for folder in "${!move_folders[@]}"; do
     src=$folder
+    echo $src
     tgt=${move_folders[$folder]}
 
     # backup old copy of the file
