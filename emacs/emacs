@@ -18,6 +18,9 @@
  '(inhibit-startup-screen t)
  '(kill-ring-max 70)
  '(org-agenda-files nil)
+ '(package-selected-packages
+   (quote
+    (reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -38,6 +41,13 @@
 ;; dotfiles thing)
 (setq vc-follow-symlinks nil)
 
+
+;;================================================================================
+;;
+;; Package management
+;;
+;;================================================================================
+
 ;; Enable the MELPA package repo (http://melpa.org/#/getting-started)
 (require 'package)
 (package-initialize)
@@ -47,6 +57,26 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
+
+;; List of packages we always want installed
+;; following: http://emacs.stackexchange.com/questions/408/synchronize-packages-between-different-machines
+(setq my-package-list '(auto-complete
+			concurrent
+			ctable
+			deferred
+			epc
+			ess
+			jedi
+			jedi-core
+			julia-mode
+			markdown-mode
+			polymode
+			popup
+			python-environment
+			reverse-theme))
+(mapc #'package-install my-package-list)
+
+
 
 ;;================================================================================
 ;;
