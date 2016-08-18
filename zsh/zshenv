@@ -13,6 +13,10 @@ fi
 PATH=$PATH:$HOME/bin:$HOME/mypython
 export PYTHONPATH=$PYTHONPATH:$HOME/mypython
 
+# Datathief bin dir
+PATH=$PATH:$HOME/datathief
+    
+
 
 #================================================================================
 #
@@ -26,9 +30,6 @@ if [[ ${(%):-%M} = *navier* ]]; then
     # Visit bin dir
     PATH=$PATH:$HOME/visit/bin
 
-    # Datathief bin dir
-    PATH=$PATH:$HOME/datathief
-    
     # TAU stuff
     PATH=$PATH:$HOME/tau-2.23.1/x86_64/bin
     

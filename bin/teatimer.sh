@@ -13,7 +13,6 @@ fi
 # Wait the specified time
 sleep $TIME;
 
-
 #================================================================================
 #
 # Notification for Mac platform
