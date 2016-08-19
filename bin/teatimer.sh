@@ -19,6 +19,9 @@ if [ "$(uname)" == "Darwin" ]; then
 
     # Wait the specified time (need to brew install coreutils)
     gsleep $TIME;
+
+    # Make sure sound is enabled
+    osascript -e "set Volume 2"
     
     # Make sure you installed terminal-notifier with homebrew
     # Also increase the notification banner time by doing:
@@ -26,9 +29,11 @@ if [ "$(uname)" == "Darwin" ]; then
     # taken from: https://9to5mac.com/2014/01/30/how-to-change-os-x-banner-notification-duration-using-terminal/
     terminal-notifier -title "Your tea is ready!" -message "" -sound default -contentImage $HOME/bin/tea.jpg;
 
-    # It would be nice to get a system beep to work...
-    
+    # Make sure sound is disabled (but wait for previous command to end)
+    gsleep 1s;
+    osascript -e "set Volume 0"
 
+    
 #================================================================================
 #
 # Notification for GNU/Linux platform
