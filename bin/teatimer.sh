@@ -10,9 +10,6 @@ else
     TIME=$1;
 fi
 
-# Wait the specified time
-sleep $TIME;
-
 #================================================================================
 #
 # Notification for Mac platform
@@ -20,6 +17,9 @@ sleep $TIME;
 #================================================================================
 if [ "$(uname)" == "Darwin" ]; then
 
+    # Wait the specified time (need to brew install coreutils)
+    gsleep $TIME;
+    
     # Make sure you installed terminal-notifier with homebrew
     # Also increase the notification banner time by doing:
     # defaults write com.apple.notificationcenterui bannerTime 15
@@ -35,6 +35,11 @@ if [ "$(uname)" == "Darwin" ]; then
 #
 #================================================================================
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
+    # Wait the specified time
+    sleep $TIME;
+
+    # Send the notification
     notify-send -t 10000 -i $HOME/bin/tea.jpg "Your tea is ready!";
 
     # Run the system beep thing. 
