@@ -16,6 +16,17 @@ export PYTHONPATH=$PYTHONPATH:$HOME/mypython
 # Datathief bin dir
 PATH=$PATH:$HOME/datathief
     
+#================================================================================
+#
+# paths for Mac OSX
+#
+#================================================================================
+if [ "$(uname)" = "Darwin" ]; then
+
+    # github tokens
+    source $HOME/.github_tokens    
+
+fi
 
 
 #================================================================================
