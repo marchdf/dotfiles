@@ -24,7 +24,13 @@ PATH=$PATH:$HOME/datathief
 if [ "$(uname)" = "Darwin" ]; then
 
     # github tokens
-    source $HOME/.github_tokens    
+    source $HOME/.github_tokens
+
+    # homebrew sbin path
+    export PATH="/usr/local/sbin:$PATH"
+
+    # specify where MPI lives
+    export MPIHOME=$(dirname `/usr/local/bin/mpicc --showme:libdirs | cut -d" " -f2`)
 
 fi
 
