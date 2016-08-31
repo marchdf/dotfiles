@@ -25,7 +25,6 @@ if [[ ${(%):-%M} = *navier* ]]; then
    alias hpc='cd /mnt/datadrive/marchdf/hpcdata'
    alias rdp_umich='rdesktop -g 90% -a 32 -r clipboard:CLIPBOARD -u UMROOT\\marchdf -r disk:doc=/home/marchdf/Dropbox'
    alias rdp_bern='rdesktop -g 90% -a 32 -r clipboard:CLIPBOARD -u UMROOT\\marchdf -r disk:doc=/home/marchdf/Dropbox me-bernoulli.adsroot.itcs.umich.edu'
-   alias empty_space='printf ''\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n'''
    alias mcfpl='sudo mount -t davfs https://ctools.umich.edu/dav/b4112ada-8342-4478-9bfc-d73ebd116e99 ~/mnt/ctools/cfpl/ '
    alias list-repos='sudo yum repolist all'   
    alias enable-epel='sudo yum-config-manager --enable epel'

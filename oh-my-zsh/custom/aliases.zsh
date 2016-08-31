@@ -23,6 +23,8 @@ alias fls="fast_ls"  # fast ls from TACC
 alias c21='vlc http://www.static.rtbf.be/radio/classic21/m3u/classic21_128k.m3u'
 if [[ -x `which htop` ]]; then alias top="htop"; fi
 alias sshot='import ~/Desktop/screenshot.jpg' # screenshot (pick area to grab)
+alias empty_space='printf ''\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n'''
+
 
 # upgrade all python packages with pip.
 # from http://mikegrouchy.com/blog/2014/06/pro-tip-pip-upgrade-all-python-packages.html

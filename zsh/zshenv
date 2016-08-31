@@ -34,7 +34,8 @@ if [ "$(uname)" = "Darwin" ]; then
     export PATH="/usr/local/sbin:$PATH"
 
     # specify where MPI lives
-    export MPIHOME=$(dirname `/usr/local/bin/mpicc --showme:libdirs | cut -d" " -f2`)
+    PATH=$HOME/mpich-install/bin:$PATH ; export PATH
+    export MPIHOME=$HOME/mpich-install
 
 fi
 

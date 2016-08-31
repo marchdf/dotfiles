@@ -20,7 +20,7 @@
 if [ "$(uname)" == "Darwin" ]; then
 
     # Make sure you installed terminal-notifier with homebrew
-    terminal-notifier -title "You should upgrade your system." -message $'brew update; brew outdated; brew upgrade; pip_upgrade_all' -contentImage $HOME/bin/shadow.png;
+    /usr/local/bin/terminal-notifier -title "You should upgrade your system." -message $'brew update; brew outdated; brew upgrade; pip_upgrade_all' -contentImage $HOME/bin/shadow.png;
 
 #================================================================================
 #
