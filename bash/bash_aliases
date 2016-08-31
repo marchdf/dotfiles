@@ -1,0 +1,3 @@
+if [ -d ~/.oh-my-zsh/custom ]; then
+   for f in ~/.oh-my-zsh/custom/*.zsh; do echo $f; done
+fi
