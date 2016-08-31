@@ -41,6 +41,20 @@
 ;; dotfiles thing)
 (setq vc-follow-symlinks nil)
 
+;;================================================================================
+;;
+;; Set up some directories
+;;
+;;================================================================================
+(add-to-list 'load-path "~/.emacs.d/personal")
+(setq make-backup-files nil) ;;Prevent Emacs from making backup files
+;; ;; Place backup files in specific directory
+;; ;;(setq make-backup-files t)
+;; ;;(setq backup-directory-alist (quote ((".*" ."c:/.emacs_backups/"))))
+(when (< emacs-major-version 24)
+  ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs23/themes/")
+  (add-to-list 'load-path "~/.emacs.d/emacs23"))
+
 
 ;;================================================================================
 ;;
@@ -55,41 +69,28 @@
 	     '("melpa" . "https://melpa.org/packages/"))
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/")))
 (package-initialize)
 
 ;; List of packages we always want installed
 ;; following: http://emacs.stackexchange.com/questions/408/synchronize-packages-between-different-machines
 (setq my-package-list '(auto-complete
-			concurrent
-			ctable
-			deferred
-			epc
-			ess
-			jedi
-			jedi-core
-			julia-mode
-			markdown-mode
-			polymode
-			popup
-			python-environment
+ 			concurrent
+ 			ctable
+ 			deferred
+ 			epc
+ 			ess
+ 			jedi
+ 			jedi-core
+ 			julia-mode
+ 			markdown-mode
+ 			polymode
+ 			popup
+ 			python-environment
 			reverse-theme))
 (mapc #'package-install my-package-list)
-
-
-
-;;================================================================================
-;;
-;; Set up some directories
-;;
-;;================================================================================
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(add-to-list 'load-path "~/.emacs.d/personal")
-(add-to-list 'load-path "~/.emacs.d/emacs23") 
-(setq make-backup-files nil) ;;Prevent Emacs from making backup files
-;; ;; Place backup files in specific directory
-;; ;;(setq make-backup-files t)
-;; ;;(setq backup-directory-alist (quote ((".*" ."c:/.emacs_backups/"))))
 
 
 ;;================================================================================
