@@ -340,6 +340,33 @@ and set the focus back to Emacs frame"
 	'(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
  (t (setq ispell-program-name nil)))
 
+
+;; No spell check for embedded snippets in org-mode
+;; From http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled/9347#9347
+(defadvice org-mode-flyspell-verify (after org-mode-flyspell-verify-hack activate)
+  (let ((rlt ad-return-value)
+	(begin-regexp "^[ \t]*#\\+begin_\\(src\\|html\\|latex\\)")
+	(end-regexp "^[ \t]*#\\+end_\\(src\\|html\\|latex\\)")
+	old-flag
+	b e)
+    (when ad-return-value
+      (save-excursion
+	(setq old-flag case-fold-search)
+	(setq case-fold-search t)
+	(setq b (re-search-backward begin-regexp nil t))
+	(if b (setq e (re-search-forward end-regexp nil t)))
+	(setq case-fold-search old-flag))
+      (if (and b e (< (point) e)) (setq rlt nil)))
+    (setq ad-return-value rlt)))
+
+;; No spell check for code snippets in Markdown
+(defun flyspell-generic-textmode-verify ()
+  "Used for `flyspell-generic-check-word-predicate' in text modes."
+  ;; (point) is next char after the word. Must check one char before.
+  (let ((f (get-text-property (- (point) 1) 'face)))
+    (not (memq f '(markdown-pre-face)))))
+(setq flyspell-generic-check-word-predicate 'flyspell-generic-textmode-verify)
+
 ;; Automatically launch flyspell (check all text) for the following
 ;; modes (https://www.emacswiki.org/emacs/FlySpell)
 (dolist (hook '(text-mode-hook
@@ -370,6 +397,9 @@ and set the focus back to Emacs frame"
     (message "Dictionary switched from %s to %s" dic change)
     ))
 (global-set-key (kbd "<f8>")   'fd-switch-dictionary)
+
+
+
 
 ;;================================================================================
 ;;
