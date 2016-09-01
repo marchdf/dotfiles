@@ -41,20 +41,6 @@
 ;; dotfiles thing)
 (setq vc-follow-symlinks nil)
 
-;;================================================================================
-;;
-;; Set up some directories
-;;
-;;================================================================================
-(add-to-list 'load-path "~/.emacs.d/personal")
-(setq make-backup-files nil) ;;Prevent Emacs from making backup files
-;; ;; Place backup files in specific directory
-;; ;;(setq make-backup-files t)
-;; ;;(setq backup-directory-alist (quote ((".*" ."c:/.emacs_backups/"))))
-(when (< emacs-major-version 24)
-  ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs23/themes/")
-  (add-to-list 'load-path "~/.emacs.d/emacs23"))
-
 
 ;;================================================================================
 ;;
@@ -91,6 +77,21 @@
  			python-environment
 			reverse-theme))
 (mapc #'package-install my-package-list)
+
+
+;;================================================================================
+;;
+;; Set up some directories
+;;
+;;================================================================================
+(add-to-list 'load-path "~/.emacs.d/personal")
+(setq make-backup-files nil) ;;Prevent Emacs from making backup files
+;; ;; Place backup files in specific directory
+;; ;;(setq make-backup-files t)
+;; ;;(setq backup-directory-alist (quote ((".*" ."c:/.emacs_backups/"))))
+(when (< emacs-major-version 24)
+  ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs23/themes/")
+  (add-to-list 'load-path "~/.emacs.d/emacs23"))
 
 
 ;;================================================================================
