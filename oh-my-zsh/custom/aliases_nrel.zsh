@@ -15,4 +15,11 @@ if [[ ${(%):-%M} = stc-29682s.local ]]; then
     alias visit='/Applications/VisIt.app/Contents/Resources/bin/visit'
 
     alias hpc='cd /Volumes/backup/backups/navier_datadrive/marchdf/hpcdata/'
+
+    # Make our custom vagrant ssh. This is so the color-ssh in
+    # iterm2_ssh_switch_tab_color.zsh gets called and we can easily
+    # detect that we are on the Vagrant VM.
+    # adapted from : http://stackoverflow.com/questions/10864372/how-to-ssh-to-vagrant-without-actually-running-vagrant-ssh
+    function ssh-vagrant () { color-ssh $(vagrant ssh-config | awk 'NR>1 {print " -o "$1"="$2}') localhost}
+    
 fi
