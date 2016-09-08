@@ -3,7 +3,7 @@
 # These are my custom aliases for my NREL laptop
 #
 #================================================================================
-if [[ ${(%):-%M} = stc-29682s.local ]]; then
+if [[ ${(%):-%M} = *stc-29682s* ]]; then
 
     # Default to python3
     alias python='python3'
@@ -21,5 +21,5 @@ if [[ ${(%):-%M} = stc-29682s.local ]]; then
     # detect that we are on the Vagrant VM.
     # adapted from : http://stackoverflow.com/questions/10864372/how-to-ssh-to-vagrant-without-actually-running-vagrant-ssh
     function ssh-vagrant () { color-ssh $(vagrant ssh-config | awk 'NR>1 {print " -o "$1"="$2}') localhost}
-    
+    alias sv=ssh-vagrant
 fi
