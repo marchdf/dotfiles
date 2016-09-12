@@ -2,20 +2,21 @@
 # http://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout
 # I should be putting all the paths and things like that in this file
 
-
 # Set the default editor to /usr/bin/emacs if emacs is installed
 if [ -f /usr/bin/emacs ] || [ -f /usr/local/bin/emacs ] ; then
    export EDITOR='emacs -nw'
 fi
 
-
 # User specific environment and startup programs
-PATH=$PATH:$HOME/bin:$HOME/mypython
+PATH=$PATH:$HOME/bin:$HOME/mypython:$HOME/.local/bin
 export PYTHONPATH=$PYTHONPATH:$HOME/mypython
 
 # Datathief bin dir
 PATH=$PATH:$HOME/datathief
-    
+	
+# specify where all the CCSE codes live
+export CCSE_DIR=$HOME/combustion
+
 #================================================================================
 #
 # paths for Mac OSX
@@ -33,12 +34,7 @@ if [ "$(uname)" = "Darwin" ]; then
     # homebrew sbin path
     export PATH="/usr/local/sbin:$PATH"
 
-    # specify where MPI lives
-    PATH=$HOME/mpich-install/bin:$PATH ; export PATH
-    export MPIHOME=$HOME/mpich-install
-
 fi
-
 
 #================================================================================
 #
