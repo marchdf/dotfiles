@@ -634,9 +634,13 @@ and set the focus back to Emacs frame"
 ;; Ediff setup
 ;;
 ;;================================================================================
+;; start in vertical split mode
+
 ;; Customize the colors of the non-current changes
 (add-hook 'ediff-load-hook
 	  (lambda ()
+	    (setq ediff-split-window-function 'split-window-horizontally)
+	    (setq ediff-merge-split-window-function 'split-window-horizontally)
 	    (set-face-background
 	     ediff-odd-diff-face-A "dim gray")
 	    (set-face-background
