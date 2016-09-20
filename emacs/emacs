@@ -628,3 +628,24 @@ and set the focus back to Emacs frame"
 ;; (add-hook 'ampl-mode-hook 'turn-on-font-lock)
 
 
+
+;;================================================================================
+;;
+;; Ediff setup
+;;
+;;================================================================================
+;; Customize the colors of the non-current changes
+(add-hook 'ediff-load-hook
+	  (lambda ()
+	    (set-face-background
+	     ediff-odd-diff-face-A "dim gray")
+	    (set-face-background
+	     ediff-even-diff-face-A "dim gray")
+	    (set-face-background
+	     ediff-odd-diff-face-B "dim gray")
+	    (set-face-background
+	     ediff-even-diff-face-B "dim gray")
+	    (set-face-background
+	     ediff-odd-diff-face-C "dim gray")
+	    (set-face-background
+	     ediff-even-diff-face-C "dim gray")))
