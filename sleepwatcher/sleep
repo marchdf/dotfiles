@@ -1,0 +1,7 @@
+#!/bin/bash
+# Quit some applications for example:
+#osascript -e 'tell application "KeePassX" to quit'
+
+# Eject all external drives
+# from http://vocaro.com/trevor/blog/2007/02/11/a-set-of-scripts-to-unmount-drives-before-sleeping/
+ls /dev/disk* | grep 'disk[1-9]s[1-9]' | xargs -I{} /usr/sbin/diskutil umount {}

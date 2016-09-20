@@ -9,7 +9,7 @@
 # Setup
 
 # list of files/folders to symlink in homedir
-folders="aspell bash git R screen woof zsh"
+folders="aspell bash git R screen woof zsh sleepwatcher"
 
 # list of folders to symlink in homedir (with different src and tgt names)
 declare -A move_folders
