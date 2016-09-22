@@ -607,6 +607,7 @@ and set the focus back to Emacs frame"
 (add-hook 'python-mode-hook 'jedi:setup)
 ;;(setq jedi:complete-on-dot t)
 
+
 ;;================================================================================
 ;;
 ;; AMPL setup
