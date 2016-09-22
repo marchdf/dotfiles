@@ -239,6 +239,8 @@ and set the focus back to Emacs frame"
 ;;================================================================================
 (add-to-list 'auto-mode-alist '("\\.H\\'" . fortran-mode))
 
+;; Make Fortran indent at the level of the code. Not a fixed width.
+(setq fortran-comment-indent-style 'relative)
 
 ;;================================================================================
 ;;
@@ -627,3 +629,28 @@ and set the focus back to Emacs frame"
 ;; (add-hook 'ampl-mode-hook 'turn-on-font-lock)
 
 
+
+;;================================================================================
+;;
+;; Ediff setup
+;;
+;;================================================================================
+;; start in vertical split mode
+
+;; Customize the colors of the non-current changes
+(add-hook 'ediff-load-hook
+	  (lambda ()
+	    (setq ediff-split-window-function 'split-window-horizontally)
+	    (setq ediff-merge-split-window-function 'split-window-horizontally)
+	    (set-face-background
+	     ediff-odd-diff-face-A "dim gray")
+	    (set-face-background
+	     ediff-even-diff-face-A "dim gray")
+	    (set-face-background
+	     ediff-odd-diff-face-B "dim gray")
+	    (set-face-background
+	     ediff-even-diff-face-B "dim gray")
+	    (set-face-background
+	     ediff-odd-diff-face-C "dim gray")
+	    (set-face-background
+	     ediff-even-diff-face-C "dim gray")))
