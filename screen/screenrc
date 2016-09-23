@@ -7,6 +7,14 @@ autodetach on # Autodetach session on hangup instead of terminating screen compl
 startup_message off # Turn off the splash screen
 defscrollback 30000 # Use a 30000-line scrollback buffer
 
+# Fix issues with text remaining on screen after an editor is closed
+altscreen on
+
+# Slightly modified from : http://serverfault.com/questions/3740/what-are-useful-screenrc-settings
+# nice explanation of what is going on and additional zshrc settings for tab names
+caption always "%?%F%{= Kk}%:%{=u kR}%?  %h"
+hardstatus alwayslastline "%{= kR} %-Lw%{=b Kg} %n%f %t %{-}%+Lw %=%{= dd}"
+
 # scroll back in the window with the mouse wheel
 termcapinfo xterm ti@:te@
 
