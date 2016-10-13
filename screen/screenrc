@@ -12,8 +12,9 @@ altscreen on
 
 # Slightly modified from : http://serverfault.com/questions/3740/what-are-useful-screenrc-settings
 # nice explanation of what is going on and additional zshrc settings for tab names
+backtick 0 0 0 whoami # Set "%0`" to equal the output of "whoami"
 caption always "%?%F%{= Kk}%:%{=u kR}%?  %h"
-hardstatus alwayslastline "%{= kR} %-Lw%{=b Kg} %n%f %t %{-}%+Lw %=%{= dd}"
+hardstatus alwayslastline "%{B}%0`@%H: %{= kR} %-Lw%{=b Kg} %n%f %t %{-}%+Lw %=%{= dd}"
 
 # scroll back in the window with the mouse wheel
 termcapinfo xterm ti@:te@
