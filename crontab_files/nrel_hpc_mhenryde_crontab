@@ -1,4 +1,4 @@
-# Apply this file with: sudo crontab -u mhenryde $HOME/crontab_files/nrel_hpc_mhenryde_crontab
+# Apply this file with: crontab $HOME/crontab_files/nrel_hpc_mhenryde_crontab
 
 
 #================================================================================
@@ -6,7 +6,7 @@
 # Run Nalu testing at 1am every day
 # 
 #================================================================================
-00 1 * * * qsub $HOME/submit_nalutest.sh
+00 1 * * * /nopt/torque/bin/qsub $HOME/submit_nalutest.sh
 
 
 # need an new line at the end of the file
