@@ -16,6 +16,8 @@ PATH=$PATH:$HOME/datathief
 	
 # specify where all the CCSE codes live
 export CCSE_DIR=$HOME/combustion
+export BOXLIB_HOME=$CCSE_DIR/BoxLib
+export PELEC_HOME=$CCSE_DIR/Pele
 
 #================================================================================
 #
@@ -27,12 +29,30 @@ if [ "$(uname)" = "Darwin" ]; then
     # homebrew compilers
     export HOMEBREW_CC=gcc-6
     export HOMEBREW_CXX=g++-6
+    export HOMEBREW_FC=gfortran-6
 
     # github tokens
     source $HOME/.github_tokens
 
     # homebrew sbin path
     export PATH="/usr/local/sbin:$PATH"
+
+fi
+
+
+#================================================================================
+#
+# paths for NREL HPC (Peregrine)
+#
+#================================================================================
+if [[ `hostname -f` = *hpc.nrel.gov ]]; then
+
+    # Set the tmp dir to scratch. This is because /tmp was filling up
+    # when compiling Nalu with intel compilers and the debug flag
+    export TMPDIR=/scratch/mhenryde/.tmp
+
+    # Location for ninja (needed for parallel cmake)
+    export PATH="/home/mhenryde/builds/ninja:$PATH"
 
 fi
 
