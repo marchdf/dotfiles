@@ -65,6 +65,7 @@
 (setq my-package-list '(auto-complete
  			concurrent
  			ctable
+			cmake-mode
  			deferred
  			epc
  			ess
