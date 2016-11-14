@@ -29,5 +29,5 @@ alias qs='qstat -u $USER'
 # upgrade all python packages with pip.
 # from http://mikegrouchy.com/blog/2014/06/pro-tip-pip-upgrade-all-python-packages.html
 # periodically check this to make sure that pip didn't add this new feature
-alias pip_upgrade_all='pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U'
+alias pip2_upgrade_all='pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U'
 alias pip3_upgrade_all='pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U' 
