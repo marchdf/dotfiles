@@ -21,3 +21,4 @@ termcapinfo xterm ti@:te@
 
 # Stop that annoying password lock that sometimes happens
 bind x
+bind ^x

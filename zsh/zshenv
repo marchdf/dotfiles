@@ -17,7 +17,9 @@ PATH=$PATH:$HOME/datathief
 # specify where all the CCSE codes live
 export CCSE_DIR=$HOME/combustion
 export BOXLIB_HOME=$CCSE_DIR/BoxLib
-export PELEC_HOME=$CCSE_DIR/Pele
+export PELE_HOME=$CCSE_DIR/Pele
+export PELEC_HOME=$PELE_HOME/PeleC
+export PELE_PHYSICS_HOME=$PELE_HOME/PelePhysics
 
 #================================================================================
 #
