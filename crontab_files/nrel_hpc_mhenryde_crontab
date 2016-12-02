@@ -7,6 +7,7 @@
 # 
 #================================================================================
 00 1 * * * /nopt/torque/bin/qsub $HOME/submit_nalutest.sh >/dev/null 2>&1
+00 1 * * * /nopt/torque/bin/qsub $HOME/submit_mynalutest.sh >/dev/null 2>&1
 
 
 # need an new line at the end of the file
