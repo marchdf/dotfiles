@@ -23,7 +23,7 @@
 /maverick_scratch/*
 /stampede_home/*
 /stampede_scratch/*
-
+/scratch/*
 
 ###############################################
 # directories, probably not worth a backup    #
