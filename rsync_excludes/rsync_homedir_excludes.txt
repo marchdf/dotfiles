@@ -15,7 +15,7 @@
 
 ## This is my personal stuff
 /Downloads/*
-/builds/*
+*/builds/*
 /fluxscratch/*
 /lonestar_home/*
 /lonestar_scratch/*
@@ -23,7 +23,8 @@
 /maverick_scratch/*
 /stampede_home/*
 /stampede_scratch/*
-/scratch/*
+*/scratch/*
+*/.conda-envs/*
 
 ###############################################
 # directories, probably not worth a backup    #

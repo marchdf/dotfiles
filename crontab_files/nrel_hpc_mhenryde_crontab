@@ -10,5 +10,15 @@
 00 1 * * * /nopt/torque/bin/qsub $HOME/submit_mynalutest.sh >/dev/null 2>&1
 
 
+#================================================================================
+#
+# Backup home 
+#
+#================================================================================
+
+# home backup to data drive every day at 1:00
+00 1 * * *    rsync -avzu --delete --exclude-from=/home/mhenryde/rsync_excludes/rsync_homedir_excludes.txt /home/mhenryde /scratch/mhenryde/backup_home 1>rsync.log 2>rsync.err
+
+
 # need an new line at the end of the file
 
