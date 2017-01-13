@@ -12,7 +12,10 @@ PATH=$PATH:$HOME/bin:$HOME/mypython:$HOME/.local/bin
 export PYTHONPATH=$PYTHONPATH:$HOME/mypython
 
 # Datathief bin dir
-PATH=$PATH:$HOME/datathief
+DATATHIEF_DIR=$HOME/datathief
+if [ -d "$DATATHIEF_DIR" ]; then
+    PATH=$PATH:$DATATHIEF_DIR
+fi
 	
 # specify where all the CCSE codes live
 export CCSE_DIR=$HOME/combustion
@@ -20,6 +23,17 @@ export BOXLIB_HOME=$CCSE_DIR/BoxLib
 export PELE_HOME=$CCSE_DIR/Pele
 export PELEC_HOME=$PELE_HOME/PeleC
 export PELE_PHYSICS_HOME=$PELE_HOME/PelePhysics
+
+# Spack
+SPACK_DIR=$HOME/spack
+if [ -d "$SPACK_DIR" ]; then
+    export SPACK_ROOT=${HOME}/spack
+    export PATH=${HOME}/spack/bin:$PATH
+
+    # alternatively uncomment this but it slows down terminal startup
+    # . ${SPACK_ROOT}/share/spack/setup-env.sh 
+fi
+
 
 #================================================================================
 #
@@ -29,9 +43,9 @@ export PELE_PHYSICS_HOME=$PELE_HOME/PelePhysics
 if [ "$(uname)" = "Darwin" ]; then
 
     # homebrew compilers
-    export HOMEBREW_CC=gcc-6
-    export HOMEBREW_CXX=g++-6
-    export HOMEBREW_FC=gfortran-6
+    #export HOMEBREW_CC=gcc-6
+    #export HOMEBREW_CXX=g++-6
+    #export HOMEBREW_FC=gfortran-6
 
     # github tokens
     source $HOME/.github_tokens
