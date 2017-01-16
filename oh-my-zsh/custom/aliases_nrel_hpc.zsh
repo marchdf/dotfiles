@@ -11,14 +11,21 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     alias cds="cd /scratch/mhenryde"
 
     # Load some custom modules (they need to go here)
-    module purge 
-    module use /nopt/nrel/apps/modules/candidate/modulefiles
-    module load openmpi-gcc/1.10.0-5.2.0
-    module load gcc/5.2.0 
-    module load python/2.7.8
+    {
+	module purge 
+	module use /nopt/nrel/apps/modules/candidate/modulefiles
+	module load openmpi-gcc/1.10.0-5.2.0
+	module load gcc/5.2.0 
+	module load python/2.7.8
+    } &> /dev/null
 
     # Spack (according to Jon Rood)
     export SPACK_ROOT=${HOME}/spack
     source $SPACK_ROOT/share/spack/setup-env.sh
+
+    {
+	spack load binutils
+	spack load texlive
+    } &> /dev/null
 
 fi

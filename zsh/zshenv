@@ -8,7 +8,7 @@ if [ -f /usr/bin/emacs ] || [ -f /usr/local/bin/emacs ] ; then
 fi
 
 # User specific environment and startup programs
-PATH=$PATH:$HOME/bin:$HOME/mypython:$HOME/.local/bin
+PATH=$HOME/bin:$HOME/mypython:$HOME/.local/bin:$PATH
 export PYTHONPATH=$PYTHONPATH:$HOME/mypython
 
 # Datathief bin dir
@@ -53,9 +53,8 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     # when compiling Nalu with intel compilers and the debug flag
     export TMPDIR=/scratch/mhenryde/.tmp
 
-    # Location for ninja (needed for parallel cmake)
-    export PATH="/home/mhenryde/builds/ninja:$PATH"
-
+    #export PATH="/home/mhenryde/miniconda3/bin:$PATH"
+    
 fi
 
 #================================================================================
