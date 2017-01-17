@@ -26,6 +26,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     {
 	spack load binutils
 	spack load texlive
+	spack load screen
     } &> /dev/null
 
 fi
