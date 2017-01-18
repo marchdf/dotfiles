@@ -20,7 +20,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -67,18 +67,24 @@
  			ctable
 			cmake-mode
  			deferred
+			elpy
  			epc
  			ess
+			flycheck
  			jedi
  			jedi-core
  			julia-mode
  			markdown-mode
+			magit
  			polymode
  			popup
  			python-environment
+			py-autopep8
 			reverse-theme))
-(mapc #'package-install my-package-list)
-
+(mapc #'(lambda (package)
+    (unless (package-installed-p package)
+      (package-install package)))
+      my-package-list)
 
 ;;================================================================================
 ;;
@@ -97,10 +103,10 @@
 
 ;;================================================================================
 ;;
-;; Customized commands (see end of this file for overwritting major modes)
+;; Customized commands (see Minor mode shortcuts below)
 ;;
 ;;================================================================================
-(global-set-key (kbd "M-g") 'goto-line)
+;; (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-M-i") 'indent-region)
 ;; (global-set-key (kbd "M-i") 'previous-line)
 ;; (global-set-key (kbd "M-j") 'backward-char)
@@ -114,10 +120,6 @@
 (global-set-key (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
 (global-set-key (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
 (global-set-key (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
-
-;; Set hotkeys to navigate buffers easily
-(global-set-key (kbd "M-,") 'previous-buffer)
-(global-set-key (kbd "M-.") 'next-buffer)
 
 ;;================================================================================
 ;;
@@ -521,26 +523,6 @@ and set the focus back to Emacs frame"
 
 ;;================================================================================
 ;;
-;; Minor mode shortcuts
-;;
-;;================================================================================
-;; If a global-set-key didn't work because it was overwritten by a major mode, 
-;; add it here. (from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs)
-;; "I use a minor mode for all my "override" key bindings"
-(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
-(define-key my-keys-minor-mode-map (kbd "C-c C-z") 'comment-region)
-(define-minor-mode my-keys-minor-mode
-  "A minor mode so that my key settings override annoying major modes."
-  t " my-keys" 'my-keys-minor-mode-map)
-(my-keys-minor-mode 1)
-
-;; Turn off the custom mode in the minibuffer
-(defun my-minibuffer-setup-hook ()
-  (my-keys-minor-mode 0))
-(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
-
-;;================================================================================
-;;
 ;; Org-mode stuff
 ;;
 ;;================================================================================
@@ -602,14 +584,20 @@ and set the focus back to Emacs frame"
 ;; Python stuff
 ;;
 ;;================================================================================
-;; ;;(autoload 'python-mode "python-mode" "Python Mode." t)
-;; ;;(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-;; ;;(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-
 ;; Python autocompletion with jedi (http://tkf.github.io/emacs-jedi/latest/)
 (add-hook 'python-mode-hook 'jedi:setup)
-;;(setq jedi:complete-on-dot t)
 
+;; Enable elpy
+(elpy-enable)
+
+;; Use flycheck instead of flymake
+;; https://realpython.com/blog/python/emacs-the-best-python-editor/
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
 ;;================================================================================
 ;;
@@ -655,3 +643,33 @@ and set the focus back to Emacs frame"
 	     ediff-odd-diff-face-C "dim gray")
 	    (set-face-background
 	     ediff-even-diff-face-C "dim gray")))
+
+
+;;================================================================================
+;;
+;; Minor mode shortcuts (put at end of file)
+;;
+;;================================================================================
+;; If a global-set-key didn't work because it was overwritten by a major mode, 
+;; add it here. (from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs)
+(defvar my-keys-minor-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-z") 'comment-region)
+    (define-key map (kbd "M-,") 'previous-buffer)
+    (define-key map (kbd "M-.") 'next-buffer)
+    map)
+  "my-keys-minor-mode keymap.")
+
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  :init-value t
+  :lighter " my-keys")
+
+(my-keys-minor-mode 1)
+
+;; Turn off the custom mode in the minibuffer
+(defun my-minibuffer-setup-hook ()
+  (my-keys-minor-mode 0))
+
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
+

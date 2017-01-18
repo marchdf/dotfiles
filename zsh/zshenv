@@ -67,8 +67,6 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     # when compiling Nalu with intel compilers and the debug flag
     export TMPDIR=/scratch/mhenryde/.tmp
 
-    #export PATH="/home/mhenryde/miniconda3/bin:$PATH"
-    
 fi
 
 #================================================================================
