@@ -4,7 +4,6 @@
 #
 #================================================================================
 if [[ `hostname -f` = *hpc.nrel.gov ]]; then
-    alias emacs='/home/mhenryde/builds/emacs-24.5/build/src/emacs'
     alias htop='/home/mhenryde/builds/htop-2.0.2/bin/htop'
 
     alias job_node_ids="qstat -u mhenryde -f | grep -e 'Job\ Id\|exec_host\|Job_Name'"
@@ -17,6 +16,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	module load openmpi-gcc/1.10.0-5.2.0
 	module load gcc/5.2.0 
 	module load python/2.7.8
+	module load R
     } &> /dev/null
 
     # Spack (according to Jon Rood)
@@ -28,6 +28,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	spack load texlive
 	spack load screen
 	spack load git
+	spack load emacs
     } &> /dev/null
 
 fi
