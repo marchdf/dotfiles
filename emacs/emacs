@@ -66,11 +66,14 @@
  			concurrent
  			ctable
 			cmake-mode
+			company
  			deferred
 			elpy
  			epc
  			ess
 			flycheck
+			helm
+			helm-projectile
  			jedi
  			jedi-core
  			julia-mode
@@ -78,13 +81,16 @@
 			magit
  			polymode
  			popup
+			projectile
  			python-environment
 			py-autopep8
 			reverse-theme))
 (mapc #'(lambda (package)
-    (unless (package-installed-p package)
-      (package-install package)))
+	  (unless (package-installed-p package)
+	    (package-refresh-contents)
+	    (package-install package)))
       my-package-list)
+
 
 ;;================================================================================
 ;;
@@ -99,6 +105,15 @@
 (when (< emacs-major-version 24)
   ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs23/themes/")
   (add-to-list 'load-path "~/.emacs.d/emacs23"))
+
+
+;;================================================================================
+;;
+;; Turn on some modes by default
+;;
+;;================================================================================
+(add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 
 ;;================================================================================
@@ -120,6 +135,7 @@
 (global-set-key (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
 (global-set-key (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
 (global-set-key (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
+
 
 ;;================================================================================
 ;;
@@ -240,10 +256,9 @@ and set the focus back to Emacs frame"
 ;; Fortran stuff
 ;;
 ;;================================================================================
-;;(add-to-list 'auto-mode-alist '("\\.H\\'" . fortran-mode))
-
 ;; Make Fortran indent at the level of the code. Not a fixed width.
 (setq fortran-comment-indent-style 'relative)
+
 
 ;;================================================================================
 ;;
@@ -413,8 +428,6 @@ and set the focus back to Emacs frame"
 (global-set-key (kbd "<f8>")   'fd-switch-dictionary)
 
 
-
-
 ;;================================================================================
 ;;
 ;; Color theme
@@ -433,6 +446,7 @@ and set the focus back to Emacs frame"
   ;;(load-theme 'solarized-dark t)
   )
 
+
 ;;================================================================================
 ;;
 ;; Zsh stuff
@@ -448,12 +462,14 @@ and set the focus back to Emacs frame"
 ;;================================================================================
 (add-to-list 'auto-mode-alist '("\\.geo$" . c++-mode))
 
+
 ;;================================================================================
 ;;
 ;; Cuda stuff
 ;;
 ;;================================================================================
 (add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
+
 
 ;;================================================================================
 ;;
@@ -469,6 +485,7 @@ and set the focus back to Emacs frame"
 ;; 2). M-[space] (word-count-set-area) sets area for counting words.
 ;; 3). M-x word-count-set-region sets region or paragraph for counting words.
 ;; 4). M-x word-count-set-marker sets marker for counting words.
+
 
 ;;================================================================================
 ;;
@@ -491,6 +508,7 @@ and set the focus back to Emacs frame"
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
+
 ;;================================================================================
 ;;
 ;; Auto-indentation: http://www.emacswiki.org/emacs/AutoIndentation
@@ -500,6 +518,7 @@ and set the focus back to Emacs frame"
   (local-set-key (kbd "RET") 'newline-and-indent))
 (add-hook 'lisp-mode-hook 'set-newline-and-indent)
 (add-hook 'c-mode-common-hook 'set-newline-and-indent)
+
 
 ;;================================================================================
 ;;
@@ -521,12 +540,14 @@ and set the focus back to Emacs frame"
  ;; If there is more than one, they won't work right.
  )
 
+
 ;;================================================================================
 ;;
 ;; Org-mode stuff
 ;;
 ;;================================================================================
 (setq org-startup-truncated nil)
+
 
 ;;================================================================================
 ;;
@@ -558,6 +579,7 @@ and set the focus back to Emacs frame"
 (ess-toggle-S-assign nil)
 (ess-toggle-underscore nil) ; leave underscore key alone!
 
+
 ;;================================================================================
 ;;
 ;; Polymode stuff 
@@ -572,12 +594,6 @@ and set the focus back to Emacs frame"
 ;; R mode
 (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
 
-;;================================================================================
-;;
-;; Yorick stuff
-;;
-;;================================================================================
-;;(load "~/Yorick/yorick.el" nil t)
 
 ;;================================================================================
 ;;
@@ -598,25 +614,6 @@ and set the focus back to Emacs frame"
 
 (require 'py-autopep8)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-;;================================================================================
-;;
-;; AMPL setup
-;;
-;;================================================================================
-;; (setq auto-mode-alist
-;;       (cons '("\\.mod$" . ampl-mode) auto-mode-alist))
-;; (setq auto-mode-alist
-;;       (cons '("\\.dat$" . ampl-mode) auto-mode-alist))
-;; (setq auto-mode-alist
-;;       (cons '("\\.ampl$" . ampl-mode) auto-mode-alist))
-;; (setq interpreter-mode-alist
-;;       (cons '("ampl" . ampl-mode)
-;;             interpreter-mode-alist))
-;; (load "ampl-mode")
-;; ;; Enable syntax coloring
-;; (add-hook 'ampl-mode-hook 'turn-on-font-lock)
-
 
 
 ;;================================================================================
