@@ -19,10 +19,6 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	module load R
     } &> /dev/null
 
-    # Spack (according to Jon Rood)
-    export SPACK_ROOT=${HOME}/spack
-    source $SPACK_ROOT/share/spack/setup-env.sh
-
     {
 	spack load binutils
 	spack load texlive

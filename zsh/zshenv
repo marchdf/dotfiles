@@ -29,9 +29,7 @@ SPACK_DIR=$HOME/spack
 if [ -d "$SPACK_DIR" ]; then
     export SPACK_ROOT=${HOME}/spack
     export PATH=${HOME}/spack/bin:$PATH
-
-    # alternatively uncomment this but it slows down terminal startup
-    # . ${SPACK_ROOT}/share/spack/setup-env.sh 
+    . ${SPACK_ROOT}/share/spack/setup-env.sh 
 fi
 
 
