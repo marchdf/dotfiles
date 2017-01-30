@@ -65,8 +65,6 @@ echo "Creating symlink to .emacs in home directory."
 ln -s $DOTDIR/emacs/emacs ~/.emacs
 echo "Making sure .emacs.d exists"
 mkdir -p .emacs.d
-echo "Creating symlink to emacs23  in .emacs.d directory."
-ln -s $DOTDIR/emacs/emacs.d/emacs23 ~/.emacs.d/
 echo "Creating symlink to personal in .emacs.d directory."
 ln -s $DOTDIR/emacs/emacs.d/personal ~/.emacs.d/
 

@@ -4,7 +4,7 @@
 
 ;;================================================================================
 ;;
-;; Set up some stuff
+;; Set up
 ;;
 ;;================================================================================
 (custom-set-variables
@@ -20,7 +20,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -41,6 +41,8 @@
 ;; dotfiles thing)
 (setq vc-follow-symlinks nil)
 
+;; Prevent Emacs from making backup files
+(setq make-backup-files nil) 
 
 ;;================================================================================
 ;;
@@ -50,91 +52,70 @@
 
 ;; Enable the MELPA package repo (http://melpa.org/#/getting-started)
 (require 'package)
-(package-initialize)
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/")))
 (package-initialize)
 
-;; List of packages we always want installed
-;; following: http://emacs.stackexchange.com/questions/408/synchronize-packages-between-different-machines
-(setq my-package-list '(auto-complete
- 			concurrent
- 			ctable
-			cmake-mode
-			company
- 			deferred
-			elpy
- 			epc
- 			ess
-			flycheck
-			helm
-			helm-projectile
- 			jedi
- 			jedi-core
- 			julia-mode
- 			markdown-mode
-			magit
- 			polymode
- 			popup
-			projectile
- 			python-environment
-			py-autopep8
-			reverse-theme))
-(mapc #'(lambda (package)
-	  (unless (package-installed-p package)
-	    (package-refresh-contents)
-	    (package-install package)))
-      my-package-list)
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 
 ;;================================================================================
 ;;
-;; Set up some directories
+;; Code completion
 ;;
 ;;================================================================================
-(add-to-list 'load-path "~/.emacs.d/personal")
-(setq make-backup-files nil) ;;Prevent Emacs from making backup files
-;; ;; Place backup files in specific directory
-;; ;;(setq make-backup-files t)
-;; ;;(setq backup-directory-alist (quote ((".*" ."c:/.emacs_backups/"))))
-(when (< emacs-major-version 24)
-  ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs23/themes/")
-  (add-to-list 'load-path "~/.emacs.d/emacs23"))
+(use-package company
+  :ensure t
+  :defer t
+  :config
+  (global-company-mode))
 
 
 ;;================================================================================
 ;;
-;; Turn on some modes by default
+;; Syntax checking
 ;;
 ;;================================================================================
-(add-hook 'after-init-hook 'global-company-mode)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(use-package flycheck
+  :ensure t
+  :defer t
+  :config
+  (global-flycheck-mode)
+  (setq flycheck-python-flake8-executable "flake8"))
 
 
 ;;================================================================================
 ;;
-;; Customized commands (see Minor mode shortcuts below)
+;; Projectile and helm
 ;;
 ;;================================================================================
-;; (global-set-key (kbd "M-g") 'goto-line)
-(global-set-key (kbd "C-M-i") 'indent-region)
-;; (global-set-key (kbd "M-i") 'previous-line)
-;; (global-set-key (kbd "M-j") 'backward-char)
-;; (global-set-key (kbd "M-k") 'next-line)
-;; (global-set-key (kbd "M-l") 'forward-char) 
-(global-set-key (kbd "M-R") 'kill-rectangle) 
-(global-set-key (kbd "M-r") 'yank-rectangle) 
-(global-set-key (kbd "C-c C-z") 'comment-region) 
-(global-set-key (kbd "C-c M-z") 'uncomment-region) 
-(global-set-key (kbd "M-m") 'magit-status) ;; magit stuff
-(global-set-key (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
-(global-set-key (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
-(global-set-key (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode))
+
+(use-package helm
+  :ensure t
+  :bind
+  ("M-x" . helm-M-x)
+  ("C-x C-f" . helm-find-files)
+  ("C-x r l" . helm-bookmarks)
+  ("C-h i"   . helm-google-suggest)
+  ("M-y"     . helm-show-kill-ring)
+  ("C-h a"   . helm-apropos)
+  ("C-x C-f" . helm-find-files)
+  ("C-x p" .   helm-top)
+  ("C-x C-b" . helm-buffers-list)
+  :init
+  (progn
+    (use-package helm-projectile
+      :ensure    helm-projectile
+      :bind      ("C-c h" . helm-projectile))
+    (helm-mode t)))
 
 
 ;;================================================================================
@@ -229,7 +210,7 @@ and set the focus back to Emacs frame"
 
 ;;================================================================================
 ;;
-;; C/C++ stuff
+;; C/C++
 ;;
 ;;================================================================================
 (defun forloop (i imax)
@@ -240,7 +221,6 @@ and set the focus back to Emacs frame"
     (indent-region beg (point))
     (previous-line 1)
     (c-indent-command)))
-(global-set-key "\M-l" 'forloop)
 
 (defun printf-binding (out vars)
   "printf binding to make things easier"
@@ -248,7 +228,16 @@ and set the focus back to Emacs frame"
   (let ((beg (point)))
     (insert "printf(\"" out "\\n\"," vars ");")
     (indent-region beg (point))))
-(global-set-key "\C-\M-p" 'printf-binding)
+
+(use-package c++-mode
+  :mode
+  ;; Gmsh files
+  ("\\.geo" . c++-mode)
+  ;; CUDA files
+  ("\\.cu$" . c++-mode)
+  :bind
+  ("C-M-l" . forloop)
+  ("C-M-p" . printf-binding))
 
 
 ;;================================================================================
@@ -262,19 +251,11 @@ and set the focus back to Emacs frame"
 
 ;;================================================================================
 ;;
-;; Matlab stuff
+;; Matlab
 ;;
 ;;================================================================================
-(autoload 'matlab-mode "~/.emacs.d/personal/matlab.el" "Enter Matlab mode." t) 
-(setq auto-mode-alist (cons '("\\.m\\'" . matlab-mode) auto-mode-alist)) 
-(autoload 'matlab-shell "~/.emacs.d/personal/matlab.el" "Interactive Matlab mode." t)
-;; User Level customizations (You need not use them all):
-(setq matlab-indent-function t)    ; if you want function bodies indented
-(setq matlab-verify-on-save-flag nil) ; turn off auto-verify on save
-(defun my-matlab-mode-hook () (setq fill-column 76))       ; where auto-fill should wrap
-(add-hook 'matlab-mode-hook 'my-matlab-mode-hook)
-(defun my-matlab-shell-mode-hook ()  '())
-(add-hook 'matlab-shell-mode-hook 'my-matlab-shell-mode-hook)
+(use-package matlab-mode
+  :ensure t)
 
 
 ;;================================================================================
@@ -433,120 +414,42 @@ and set the focus back to Emacs frame"
 ;; Color theme
 ;;
 ;;================================================================================
-
-;; for Emacs < 23, use the color theme package
-(when (< emacs-major-version 24)
-  (require 'color-theme)
-  (color-theme-initialize)
-  (color-theme-clarity))
-
-;; For emacs > 23, use the following
-(when (> emacs-major-version 23)
-  (load-theme 'reverse t)
-  ;;(load-theme 'solarized-dark t)
-  )
+(use-package reverse-theme
+  :ensure t
+  :init
+  (load-theme 'reverse t))
 
 
 ;;================================================================================
 ;;
-;; Zsh stuff
+;; Shell editing
 ;;
 ;;================================================================================
-(add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
-
-
-;;================================================================================
-;;
-;; Gmsh stuff
-;;
-;;================================================================================
-(add-to-list 'auto-mode-alist '("\\.geo$" . c++-mode))
+(use-package sh-mode
+  :mode
+  ("\\.zsh" . sh-mode))
 
 
 ;;================================================================================
 ;;
-;; Cuda stuff
+;; Word counting
 ;;
 ;;================================================================================
-(add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
-
-
-;;================================================================================
-;;
-;; Word counting stuff
-;;
-;;================================================================================
-(setq load-path (cons (expand-file-name "~/.emacs.d/personal") load-path))
-(autoload 'word-count-mode "word-count"
-  "Minor mode to count words." t nil)
-(global-set-key "\M-+" 'word-count-mode)
-;; How to use:
-;; 1). M-+ (word-count-mode) toggles word-count mode.
-;; 2). M-[space] (word-count-set-area) sets area for counting words.
-;; 3). M-x word-count-set-region sets region or paragraph for counting words.
-;; 4). M-x word-count-set-marker sets marker for counting words.
+(use-package wc-mode
+  :ensure t
+  :bind
+  ("\C-cw" . wc-mode))
 
 
 ;;================================================================================
 ;;
-;; Octave stuff
+;; Org-mode
 ;;
 ;;================================================================================
-(add-hook 'inferior-octave-mode-hook
-               (lambda ()
-                 (turn-on-font-lock)
-                 (define-key inferior-octave-mode-map [up]
-                   'comint-previous-input)
-                 (define-key inferior-octave-mode-map [down]
-                   'comint-next-input)))
-
-
-;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph (M-q)
-(defun unfill-paragraph ()
-  "Takes a multi-line paragraph and makes it into a single line of text."
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-
-;;================================================================================
-;;
-;; Auto-indentation: http://www.emacswiki.org/emacs/AutoIndentation
-;;
-;;================================================================================
-(defun set-newline-and-indent ()
-  (local-set-key (kbd "RET") 'newline-and-indent))
-(add-hook 'lisp-mode-hook 'set-newline-and-indent)
-(add-hook 'c-mode-common-hook 'set-newline-and-indent)
-
-
-;;================================================================================
-;;
-;; fun startup message
-;;
-;;================================================================================
-(defconst animate-n-steps 0)
-(defun emacs-reloaded()
- (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
-			(substring (emacs-version) 0 16)
-			".")
-		 0 0)
- (newline-and-indent) (newline-and-indent))
-(add-hook 'after-init-hook 'emacs-reloaded)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-
-;;================================================================================
-;;
-;; Org-mode stuff
-;;
-;;================================================================================
-(setq org-startup-truncated nil)
+(use-package org
+  :ensure t
+  :init
+  (setq org-startup-truncated nil))
 
 
 ;;================================================================================
@@ -582,64 +485,129 @@ and set the focus back to Emacs frame"
 
 ;;================================================================================
 ;;
-;; Polymode stuff 
+;; Markdown and polymode
 ;;
 ;;================================================================================
-;; (require 'poly-R)
-;; (require 'poly-markdown)
+(use-package markdown-mode
+  :ensure t)
 
-;; Markdown
-(add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
-
-;; R mode
-(add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
-
-
-;;================================================================================
-;;
-;; Python stuff
-;;
-;;================================================================================
-;; Python autocompletion with jedi (http://tkf.github.io/emacs-jedi/latest/)
-(add-hook 'python-mode-hook 'jedi:setup)
-
-;; Enable elpy
-(elpy-enable)
-
-;; Use flycheck instead of flymake
-;; https://realpython.com/blog/python/emacs-the-best-python-editor/
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+(use-package polymode
+  :ensure t
+  :mode
+  ("\\.Snw" . poly-noweb+r-mode)
+  ("\\.Rnw" . poly-noweb+r-mode)
+  ("\\.Rmd" . poly-markdown+r-mode))
 
 
 ;;================================================================================
 ;;
-;; Ediff setup
+;; Python
 ;;
 ;;================================================================================
-;; start in vertical split mode
+(use-package jedi
+  :ensure t)
 
-;; Customize the colors of the non-current changes
-(add-hook 'ediff-load-hook
-	  (lambda ()
-	    (setq ediff-split-window-function 'split-window-horizontally)
-	    (setq ediff-merge-split-window-function 'split-window-horizontally)
-	    (set-face-background
-	     ediff-odd-diff-face-A "dim gray")
-	    (set-face-background
-	     ediff-even-diff-face-A "dim gray")
-	    (set-face-background
-	     ediff-odd-diff-face-B "dim gray")
-	    (set-face-background
-	     ediff-even-diff-face-B "dim gray")
-	    (set-face-background
-	     ediff-odd-diff-face-C "dim gray")
-	    (set-face-background
-	     ediff-even-diff-face-C "dim gray")))
+(use-package py-autopep8
+  :ensure t)
+
+(use-package elpy
+  :ensure t
+  :config
+  (progn
+    ;; Use flycheck instead of flymake
+    (when (require 'flycheck nil t)
+      (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+      (add-hook 'elpy-mode-hook 'flycheck-mode))
+    (elpy-enable)
+    ;; Enable jedi
+    (setq elpy-rpc-backend "jedi")
+    ;; PEP8 compliance
+    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+    ))
+
+
+;;================================================================================
+;;
+;; Git
+;;
+;;================================================================================
+(use-package magit
+  :ensure t
+  :bind
+  ("M-m" . magit-status))
+
+
+;;================================================================================
+;;
+;; Ediff
+;;
+;;================================================================================
+(use-package ediff
+  :ensure t
+  :init
+  ;; Customize the colors of the non-current changes
+  (add-hook 'ediff-load-hook
+	    (lambda ()
+	      (setq ediff-split-window-function 'split-window-horizontally)
+	      (setq ediff-merge-split-window-function 'split-window-horizontally)
+	      (set-face-background
+	       ediff-odd-diff-face-A "dim gray")
+	      (set-face-background
+	       ediff-even-diff-face-A "dim gray")
+	      (set-face-background
+	       ediff-odd-diff-face-B "dim gray")
+	      (set-face-background
+	       ediff-even-diff-face-B "dim gray")
+	      (set-face-background
+	       ediff-odd-diff-face-C "dim gray")
+	      (set-face-background
+	       ediff-even-diff-face-C "dim gray"))))
+
+
+;;================================================================================
+;;
+;; Miscellaneous functions
+;;
+;;================================================================================
+
+;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph (M-q)
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+
+;;================================================================================
+;;
+;; Auto-indentation: http://www.emacswiki.org/emacs/AutoIndentation
+;;
+;;================================================================================
+(defun set-newline-and-indent ()
+  (local-set-key (kbd "RET") 'newline-and-indent))
+(add-hook 'lisp-mode-hook 'set-newline-and-indent)
+(add-hook 'c-mode-common-hook 'set-newline-and-indent)
+
+
+;;================================================================================
+;;
+;; Fun startup message
+;;
+;;================================================================================
+(defconst animate-n-steps 0)
+(defun emacs-reloaded()
+ (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
+			(substring (emacs-version) 0 16)
+			".")
+		 0 0)
+ (newline-and-indent) (newline-and-indent))
+(add-hook 'after-init-hook 'emacs-reloaded)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 
 ;;================================================================================
@@ -651,9 +619,17 @@ and set the focus back to Emacs frame"
 ;; add it here. (from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs)
 (defvar my-keys-minor-mode-map
   (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-M-i") 'indent-region)
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "M-,") 'previous-buffer)
     (define-key map (kbd "M-.") 'next-buffer)
+    (define-key map (kbd "M-R") 'kill-rectangle) 
+    (define-key map (kbd "M-r") 'yank-rectangle)
+    (define-key map (kbd "C-c C-z") 'comment-region)
+    (define-key map (kbd "C-c M-z") 'uncomment-region)
+    (define-key map (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
+    (define-key map (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
+    (define-key map (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
     map)
   "my-keys-minor-mode keymap.")
 
