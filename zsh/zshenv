@@ -28,7 +28,6 @@ export PELE_PHYSICS_HOME=$PELE_HOME/PelePhysics
 SPACK_DIR=$HOME/spack
 if [ -d "$SPACK_DIR" ]; then
     export SPACK_ROOT=${HOME}/spack
-    export PATH=${HOME}/spack/bin:$PATH
     . ${SPACK_ROOT}/share/spack/setup-env.sh 
 fi
 
