@@ -25,16 +25,16 @@
 (set-face-attribute 'default nil :height 110)
 
 ;; syntax color
-(global-font-lock-mode t) 
+(global-font-lock-mode t)
 
 ;; Parenthesis matching
 (show-paren-mode t)
 
-;; For accents. To toggle: C-\ 
-(setq default-input-method "latin-1-prefix") 
+;; For accents. To toggle: C-\
+(setq default-input-method "latin-1-prefix")
 
 ;;Turn alarm completely off
-(setq ring-bell-function 'ignore ) 
+(setq ring-bell-function 'ignore )
 
 ;; Never follow symlinks (don't prompt to ask). This allows me to keep
 ;; the syntax coloring when editing a symlinked file (useful for the
@@ -42,7 +42,7 @@
 (setq vc-follow-symlinks nil)
 
 ;; Prevent Emacs from making backup files
-(setq make-backup-files nil) 
+(setq make-backup-files nil)
 
 ;;================================================================================
 ;;
@@ -96,7 +96,11 @@
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode))
+  (progn
+    (projectile-global-mode)
+    (setq projectile-globally-ignored-files
+	  (append projectile-globally-ignored-files
+		  '(".DS_Store")))))
 
 (use-package helm
   :ensure t
@@ -139,29 +143,25 @@
 ;; buffer. So you would have to manually switch to the compile buffer
 ;; and do compile there. This is what the above command does."
 (defun compile-again (pfx)
-  """Run the same compile as the last time.
-
-If there was no last time, or there is a prefix argument, this acts like
-M-x compile.
-"""
-(interactive "p")
-(if (buffer-modified-p)
-    (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
-	(save-buffer)))
-(if (and (eq pfx 1)
-	 compilation-last-buffer)
-    (progn
-      (set-buffer compilation-last-buffer)
-      (revert-buffer t t))
-  (call-interactively 'compile)))
+  """Run the same compile as the last time.  If there was no last time, or there is a prefix argument (PFX), this acts like M-x compile."""
+  (interactive "p")
+  (if (buffer-modified-p)
+      (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
+	  (save-buffer)))
+  (if (and (eq pfx 1)
+	   compilation-last-buffer)
+      (progn
+	(set-buffer compilation-last-buffer)
+	(revert-buffer t t))
+    (call-interactively 'compile)))
 
 ;; Set the shortcut command
 (global-set-key (kbd "M-p") 'compile-again)
 
 ;; Notifications that compile finished and close the compile buffer if
 ;; successful.
-(setq success-message "\n Compilation Successful :-) \n ")
-(setq fail-message "\n Compilation Fail :-( \n ")
+(defvar success-message "\n Compilation Successful :-) \n ")
+(defvar fail-message "\n Compilation Fail :-( \n ")
 (defun notify-compilation-result(buffer msg)
   "Notify that the compilation is finished,
 close the *compilation* buffer if the compilation is successful,
@@ -180,7 +180,7 @@ and set the focus back to Emacs frame"
 				       ;; not to interfere with
 				       ;; 'compile-again
     )
-  (setq current-frame (car (car (cdr (current-frame-configuration)))))
+  (defvar current-frame (car (car (cdr (current-frame-configuration)))))
   (select-frame-set-input-focus current-frame))
 
 (add-to-list 'compilation-finish-functions
@@ -286,7 +286,7 @@ and set the focus back to Emacs frame"
 	     (add-hook 'replace-newlines-with-percent-in-region 'replace-newlines-with-percent-in-region nil 'make-it-local)
 	     (local-set-key (kbd "\C-c %") 'replace-newlines-with-percent-in-region)
 	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
-	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8) 
+	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8)
 ;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")
 ;;	     (setq compile-command "pdflatex -shell-escape report.tex && evince report.pdf")
 	     (setq compile-command "./sh_latex.sh")
@@ -310,10 +310,10 @@ and set the focus back to Emacs frame"
 	     (add-hook 'replace-newlines-with-percent-in-region 'replace-newlines-with-percent-in-region nil 'make-it-local)
 	     (local-set-key (kbd "\C-c %") 'replace-newlines-with-percent-in-region)
 	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
-	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8) 
+	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8)
 ;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")
 ;;	     (setq compile-command "pdflatex -shell-escape report.tex && evince report.pdf")
-	     (setq compile-command "./sh_latex.sh")	     
+	     (setq compile-command "./sh_latex.sh")
 	     (local-set-key (kbd "\C-c k") (lambda ()(interactive) (shell-command "rm report.aux" "*shell-command-out*" "*shell-command-err*") (kill-compilation)))
 	     (local-set-key (kbd "M-F") (lambda () (interactive) (insert "Figure\\,\\ref{fig:}") (backward-char 1)))
 	     (local-set-key (kbd "M-E") (lambda () (interactive) (insert "Equation\\,(\\ref{equ:})") (backward-char 2)))
@@ -454,33 +454,39 @@ and set the focus back to Emacs frame"
 
 ;;================================================================================
 ;;
-;; ESS stuff
+;; ESS
 ;;
 ;;================================================================================
-(require 'ess-site)
-(add-to-list 'auto-mode-alist '("\\.Rprofile\\'" . R-mode))
+(use-package ess-site
+  :ensure ess
+  :mode
+  ("\\.R\\'" . R-mode)
+  ("\\.Rprofile" . R-mode)
+  :commands R
+  :config
+  (progn
+    ;; inspiration for the following:
+    ;; http://stats.blogoverflow.com/2011/08/using-emacs-to-work-with-r/
+    ;; save more commands
+    (setq comint-input-ring-size 1000)
+    ;; "This recalls the R statement from your R statement history, but it
+    ;; tries to match it with the one which is already on your line."
+    (add-hook 'inferior-ess-mode-hook
+	      '(lambda nil
+		 (define-key inferior-ess-mode-map [\C-up]
+		   'comint-previous-matching-input-from-input)
+		 (define-key inferior-ess-mode-map [\C-down]
+		   'comint-next-matching-input-from-input)
+		 (define-key inferior-ess-mode-map [\C-x \t]
+		   'comint-dynamic-complete-filename)))
 
-;; inspiration for the following:
-;; http://stats.blogoverflow.com/2011/08/using-emacs-to-work-with-r/
-;; save more commands
-(setq comint-input-ring-size 1000)
-;; "This recalls the R statement from your R statement history, but it
-;; tries to match it with the one which is already on your line."
-(add-hook 'inferior-ess-mode-hook
-	  '(lambda nil
-	     (define-key inferior-ess-mode-map [\C-up]
-	       'comint-previous-matching-input-from-input)
-	     (define-key inferior-ess-mode-map [\C-down]
-	       'comint-next-matching-input-from-input)
-	     (define-key inferior-ess-mode-map [\C-x \t]
-	       'comint-dynamic-complete-filename)))
+    ;; To assign ":" to "<-" and to stop the assignment of underscore
+    ;; (underbar) "_" to "<-"
+    (setq ess-smart-S-assign-key ":")
+    (ess-toggle-S-assign nil)
+    (ess-toggle-S-assign nil)
+    (ess-toggle-underscore nil)))
 
-;; To assign ":" to "<-" and to stop the assignment of underscore
-;; (underbar) "_" to "<-"
-(setq ess-smart-S-assign-key ":")
-(ess-toggle-S-assign nil)
-(ess-toggle-S-assign nil)
-(ess-toggle-underscore nil) ; leave underscore key alone!
 
 
 ;;================================================================================
@@ -569,10 +575,10 @@ and set the focus back to Emacs frame"
   :diminish smartparens-mode
   :config
   (progn
-    (require 'smartparens-config)
-    (smartparens-global-mode t)
     (sp-with-modes '(html-mode sgml-mode nxml-mode web-mode)
-		   (sp-local-pair "<" ">"))))
+      (sp-local-pair "<" ">"))
+    (require 'smartparens-config)
+    (smartparens-global-mode t)))
 
 
 ;;================================================================================
@@ -622,6 +628,7 @@ and set the focus back to Emacs frame"
 ;;
 ;;================================================================================
 (defun set-newline-and-indent ()
+  "Newline and indent for C-mode."
   (local-set-key (kbd "RET") 'newline-and-indent))
 (add-hook 'lisp-mode-hook 'set-newline-and-indent)
 (add-hook 'c-mode-common-hook 'set-newline-and-indent)
@@ -653,7 +660,7 @@ and set the focus back to Emacs frame"
 ;; Minor mode shortcuts (put at end of file)
 ;;
 ;;================================================================================
-;; If a global-set-key didn't work because it was overwritten by a major mode, 
+;; If a global-set-key didn't work because it was overwritten by a major mode,
 ;; add it here. (from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs)
 (defvar my-keys-minor-mode-map
   (let ((map (make-sparse-keymap)))
@@ -661,7 +668,7 @@ and set the focus back to Emacs frame"
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "M-,") 'previous-buffer)
     (define-key map (kbd "M-.") 'next-buffer)
-    (define-key map (kbd "M-R") 'kill-rectangle) 
+    (define-key map (kbd "M-R") 'kill-rectangle)
     (define-key map (kbd "M-r") 'yank-rectangle)
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "C-c M-z") 'uncomment-region)
@@ -680,7 +687,10 @@ and set the focus back to Emacs frame"
 
 ;; Turn off the custom mode in the minibuffer
 (defun my-minibuffer-setup-hook ()
+  "Turn off my keymap in the minibuffer."
   (my-keys-minor-mode 0))
 
 (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 
+(provide '.emacs)
+;;; .emacs ends here
