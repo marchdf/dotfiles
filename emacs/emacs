@@ -97,10 +97,13 @@
   :ensure t
   :config
   (progn
-    (projectile-global-mode)
     (setq projectile-globally-ignored-files
 	  (append projectile-globally-ignored-files
-		  '(".DS_Store")))))
+		  '(".DS_Store"))
+	  projectile-enable-caching t
+	  projectile-completion-system 'helm
+	  projectile-switch-project-action 'helm-projectile)
+    (projectile-global-mode)))
 
 (use-package helm
   :ensure t
