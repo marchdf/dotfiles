@@ -27,9 +27,6 @@
 ;; syntax color
 (global-font-lock-mode t)
 
-;; Parenthesis matching
-(show-paren-mode t)
-
 ;; For accents. To toggle: C-\
 (setq default-input-method "latin-1-prefix")
 
@@ -43,6 +40,7 @@
 
 ;; Prevent Emacs from making backup files
 (setq make-backup-files nil)
+
 
 ;;================================================================================
 ;;
@@ -61,6 +59,15 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+
+;;================================================================================
+;;
+;; Diminish
+;;
+;;================================================================================
+(use-package diminish
+    :ensure t)
 
 
 ;;================================================================================
@@ -578,10 +585,22 @@ and set the focus back to Emacs frame"
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
+  :bind
+  ("C-M-k" . sp-kill-sexp)
+  ("C-M-f" . sp-forward-sexp)
+  ("C-M-b" . sp-backward-sexp)
+  ("C-M-n" . sp-next-sexp)
+  ("C-M-p" . sp-previous-sexp)
+  ("C-M-u" . sp-up-sexp)
+  ("C-M-d" . sp-down-sexp)
+  ("C-M-w" . sp-copy-sexp)
+  ("C-M-a" . sp-beginning-of-sexp)
+  ("C-M-e" . sp-end-of-sexp)
   :config
   (progn
     (sp-with-modes '(html-mode sgml-mode nxml-mode web-mode)
       (sp-local-pair "<" ">"))
+    (show-smartparens-global-mode t)
     (require 'smartparens-config)
     (smartparens-global-mode t)))
 
