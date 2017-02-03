@@ -586,6 +586,9 @@ and set the focus back to Emacs frame"
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
+  :init
+  (show-smartparens-global-mode t)
+  (smartparens-global-mode t)
   :bind
   ("C-M-k" . sp-kill-sexp)
   ("C-M-f" . sp-forward-sexp)
@@ -601,9 +604,7 @@ and set the focus back to Emacs frame"
   (progn
     (sp-with-modes '(html-mode sgml-mode nxml-mode web-mode)
       (sp-local-pair "<" ">"))
-    (show-smartparens-global-mode t)
-    (require 'smartparens-config)
-    (smartparens-global-mode t)))
+    (use-package smartparens-config)))
 
 
 ;;================================================================================
