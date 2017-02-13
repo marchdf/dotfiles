@@ -132,6 +132,18 @@
       ("C-c h" . helm-projectile)
       :config
       (setq shell-file-name "/bin/bash"))
+    (use-package helm-swoop
+      :ensure    helm-swoop
+      :bind
+      ("M-i" . helm-swoop)
+      ("C-c M-i" . helm-multi-swoop)
+      ("C-x M-i" . helm-multi-swoop-all)
+      :config
+      (progn
+	(setq helm-swoop-split-direction 'split-window-horizontally)
+	(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+	(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+	(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)))
     (helm-mode t)))
 
 
