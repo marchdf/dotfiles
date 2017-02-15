@@ -144,6 +144,16 @@
 	(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 	(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
 	(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)))
+    (use-package helm-git-grep
+      :ensure    helm-git-grep
+      :bind
+      ("C-c g" . helm-git-grep)
+      :config
+      (progn
+	(define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
+	(define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
+    	(define-key helm-git-grep-map (kbd "C-r") 'helm-previous-line)
+	(define-key helm-git-grep-map (kbd "C-s") 'helm-next-line)))
     (helm-mode t)))
 
 
