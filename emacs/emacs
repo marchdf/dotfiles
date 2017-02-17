@@ -92,6 +92,7 @@
   :defer t
   :config
   (global-flycheck-mode)
+
   (setq flycheck-python-flake8-executable "flake8"))
 
 
@@ -102,18 +103,20 @@
 ;;================================================================================
 (use-package projectile
   :ensure t
+  :diminish projectile-mode
   :config
-  (progn
-    (setq projectile-globally-ignored-files
-	  (append projectile-globally-ignored-files
-		  '(".DS_Store"))
-	  projectile-enable-caching t
-	  projectile-completion-system 'helm
-	  projectile-switch-project-action 'helm-projectile)
-    (projectile-global-mode)))
+  (setq projectile-globally-ignored-files
+	(append projectile-globally-ignored-files
+		'(".DS_Store"))
+	projectile-enable-caching t
+	projectile-completion-system 'helm
+	projectile-switch-project-action 'helm-projectile)
+
+  (projectile-global-mode))
 
 (use-package helm
   :ensure t
+  :diminish helm-mode
   :bind
   ("M-x"     . helm-M-x)
   ("C-x C-f" . helm-find-files)
@@ -125,36 +128,37 @@
   ("C-x C-b" . helm-buffers-list)
   ("C-x b"   . helm-mini)
   :init
-  (progn
-    (use-package helm-projectile
-      :ensure    helm-projectile
-      :bind
-      ("C-c h" . helm-projectile)
-      :config
-      (setq shell-file-name "/bin/bash"))
-    (use-package helm-swoop
-      :ensure    helm-swoop
-      :bind
-      ("M-i" . helm-swoop)
-      ("C-c M-i" . helm-multi-swoop)
-      ("C-x M-i" . helm-multi-swoop-all)
-      :config
-      (progn
-	(setq helm-swoop-split-direction 'split-window-horizontally)
-	(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-	(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-	(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)))
-    (use-package helm-git-grep
-      :ensure    helm-git-grep
-      :bind
-      ("C-c g" . helm-git-grep)
-      :config
-      (progn
-	(define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
-	(define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
-    	(define-key helm-git-grep-map (kbd "C-r") 'helm-previous-line)
-	(define-key helm-git-grep-map (kbd "C-s") 'helm-next-line)))
-    (helm-mode t)))
+  (use-package helm-projectile
+    :ensure    helm-projectile
+    :bind
+    ("C-c h" . helm-projectile)
+    ("C-c x" . helm-projectile-find-file-dwim)
+    :config
+    (setq shell-file-name "/bin/bash"))
+
+  (use-package helm-swoop
+    :ensure    helm-swoop
+    :bind
+    ("M-i" . helm-swoop)
+    ("C-c M-i" . helm-multi-swoop)
+    ("C-x M-i" . helm-multi-swoop-all)
+    :config
+    (setq helm-swoop-split-direction 'split-window-horizontally)
+    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+    (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+    (define-key helm-swoop-map (kbd "C-s") 'helm-next-line))
+
+  (use-package helm-git-grep
+    :ensure    helm-git-grep
+    :bind
+    ("C-c g" . helm-git-grep)
+    :config
+    (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
+    (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
+    (define-key helm-git-grep-map (kbd "C-r") 'helm-previous-line)
+    (define-key helm-git-grep-map (kbd "C-s") 'helm-next-line))
+
+  (helm-mode t))
 
 
 ;;================================================================================
@@ -248,29 +252,29 @@ and set the focus back to Emacs frame"
 ;; C/C++
 ;;
 ;;================================================================================
-(defun forloop (i imax)
-  "Build a C/C++ for loop given I and IMAX."
-  (interactive "Miterator:\nMmax:")
-  (let ((beg (point)))
-    (insert "for(int " i "=0; " i "<" imax "; " i "++){\n\n}")
-    (indent-region beg (point))
-    (previous-line 1)
-    (c-indent-command)))
-
-(defun printf-binding (out vars)
-  "Binding for printf to make things easier.  OUT is the output string and VARS is the variables to printf."
-  (interactive "MOutput:\nMVariables:")
-  (let ((beg (point)))
-    (insert "printf(\"" out "\\n\"," vars ");")
-    (indent-region beg (point))))
-
-(use-package c++-mode
+(use-package cc-mode
   :mode
   ("\\.geo" . c++-mode)  ;; Gmsh files
   ("\\.cu$" . c++-mode)  ;; CUDA files
   :bind
   ("C-M-l" . forloop)
-  ("C-M-p" . printf-binding))
+  ("C-M-p" . printf-binding)
+  :config
+  (defun printf-binding (out vars)
+    "Binding for printf to make things easier.  OUT is the output string and VARS is the variables to printf."
+    (interactive "MOutput:\nMVariables:")
+    (let ((beg (point)))
+      (insert "printf(\"" out "\\n\"," vars ");")
+      (indent-region beg (point))))
+
+  (defun forloop (i imax)
+    "Build a C/C++ for loop given I and IMAX."
+    (interactive "Miterator:\nMmax:")
+    (let ((beg (point)))
+      (insert "for(int " i "=0; " i "<" imax "; " i "++){\n\n}")
+      (indent-region beg (point))
+      (previous-line 1)
+      (c-indent-command))))
 
 
 ;;================================================================================
@@ -441,6 +445,7 @@ and set the focus back to Emacs frame"
     ))
 (global-set-key (kbd "<f8>")   'fd-switch-dictionary)
 
+(eval-after-load "flyspell" '(diminish 'flyspell-mode))
 
 ;;================================================================================
 ;;
@@ -497,28 +502,28 @@ and set the focus back to Emacs frame"
   ("\\.Rprofile" . R-mode)
   :commands R
   :config
-  (progn
-    ;; inspiration for the following:
-    ;; http://stats.blogoverflow.com/2011/08/using-emacs-to-work-with-r/
-    ;; save more commands
-    (setq comint-input-ring-size 1000)
-    ;; "This recalls the R statement from your R statement history, but it
-    ;; tries to match it with the one which is already on your line."
-    (add-hook 'inferior-ess-mode-hook
-	      '(lambda nil
-		 (define-key inferior-ess-mode-map [\C-up]
-		   'comint-previous-matching-input-from-input)
-		 (define-key inferior-ess-mode-map [\C-down]
-		   'comint-next-matching-input-from-input)
-		 (define-key inferior-ess-mode-map [\C-x \t]
-		   'comint-dynamic-complete-filename)))
+  ;; inspiration for the following:
+  ;; http://stats.blogoverflow.com/2011/08/using-emacs-to-work-with-r/
+  ;; save more commands
+  (setq comint-input-ring-size 1000)
 
-    ;; To assign ":" to "<-" and to stop the assignment of underscore
-    ;; (underbar) "_" to "<-"
-    (setq ess-smart-S-assign-key ":")
-    (ess-toggle-S-assign nil)
-    (ess-toggle-S-assign nil)
-    (ess-toggle-underscore nil)))
+  ;; "This recalls the R statement from your R statement history, but it
+  ;; tries to match it with the one which is already on your line."
+  (add-hook 'inferior-ess-mode-hook
+	    '(lambda nil
+	       (define-key inferior-ess-mode-map [\C-up]
+		 'comint-previous-matching-input-from-input)
+	       (define-key inferior-ess-mode-map [\C-down]
+		 'comint-next-matching-input-from-input)
+	       (define-key inferior-ess-mode-map [\C-x \t]
+		 'comint-dynamic-complete-filename)))
+
+  ;; To assign ":" to "<-" and to stop the assignment of underscore
+  ;; (underbar) "_" to "<-"
+  (setq ess-smart-S-assign-key ":")
+  (ess-toggle-S-assign nil)
+  (ess-toggle-S-assign nil)
+  (ess-toggle-underscore nil))
 
 
 
@@ -553,16 +558,18 @@ and set the focus back to Emacs frame"
 (use-package elpy
   :ensure t
   :config
-  (progn
-    ;; Use flycheck instead of flymake
-    (when (require 'flycheck nil t)
-      (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-      (add-hook 'elpy-mode-hook 'flycheck-mode))
-    (elpy-enable)
-    ;; Enable jedi
-    (setq elpy-rpc-backend "jedi")
-    ;; PEP8 compliance
-    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)))
+  ;; Use flycheck instead of flymake
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+  (elpy-enable)
+
+  ;; Enable jedi
+  (setq elpy-rpc-backend "jedi")
+
+  ;; PEP8 compliance
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
 
 ;;================================================================================
@@ -606,9 +613,6 @@ and set the focus back to Emacs frame"
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
-  :init
-  (show-smartparens-global-mode t)
-  (smartparens-global-mode t)
   :bind
   ("C-M-k" . sp-kill-sexp)
   ("C-M-f" . sp-forward-sexp)
@@ -620,11 +624,14 @@ and set the focus back to Emacs frame"
   ("C-M-w" . sp-copy-sexp)
   ("C-M-a" . sp-beginning-of-sexp)
   ("C-M-e" . sp-end-of-sexp)
+  :init
+  (show-smartparens-global-mode t)
+  (smartparens-global-mode t)
   :config
-  (progn
-    (sp-with-modes '(html-mode sgml-mode nxml-mode web-mode)
-      (sp-local-pair "<" ">"))
-    (use-package smartparens-config)))
+  (sp-with-modes '(html-mode sgml-mode nxml-mode web-mode)
+    (sp-local-pair "<" ">"))
+
+  (use-package smartparens-config))
 
 
 ;;================================================================================
@@ -656,30 +663,54 @@ and set the focus back to Emacs frame"
 
 ;;================================================================================
 ;;
-;; EMMS
-;; Requires: mp3info (or something like that)
+;; Automatic music layout
+;; Uses EMMS (which requires mp3info)
 ;;
 ;;================================================================================
-(use-package emms
-  :ensure t
+(use-package music-setup
   :bind
-  ("C-c e" . emms-smart-browse)
-  :config
-  (progn
+  ("C-c m" . my-music-layout)
+  ("C-c C-p" . go-to-pianobar)
+  :init
+  (defvar my-music-directory "~/my_music")
+
+  (use-package emms
+    :ensure t
+    :bind
+    ("C-c e" . emms-smart-browse)
+    :config
     (emms-all)
+
     (emms-default-players)
-    (setq emms-source-file-default-directory "~/my_music"
-	  emms-playlist-buffer-name "*Music*"
+
+    (setq emms-source-file-default-directory my-music-directory
+	  emms-playlist-buffer-name "*Music Playlist*"
 	  emms-playlist-default-major-mode 'emms-playlist-mode
 	  emms-show-format "♪ %s"
-	  emms-browser-default-covers (list "~/my_music/cover_small.jpg" "~/my_music/cover_med.jpg" nil)
+	  emms-browser-default-covers (list (concat (file-name-as-directory my-music-directory) "cover_small.jpg")
+					    (concat (file-name-as-directory my-music-directory) "cover_med.jpg")
+					    nil)
 	  emms-browser-info-artist-format "%i● %n"
 	  emms-browser-info-album-format "%i◎%cS%n (%y)"
 	  emms-browser-info-genre-format "%i● %n"
 	  emms-browser-info-title-format "%i♪ %T. %n"
 	  emms-browser-playlist-info-artist-format emms-browser-info-artist-format
 	  emms-browser-playlist-info-album-format emms-browser-info-album-format
-	  emms-browser-playlist-info-title-format emms-browser-info-title-format)))
+	  emms-browser-playlist-info-title-format emms-browser-info-title-format))
+
+  (defun my-music-layout ()
+    (interactive)
+    (emms-smart-browse)
+    (next-multiframe-window)
+    (split-window-vertically)
+    (next-multiframe-window)
+    (cd (getenv "HOME"))
+    (ansi-term (getenv "SHELL") "Pianobar")
+    (next-multiframe-window))
+
+  (defun go-to-pianobar ()
+    (interactive)
+    (switch-to-buffer-other-window "*Pianobar*")))
 
 
 ;;================================================================================
