@@ -182,7 +182,7 @@
 ;; buffer. So you would have to manually switch to the compile buffer
 ;; and do compile there. This is what the above command does."
 (defun compile-again (pfx)
-  """Run the same compile as the last time.  If there was no last time, or there is a prefix argument (PFX), this acts like M-x compile."""
+  """Run the same compile as the last time. If there was no last time, or there is a prefix argument (PFX), this acts like M-x compile."""
   (interactive "p")
   (if (buffer-modified-p)
       (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
@@ -202,9 +202,7 @@
 (defvar success-message "\n Compilation Successful :-) \n ")
 (defvar fail-message "\n Compilation Fail :-( \n ")
 (defun notify-compilation-result(buffer msg)
-  "Notify that the compilation is finished,
-close the *compilation* buffer if the compilation is successful,
-and set the focus back to Emacs frame"
+  "Notify that the compilation is finished, close the *compilation* BUFFER if the compilation is successful, and set the focus back to Emacs frame (show MSG)."
   (if (string-match "^finished" msg)
       (progn
 	(delete-windows-on buffer)
@@ -279,11 +277,13 @@ and set the focus back to Emacs frame"
 
 ;;================================================================================
 ;;
-;; Fortran stuff
+;; Fortran
 ;;
 ;;================================================================================
-;; Make Fortran indent at the level of the code. Not a fixed width.
-(setq fortran-comment-indent-style 'relative)
+(use-package f90-mode
+  :init
+  ;; Make Fortran indent at the level of the code. Not a fixed width.
+  (setq fortran-comment-indent-style 'relative))
 
 
 ;;================================================================================
@@ -565,10 +565,8 @@ and set the focus back to Emacs frame"
 
   (elpy-enable)
 
-  ;; Enable jedi
   (setq elpy-rpc-backend "jedi")
 
-  ;; PEP8 compliance
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
 
@@ -664,7 +662,7 @@ and set the focus back to Emacs frame"
 ;;================================================================================
 ;;
 ;; Automatic music layout
-;; Uses EMMS (which requires mp3info)
+;; Uses EMMS (which requires mp3info and vorbis-tools)
 ;;
 ;;================================================================================
 (use-package music-setup
@@ -746,11 +744,12 @@ and set the focus back to Emacs frame"
 ;;================================================================================
 (defconst animate-n-steps 0)
 (defun emacs-reloaded()
- (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
-			(substring (emacs-version) 0 16)
-			".")
-		 0 0)
- (newline-and-indent) (newline-and-indent))
+  "Custom startup message."
+  (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
+			 (substring (emacs-version) 0 16)
+			 ".")
+		  0 0)
+  (newline-and-indent) (newline-and-indent))
 (add-hook 'after-init-hook 'emacs-reloaded)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
