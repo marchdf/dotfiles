@@ -19,11 +19,14 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     } &> /dev/null
 
     {
+	. ${HOME}/.oh-my-zsh/custom/functions.zsh
+	load_spack
 	spack load binutils
 	spack load texlive
 	spack load screen
 	spack load git
 	spack load emacs
+	spack load global
     } &> /dev/null
 
 fi

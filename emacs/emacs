@@ -158,6 +158,14 @@
     (define-key helm-git-grep-map (kbd "C-r") 'helm-previous-line)
     (define-key helm-git-grep-map (kbd "C-s") 'helm-next-line))
 
+  (use-package helm-gtags
+    :ensure    helm-gtags
+    :bind
+    ("C-c f" . helm-gtags-dwim)
+    :config
+    (add-hook 'c-mode-hook 'helm-gtags-mode)
+    (add-hook 'c++-mode-hook 'helm-gtags-mode))
+
   (helm-mode t))
 
 

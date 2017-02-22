@@ -53,6 +53,9 @@ fi
 #================================================================================
 if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 
+    # Set scratch
+    export SCRATCH=/scratch/${USER}
+
     # Set the tmp dir to scratch. This is because /tmp was filling up
     # when compiling Nalu with intel compilers and the debug flag
     export TMPDIR=/scratch/mhenryde/.tmp
