@@ -24,13 +24,6 @@ export PELE_HOME=$CCSE_DIR/Pele
 export PELEC_HOME=$PELE_HOME/PeleC
 export PELE_PHYSICS_HOME=$PELE_HOME/PelePhysics
 
-# Spack
-SPACK_DIR=$HOME/spack
-if [ -d "$SPACK_DIR" ]; then
-    export SPACK_ROOT=${HOME}/spack
-    . ${SPACK_ROOT}/share/spack/setup-env.sh 
-fi
-
 
 #================================================================================
 #

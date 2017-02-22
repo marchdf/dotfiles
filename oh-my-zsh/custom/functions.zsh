@@ -26,3 +26,16 @@ function ediff() {
 	emacs -nw --eval "(ediff-files \"$1\" \"$2\")"
     fi
 }
+
+# Load spack environment if you want it. I do this instead of loading
+# it by default because it would slow down terminal startup time
+SPACK_DIR=$HOME/spack
+if [ -d "$SPACK_DIR" ]; then
+    function load_spack(){
+	export SPACK_ROOT=${HOME}/spack
+	. ${SPACK_ROOT}/share/spack/setup-env.sh
+    }
+fi
+
+
+
