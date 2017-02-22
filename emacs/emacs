@@ -280,10 +280,12 @@
 ;; Fortran
 ;;
 ;;================================================================================
-(use-package f90-mode
+(use-package fortran
   :init
   ;; Make Fortran indent at the level of the code. Not a fixed width.
-  (setq fortran-comment-indent-style 'relative))
+  (add-hook 'f90-mode-hook
+	    '(lambda ()
+	       (setq fortran-comment-indent-style 'relative))))
 
 
 ;;================================================================================
@@ -291,8 +293,8 @@
 ;; Matlab
 ;;
 ;;================================================================================
-(use-package matlab-mode
-  :ensure t)
+(use-package matlab
+  :ensure matlab-mode)
 
 
 ;;================================================================================
