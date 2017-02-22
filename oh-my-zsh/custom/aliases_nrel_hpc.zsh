@@ -26,6 +26,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	spack load screen
 	spack load git
 	spack load emacs
+	spack load global
     } &> /dev/null
 
 fi
