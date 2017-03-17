@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright (c) Marc T. Henry de Frahan, http://www-personal.umich.edu/~marchdf/
+Copyright (c) Marc T. Henry de Frahan, http://marchdf.github.io
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
