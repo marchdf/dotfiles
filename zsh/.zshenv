@@ -58,10 +58,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     # when compiling Nalu with intel compilers and the debug flag
     export TMPDIR=${SCRATCH}/.tmp
 
-    # Source /etc/bashrc to get modules loaded
-    . /etc/bashrc
-
-    # Load some custom modules (they need to go here)
+    # Load some custom modules
     {
 	module purge
 	module use /nopt/nrel/apps/modules/candidate/modulefiles
