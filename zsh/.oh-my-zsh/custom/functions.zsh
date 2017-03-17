@@ -23,7 +23,7 @@ function ediff() {
 	echo "USAGE: ediff <FILE 1> <FILE 2>"
     else
 	# The --eval flag takes lisp code and evaluates it with emacs
-	emacs -nw --eval "(ediff-files \"$1\" \"$2\")"
+	e --eval "(ediff-files \"$1\" \"$2\")"
     fi
 }
 
