@@ -20,7 +20,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -776,7 +776,7 @@
 
   ;; Core emacs
   (defhydra hydra-yank-pop ()
-    """Yank with hydra."""
+    "yank"
     ("C-y" yank nil)
     ("M-y" yank-pop nil)
     ("y" (yank-pop 1) "next")
@@ -785,7 +785,7 @@
 
   (defhydra hydra-move
     (:body-pre (next-line))
-    """Move with hydra."""
+    "move"
     ("n" next-line)
     ("p" previous-line)
     ("f" forward-char)
@@ -793,7 +793,6 @@
     ("a" beginning-of-line)
     ("e" move-end-of-line)
     ("v" scroll-up-command)
-    ;; Converting M-v to V here by analogy.
     ("V" scroll-down-command)
     ("l" recenter-top-bottom)))
 
