@@ -771,7 +771,15 @@
   :bind
   ("C-y" . hydra-yank-pop/yank)
   ("M-y" . hydra-yank-pop/yank-pop)
-  ("C-n" . hydra-move/body)
+  ("C-n" . hydra-move/next-line)
+  ("C-p" . hydra-move/previous-line)
+  ("C-f" . hydra-move/forward-char)
+  ("C-b" . hydra-move/backward-char)
+  ("C-a" . hydra-move/beginning-of-line)
+  ("C-e" . hydra-move/move-end-of-line)
+  ("C-v" . hydra-move/scroll-up-command)
+  ("M-v" . hydra-move/scroll-down-command)
+  ("C-l" . hydra-move/recenter-top-bottom)
   :config
 
   ;; Core emacs
@@ -783,8 +791,7 @@
     ("Y" (yank-pop -1) "prev")
     ("l" helm-show-kill-ring "list" :color blue))
 
-  (defhydra hydra-move
-    (:body-pre (next-line))
+  (defhydra hydra-move ()
     "move"
     ("n" next-line)
     ("p" previous-line)
