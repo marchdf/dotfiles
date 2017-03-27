@@ -536,7 +536,6 @@
   (ess-toggle-underscore nil))
 
 
-
 ;;================================================================================
 ;;
 ;; Markdown and polymode
@@ -597,7 +596,7 @@
 ;;
 ;;================================================================================
 (use-package yaml-mode
-  :ensure     t
+  :ensure t
   :mode
   ("\\.yml$" . yaml-mode))
 
@@ -718,6 +717,7 @@
 
   (defun my-music-layout ()
     (interactive)
+    (delete-other-windows)
     (emms-smart-browse)
     (next-multiframe-window)
     (split-window-vertically)
@@ -729,6 +729,73 @@
   (defun go-to-pianobar ()
     (interactive)
     (switch-to-buffer-other-window "*Pianobar*")))
+
+
+;;================================================================================
+;;
+;; Dired
+;;
+;;================================================================================
+(use-package dired
+  :config
+  (defun dired-ediff-files ()
+    """Diff files in dired mode by pressing 'e'. From https://oremacs.com/2017/03/18/dired-ediff."""
+    (interactive)
+    (let ((files (dired-get-marked-files))
+	  (wnd (current-window-configuration)))
+      (if (<= (length files) 2)
+	  (let ((file1 (car files))
+		(file2 (if (cdr files)
+			   (cadr files)
+			 (read-file-name
+			  "file: "
+			  (dired-dwim-target-directory)))))
+	    (if (file-newer-than-file-p file1 file2)
+		(ediff-files file2 file1)
+	      (ediff-files file1 file2))
+	    (add-hook 'ediff-after-quit-hook-internal
+		      (lambda ()
+			(setq ediff-after-quit-hook-internal nil)
+			(set-window-configuration wnd))))
+	(error "No more than 2 files should be marked"))))
+  (define-key dired-mode-map "e" 'dired-ediff-files))
+
+
+;;================================================================================
+;;
+;; Hydra
+;;
+;;================================================================================
+(use-package hydra
+  :ensure t
+  :bind
+  ("C-y" . hydra-yank-pop/yank)
+  ("M-y" . hydra-yank-pop/yank-pop)
+  ("C-n" . hydra-move/body)
+  :config
+
+  ;; Core emacs
+  (defhydra hydra-yank-pop ()
+    """Yank with hydra."""
+    ("C-y" yank nil)
+    ("M-y" yank-pop nil)
+    ("y" (yank-pop 1) "next")
+    ("Y" (yank-pop -1) "prev")
+    ("l" helm-show-kill-ring "list" :color blue))
+
+  (defhydra hydra-move
+    (:body-pre (next-line))
+    """Move with hydra."""
+    ("n" next-line)
+    ("p" previous-line)
+    ("f" forward-char)
+    ("b" backward-char)
+    ("a" beginning-of-line)
+    ("e" move-end-of-line)
+    ("v" scroll-up-command)
+    ;; Converting M-v to V here by analogy.
+    ("V" scroll-down-command)
+    ("l" recenter-top-bottom)))
 
 
 ;;================================================================================
