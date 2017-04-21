@@ -18,7 +18,7 @@ alias ek='emacsclient -e "(kill-emacs)"'
 alias rmeps='rm *.eps'
 alias rmpng='rm *.png'
 alias rmpdf='rm -i *.pdf'
-alias rmself='self=`pwd`; cd ..; rm -rfi $self'
+alias rmself='self=`pwd`; rm -r *; cd `dirname $self`; rm -r $self;'
 alias sx='source ~/.xinitrc'
 alias fls="fast_ls"  # fast ls from TACC
 alias c21='vlc http://www.static.rtbf.be/radio/classic21/m3u/classic21_128k.m3u'
