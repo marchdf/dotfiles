@@ -80,6 +80,9 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	spack load global
     } &> /dev/null
 
+    # Swig
+    export PATH=$PATH:$HOME/builds/swig-3.0.12/build/bin
+
 fi
 
 #================================================================================
