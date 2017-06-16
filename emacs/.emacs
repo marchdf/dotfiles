@@ -700,6 +700,11 @@
 
     (emms-default-players)
 
+    (if (eq system-type 'darwin)
+	(progn
+	  (setq emms-player-vlc-command-name
+		"/Applications/VLC.app/Contents/MacOS/VLC")))
+
     (setq emms-source-file-default-directory my-music-directory
 	  emms-playlist-buffer-name "*Music Playlist*"
 	  emms-playlist-default-major-mode 'emms-playlist-mode
