@@ -41,6 +41,9 @@ if [ "$(uname)" = "Darwin" ]; then
     # openmpi fails because tmp dir name is too long
     # see: https://www.open-mpi.org/faq/?category=osx
     export TMPDIR=/tmp
+
+    # Set vlc for terminal
+    alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 fi
 
 
