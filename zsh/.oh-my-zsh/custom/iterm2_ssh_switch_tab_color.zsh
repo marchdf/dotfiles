@@ -24,6 +24,14 @@ color-ssh() {
         trap "tab-reset" INT EXIT
         if [[ "$*" =~ "navier|other_*_machine" ]]; then
             tab-color 24 90 169
+        elif [[ "$*" =~ "cori|edison" ]]; then
+            tab-color 244 125 35
+        elif [[ "$*" =~ "machine1a|machine1b" ]]; then
+            tab-color 102 44 155
+        elif [[ "$*" =~ "machine2a|machine2b" ]]; then
+            tab-color 162 29 33
+        elif [[ "$*" =~ "machine3a|machine3b" ]]; then
+            tab-color 180 56 148
         else
             tab-color 0 140 72
         fi
