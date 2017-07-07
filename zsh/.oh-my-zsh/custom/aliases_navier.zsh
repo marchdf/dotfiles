@@ -10,7 +10,6 @@ if [[ ${(%):-%M} = *navier* ]]; then
    alias lonestar='ssh -X marchdf@lonestar.tacc.utexas.edu'
    alias stampede='ssh -X marchdf@login1.stampede.tacc.utexas.edu'
    alias maverick='ssh -X marchdf@login1.maverick.tacc.utexas.edu'
-   alias c21='vlc http://www.static.rtbf.be/radio/classic21/m3u/classic21_128k.m3u'
    alias matlab='matlab -nosplash -nodesktop'
    alias mnt_nyx_bkp='sshfs marchdf@nyx-login.engin.umich.edu:/nobackup/marchdf /mnt/nyxnobackup'
    alias mnt_nyx='sshfs marchdf@nyx-login.engin.umich.edu:/home/marchdf /mnt/nyxhome'
