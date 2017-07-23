@@ -27,6 +27,9 @@ alias sshot='import ~/Desktop/screenshot.jpg' # screenshot (pick area to grab)
 alias empty_space='printf ''\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n'''
 alias qs='qstat -u $USER'
 
+# Weather using https://github.com/chubin/wttr.in
+alias weather='curl wttr.in/\?m'
+
 # upgrade all python packages with pip.
 # from http://mikegrouchy.com/blog/2014/06/pro-tip-pip-upgrade-all-python-packages.html
 # periodically check this to make sure that pip didn't add this new feature
