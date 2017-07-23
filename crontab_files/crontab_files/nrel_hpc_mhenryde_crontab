@@ -15,7 +15,7 @@
 # Make trilinos every sunday at 22:00
 # 
 #================================================================================
-00 22 * * 0 /nopt/torque/bin/qsub $HOME/submit_trilinos.sh >/dev/null 2>&1
+#00 22 * * 0 /nopt/torque/bin/qsub $HOME/submit_trilinos.sh >/dev/null 2>&1
 
 
 #================================================================================
