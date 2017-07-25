@@ -62,8 +62,8 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     export TMPDIR=${SCRATCH}/.tmp
 
     # Load some custom modules
-    . /etc/bashrc
     {
+	. /etc/bashrc
 	module purge
 	module use /nopt/nrel/apps/modules/candidate/modulefiles
 	module load openmpi-gcc/1.10.0-5.2.0
