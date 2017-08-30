@@ -310,68 +310,83 @@
 ;; Latex stuff
 ;;
 ;;================================================================================
+(use-package latex
+  :ensure auctex
+  :mode
+  ("\\.tex\\'" . latex-mode)
+  :commands (latex-mode LaTeX-mode plain-tex-mode)
+  :bind
+  ("C-c %" . replace-newlines-with-percent-in-region)
+  ("M-F" . insert-figure-reference)
+  ("M-E" . insert-equation-reference)
+  ("M-T" . insert-table-reference)
+  ("M-H" . insert-chapter-reference)
+  ("M-G" . insert-appendix-reference)
+  ("M-L (" . insert-left-right-paren)
+  ("M-L {" . insert-left-right-brace)
+  ("M-L [" . insert-left-right-bracket)
+  :config
+  (add-to-list 'TeX-command-list
+		'("Make" "make" TeX-run-compile nil t
+		  :help "Compile with Makefile"))
 
-;; function to replace all \n with %\n in a region. Useful for latex
-;; when you are in the minipage environment.
-(defun replace-newlines-with-percent-in-region ()
-  "Replace newlines with %\n in region."
-  (interactive)
-  (save-restriction
-    (narrow-to-region (point) (mark))
-    (goto-char (point-min))
-        (while (search-forward "\n" nil t) (replace-match "%\n" nil t))))
+  ;; function to replace all \n with %\n in a region. Useful for latex
+  ;; when you are in the minipage environment.
+  (defun replace-newlines-with-percent-in-region ()
+    "Replace newlines with %\n in region."
+    (interactive)
+    (save-restriction
+      (narrow-to-region (point) (mark))
+      (goto-char (point-min))
+      (while (search-forward "\n" nil t) (replace-match "%\n" nil t))))
 
-;; force all files ending in .tex to be opened in LaTeX mode (not TeX)
-(add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode))
+  (defun insert-figure-reference ()
+    "Insert a figure reference for LaTex."
+    (interactive)
+    (insert "Figure\\,\\ref{fig:}") (backward-char 1))
 
-;; custom latex mode
-(add-hook 'LaTeX-mode-hook
-	  '(lambda ()
-	     (define-key LaTeX-mode-map "\C-c\C-a"
-	       'compile)
-	     (setq compilation-read-command nil)
-	     (add-hook 'replace-newlines-with-percent-in-region 'replace-newlines-with-percent-in-region nil 'make-it-local)
-	     (local-set-key (kbd "\C-c %") 'replace-newlines-with-percent-in-region)
-	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
-	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8)
-;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")
-;;	     (setq compile-command "pdflatex -shell-escape report.tex && evince report.pdf")
-	     (setq compile-command "./sh_latex.sh")
-	     (local-set-key (kbd "\C-c k") (lambda ()(interactive) (shell-command "rm report.aux" "*shell-command-out*" "*shell-command-err*") (kill-compilation)))
-	     (local-set-key (kbd "M-F") (lambda () (interactive) (insert "Figure\\,\\ref{fig:}") (backward-char 1)))
-	     (local-set-key (kbd "M-E") (lambda () (interactive) (insert "Equation\\,(\\ref{equ:})") (backward-char 2)))
-	     (local-set-key (kbd "M-T") (lambda () (interactive) (insert "Table\\,\\ref{tab:}") (backward-char 1)))
-	     (local-set-key (kbd "M-H") (lambda () (interactive) (insert "Chapter\\,\\ref{chap:}") (backward-char 1)))
-	     (local-set-key (kbd "M-G") (lambda () (interactive) (insert "Appendix\\,\\ref{app:}") (backward-char 1)))
-	     (local-set-key (kbd "M-L (") (lambda () (interactive) (insert "\\left( \\right)") (backward-char 8)))
-	     (local-set-key (kbd "M-L {") (lambda () (interactive) (insert "\\left\\{ \\right\\}") (backward-char 10)))
-	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))
-	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))))
+  (defun insert-equation-reference ()
+    "Insert an equation reference for LaTex."
+    (interactive)
+    (insert "Equation\\,(\\ref{equ:})") (backward-char 2))
 
-;; custom tex mode
-(add-hook 'tex-mode-hook
-	  '(lambda ()
-	     (define-key tex-mode-map "\C-c\C-a"
-	       'compile)
-	     (setq compilation-read-command nil)
-	     (add-hook 'replace-newlines-with-percent-in-region 'replace-newlines-with-percent-in-region nil 'make-it-local)
-	     (local-set-key (kbd "\C-c %") 'replace-newlines-with-percent-in-region)
-	     (setq default-input-method "latin-1-prefix") ;; To toggle: C-\
-	     (modify-coding-system-alist 'file "\\.tex\\'" 'utf-8)
-;;	     (setq compile-command "latex report.tex && dvips -f report.dvi -o report.ps && ps2pdf report.ps && evince report.pdf")
-;;	     (setq compile-command "pdflatex -shell-escape report.tex && evince report.pdf")
-	     (setq compile-command "./sh_latex.sh")
-	     (local-set-key (kbd "\C-c k") (lambda ()(interactive) (shell-command "rm report.aux" "*shell-command-out*" "*shell-command-err*") (kill-compilation)))
-	     (local-set-key (kbd "M-F") (lambda () (interactive) (insert "Figure\\,\\ref{fig:}") (backward-char 1)))
-	     (local-set-key (kbd "M-E") (lambda () (interactive) (insert "Equation\\,(\\ref{equ:})") (backward-char 2)))
-	     (local-set-key (kbd "M-T") (lambda () (interactive) (insert "Table\\,\\ref{tab:}") (backward-char 1)))
-	     (local-set-key (kbd "M-H") (lambda () (interactive) (insert "Chapter\\,\\ref{chap:}") (backward-char 1)))
-	     (local-set-key (kbd "M-G") (lambda () (interactive) (insert "Appendix\\,\\ref{app:}") (backward-char 1)))
-	     (local-set-key (kbd "M-L (") (lambda () (interactive) (insert "\\left( \\right)") (backward-char 8)))
-	     (local-set-key (kbd "M-L {") (lambda () (interactive) (insert "\\left\\{ \\right\\}") (backward-char 10)))
-	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))
-	     (local-set-key (kbd "M-L [") (lambda () (interactive) (insert "\\left[ \\right]") (backward-char 8)))))
+  (defun insert-table-reference ()
+    "Insert a table reference for LaTex."
+    (interactive)
+    (insert "Table\\,\\ref{tab:}") (backward-char 1))
 
+  (defun insert-chapter-reference ()
+    "Insert a chapter reference for LaTex."
+    (interactive)
+    (insert "Chapter\\,\\ref{chap:}") (backward-char 1))
+
+  (defun insert-appendix-reference ()
+    "Insert an appendix reference for LaTex."
+    (interactive)
+    (insert "Appendix\\,\\ref{app:}") (backward-char 1))
+
+  (defun insert-left-right-paren ()
+    "Insert a left right paren for LaTex math mode."
+    (interactive)
+    (insert "\\left( \\right)") (backward-char 8))
+
+  (defun insert-left-right-brace ()
+    "Insert a left right brace for LaTex math mode."
+    (interactive)
+    (insert "\\left\\{ \\right\\}") (backward-char 9))
+
+  (defun insert-left-right-bracket ()
+    "Insert a left right bracket for LaTex math mode."
+    (interactive)
+    (insert "\\left[ \\right]") (backward-char 8))
+
+  (setq TeX-auto-save t
+	TeX-parse-self t))
+
+
+(use-package bibtex
+  :ensure t
+  :mode ("\\.bib" . bibtex-mode))
 
 
 ;;================================================================================
