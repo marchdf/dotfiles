@@ -582,6 +582,11 @@
 (use-package elpy
   :ensure t
   :config
+  (if (executable-find "python3")
+      (progn
+	(setq elpy-rpc-python-command "python3")
+	(setq python-shell-interpreter "python3")))
+
   ;; Use flycheck instead of flymake
   (when (require 'flycheck nil t)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
