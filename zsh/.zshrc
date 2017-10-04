@@ -130,3 +130,7 @@ fzf-history-widget-accept() {
 }
 zle     -N     fzf-history-widget-accept
 bindkey '^X^R' fzf-history-widget-accept
+
+# Longer history
+HISTSIZE=100000
+SAVEHIST=100000
