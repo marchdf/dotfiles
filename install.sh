@@ -12,6 +12,7 @@ install_dotfiles() {
     stow crontab_files
     stow emacs
     stow git
+    stow karabiner
     stow mypython
     stow R
     stow rsync_excludes
@@ -30,6 +31,7 @@ uninstall_dotfiles() {
     stow -D crontab_files
     stow -D emacs
     stow -D git
+    stow -D karabiner
     stow -D mypython
     stow -D R
     stow -D rsync_excludes
