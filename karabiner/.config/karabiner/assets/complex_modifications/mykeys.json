@@ -1,68 +1,67 @@
 {
-    "title": "My keys",
-    "rules": [
+  "title": "My keys",
+  "rules": [
+    {
+      "description": "Copy username in KeepassX",
+      "manipulators": [
 	{
-	    "description": "Copy username in KeepassX",
-	    "manipulators": [
-		{
-		    "type": "basic",
-		    "from": {
-			"key_code": "b",
-			"modifiers": {
-			    "mandatory": [
-				"control"
-			    ],
-			    "optional": [
-				"any"
-			    ]
-			}
-		    },
-		    "to": [
-			{
-			    "key_code": "b",
-			    "modifiers": [
-				"left_command"
-			    ]
-			}
-		    ],
-		    "conditions": [
-			{
-			    "type": "frontmost_application_if",
-			    "bundle_identifiers": [
-				"^org\\.keepassx\\.keepassx$"
-			    ]
-			}
-		    ]
-		}
-	    ]
-	},
-	{
-	    "description": "Shift-insert to Command + v",
-	    "manipulators": [
-		{
-		    "type": "basic",
-		    "from": {
-			"key_code": "insert",
-			"modifiers": {
-			    "mandatory": [
-				"shift"
-			    ],
-			    "optional": [
-				"any"
-			    ]
-			}
-		    },
-		    "to": [
-			{
-			    "key_code": "v",
-			    "modifiers": [
-				"left_command"
-			    ]
-			}
-		    ]
-		}
-	    ]
+	  "type": "basic",
+	  "from": {
+	    "key_code": "b",
+	    "modifiers": {
+	      "mandatory": [
+		"control"
+	      ],
+	      "optional": [
+		"any"
+	      ]
+	    }
+	  },
+	  "to": [
+	    {
+	      "key_code": "b",
+	      "modifiers": [
+		"left_command"
+	      ]
+	    }
+	  ],
+	  "conditions": [
+	    {
+	      "type": "frontmost_application_if",
+	      "bundle_identifiers": [
+		"^org\\.keepassx\\.keepassx$"
+	      ]
+	    }
+	  ]
 	}
-
-    ]
+      ]
+    },
+    {
+      "description": "Shift-insert to Command + v",
+      "manipulators": [
+	{
+	  "type": "basic",
+	  "from": {
+	    "key_code": "insert",
+	    "modifiers": {
+	      "mandatory": [
+		"shift"
+	      ],
+	      "optional": [
+		"any"
+	      ]
+	    }
+	  },
+	  "to": [
+	    {
+	      "key_code": "v",
+	      "modifiers": [
+		"left_command"
+	      ]
+	    }
+	  ]
+	}
+      ]
+    }
+  ]
 }
