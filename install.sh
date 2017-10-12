@@ -8,6 +8,7 @@ install_dotfiles() {
     stow amrvis
     stow aspell
     stow bash
+    stow beets
     stow bin
     stow crontab_files
     stow emacs
@@ -27,6 +28,7 @@ uninstall_dotfiles() {
     stow -D amrvis
     stow -D aspell
     stow -D bash
+    stow -D beets
     stow -D bin
     stow -D crontab_files
     stow -D emacs
