@@ -742,6 +742,14 @@
     (emms-all)
 
     (emms-default-players)
+    (define-emms-simple-player flac123 '(file)
+      "\\.flac$" "flac123")
+    (add-to-list 'emms-player-list emms-player-flac123)
+
+    ;; Use libtag exclusively for tagging
+    ;; Requires building emms-print-metadata and it being in your path
+    (require 'emms-info-libtag)
+    (setq emms-info-functions '(emms-info-libtag))
 
     (if (eq system-type 'darwin)
 	(progn

@@ -1,5 +1,5 @@
 directory: ~/my_music
 library: ~/my_music/musiclibrary.db
 import:
-  move: yes
+  move: no
 plugins: fetchart
