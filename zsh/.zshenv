@@ -11,7 +11,10 @@ DATATHIEF_DIR=$HOME/datathief
 if [ -d "$DATATHIEF_DIR" ]; then
     PATH=$PATH:$DATATHIEF_DIR
 fi
-	
+
+# Spack home directory
+SPACK_DIR=$HOME/spack
+
 # specify where all the CCSE codes live
 export CCSE_DIR=$HOME/combustion
 export AMREX_HOME=$CCSE_DIR/amrex
@@ -62,29 +65,11 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
     export TMPDIR=${SCRATCH}/.tmp
 
     # Load some custom modules
-    {
-	. /etc/bashrc
-	module purge
-	module use /nopt/nrel/apps/modules/candidate/modulefiles
-	module load openmpi-gcc/1.10.0-5.2.0
-	module load gcc/5.2.0
-	module load python/2.7.8
-	module load R
-    } &> /dev/null
+    . ${HOME}/.oh-my-zsh/custom/functions_nrel_hpc.zsh
+    load_custom_modules
 
-    {
-	. ${HOME}/.oh-my-zsh/custom/functions.zsh
-	load_spack
-	spack load binutils
-	spack load texlive
-	spack load screen
-	spack load git
-	spack load emacs
-	spack load global
-    } &> /dev/null
-
-    # Swig
-    export PATH=$PATH:$HOME/builds/swig-3.0.12/build/bin
+    # Nek5000
+    export PATH=$HOME/Nek5000/bin:$PATH
 
 fi
 
