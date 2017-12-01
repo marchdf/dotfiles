@@ -20,7 +20,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -80,6 +80,21 @@
   :defer t
   :config
   (global-company-mode))
+
+
+;;================================================================================
+;;
+;; Semantic
+;;
+;;================================================================================
+(use-package semantic
+  :ensure t
+  :init
+  (use-package stickyfunc-enhance
+    :ensure t)
+  :config
+  (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+  (semantic-mode 1))
 
 
 ;;================================================================================
@@ -165,6 +180,9 @@
     :config
     (add-hook 'c-mode-hook 'helm-gtags-mode)
     (add-hook 'c++-mode-hook 'helm-gtags-mode))
+
+  (use-package helm-make
+    :ensure    helm-make)
 
   (helm-mode t))
 
@@ -277,6 +295,22 @@
   ("C-M-l" . forloop)
   ("C-M-p" . printf-binding)
   :config
+
+  (c-add-style "my-cpp-style"
+	       '("stroustrup"
+		 (c-offsets-alist
+		  (innamespace . 0)
+		  (inline-open . 0)
+		  (arglist-close . 0))))
+
+  (defun my-cpp-mode-hook ()
+    (setq-default helm-make-build-dir "build")
+    (add-to-list 'projectile-other-file-alist
+		 '("C" "H" "hpp" "hxx"))
+    (c-set-style "my-cpp-style"))
+
+  (add-hook 'c++-mode-hook 'my-cpp-mode-hook)
+
   (defun printf-binding (out vars)
     "Binding for printf to make things easier.  OUT is the output string and VARS is the variables to printf."
     (interactive "MOutput:\nMVariables:")
@@ -292,6 +326,18 @@
       (indent-region beg (point))
       (previous-line 1)
       (c-indent-command))))
+
+
+;;================================================================================
+;;
+;; Clang formatting
+;;
+;;================================================================================
+(use-package clang-format
+  :ensure t
+  :bind
+  ("C-c i" . clang-format-region)
+  ("C-c u" . clang-format-buffer))
 
 
 ;;================================================================================
@@ -641,7 +687,8 @@
 (use-package yaml-mode
   :ensure t
   :mode
-  ("\\.yml$" . yaml-mode))
+  ("\\.yml$" . yaml-mode)
+  ("\\.clang-format$" . yaml-mode))
 
 
 ;;================================================================================
@@ -718,7 +765,10 @@
 ;;
 ;;================================================================================
 (use-package cmake-mode
-  :ensure t)
+  :ensure t
+  :mode
+  ("CMakeLists\\.txt\\'" . cmake-mode)
+  ("\\.cmake\\'" . cmake-mode))
 
 
 ;;================================================================================
