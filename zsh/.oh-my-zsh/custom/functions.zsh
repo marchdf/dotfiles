@@ -12,7 +12,7 @@ function tt() { ~/bin/teatimer.sh "$@" &}
 # Calls the pdf2eps script
 function pdf2eps() { ~/bin/pdf2eps.sh "$@" &}
 
-# refresh directory (if the directory was deleted from underneat us
+# refresh directory (if the directory was deleted from underneath us
 # and we are still in it, try to re-cd to the directory)
 function recd() { cd `pwd`; }
 
@@ -29,13 +29,13 @@ function ediff() {
 
 # Load spack environment if you want it. I do this instead of loading
 # it by default because it would slow down terminal startup time
-SPACK_DIR=$HOME/spack
-if [ -d "$SPACK_DIR" ]; then
-    function load_spack(){
-	export SPACK_ROOT=${HOME}/spack
+function load_spack(){
+    if [ -d "$SPACK_DIR" ]; then
+	export SPACK_ROOT=${SPACK_DIR}
 	. ${SPACK_ROOT}/share/spack/setup-env.sh
-    }
-fi
+    fi
+}
+
 
 
 
