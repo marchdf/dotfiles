@@ -24,6 +24,9 @@
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
+;; never tabs
+(setq-default indent-tabs-mode nil)
+
 ;; syntax color
 (global-font-lock-mode t)
 
@@ -307,7 +310,8 @@
     (setq-default helm-make-build-dir "build")
     (add-to-list 'projectile-other-file-alist
 		 '("C" "H" "hpp" "hxx"))
-    (c-set-style "my-cpp-style"))
+    (c-set-style "my-cpp-style")
+    (setq c-basic-offset 2))
 
   (add-hook 'c++-mode-hook 'my-cpp-mode-hook)
 
