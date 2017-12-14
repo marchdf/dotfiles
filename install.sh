@@ -43,6 +43,18 @@ uninstall_dotfiles() {
     stow -D zsh
 }
 
+# Install virtual environment for the dotfiles
+install_dotfiles_venv(){
+    venv_name="dotfiles"
+    source /usr/local/bin/virtualenvwrapper.sh
+    rmvirtualenv ${venv_name}
+    mkvirtualenv ${venv_name}
+    workon ${venv_name}
+    pip install autopep8 flake8 importmagic jedi rope yapf
+    deactivate
+}
+
+
 #================================================================================
 # Main
 
@@ -54,3 +66,6 @@ fi
 
 # install (or uninstall)
 install_dotfiles
+
+# setup a dotfiles virtualenvwrapper
+#install_dotfiles_venv

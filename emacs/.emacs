@@ -652,6 +652,11 @@
 (use-package py-autopep8
   :ensure t)
 
+;; (use-package pyvenv
+;;   :ensure t
+;;   :config
+;;   (pyvenv-workon "dotfiles"))
+
 (use-package elpy
   :ensure t
   :config
