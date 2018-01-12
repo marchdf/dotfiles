@@ -44,6 +44,8 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	    module load emacs
 	    module load git
 	    module load global
+            module load htop
+            module load libtool
 	    module load llvm/5.0.0
 	    module load python/2.7.14
 	    module load swig
