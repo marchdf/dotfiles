@@ -26,3 +26,5 @@
 
 [diff]
 	tool = meld
+[rerere]
+	enabled = true
