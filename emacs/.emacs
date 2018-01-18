@@ -310,6 +310,8 @@
     (setq-default helm-make-build-dir "build")
     (add-to-list 'projectile-other-file-alist
 		 '("C" "H" "hpp" "hxx"))
+    (add-to-list 'projectile-other-file-alist
+		 '("H" "cpp"))
     (c-set-style "my-cpp-style")
     (setq c-basic-offset 2))
 
