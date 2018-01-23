@@ -1,6 +1,15 @@
 ;;
 ;; Written by Marc Henry de Frahan
 ;;
+;; Required externals:
+;; - aspell
+;; - emms-print-metadata
+;; - global
+;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
+;; - mp3info
+;; - vlc
+;; - vorbis-tools
+
 
 ;;================================================================================
 ;;
@@ -20,7 +29,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (intero haskell-mode json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -55,7 +64,7 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/"))
+             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 ;; Bootstrap `use-package'
@@ -81,23 +90,67 @@
 (use-package company
   :ensure t
   :defer t
+  :after (irony)
+  :bind
+  ("C-;" . company-complete-common)
   :config
+  (use-package company-irony
+    :ensure t
+    :defer t)
+
+  (use-package company-irony-c-headers
+    :ensure t
+    :defer t)
+
+  (setq company-show-numbers t
+        company-backends     '((company-irony company-irony-c-headers company-gtags)))
   (global-company-mode))
 
 
 ;;================================================================================
 ;;
-;; Semantic
+;; Irony
 ;;
 ;;================================================================================
-(use-package semantic
+(use-package irony
   :ensure t
-  :init
-  (use-package stickyfunc-enhance
-    :ensure t)
+  :defer t
   :config
-  (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-  (semantic-mode 1))
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+(use-package flycheck-irony
+  :after (irony)
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+(use-package irony-eldoc
+  :after (irony)
+  :config
+  (add-hook 'irony-mode-hook #'irony-eldoc))
+
+
+;; ;;================================================================================
+;; ;;
+;; ;; Semantic
+;; ;;
+;; ;;================================================================================
+;; (use-package semantic
+;;   :ensure t
+;;   :init
+;;   (use-package stickyfunc-enhance
+;;     :ensure t)
+;;   :config
+;;   (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+;;   (semantic-mode 1))
 
 
 ;;================================================================================
@@ -124,11 +177,11 @@
   :diminish projectile-mode
   :config
   (setq projectile-globally-ignored-files
-	(append projectile-globally-ignored-files
-		'(".DS_Store"))
-	projectile-enable-caching t
-	projectile-completion-system 'helm
-	projectile-switch-project-action 'helm-projectile)
+        (append projectile-globally-ignored-files
+                '(".DS_Store"))
+        projectile-enable-caching t
+        projectile-completion-system 'helm
+        projectile-switch-project-action 'helm-projectile)
 
   (projectile-global-mode))
 
@@ -226,12 +279,12 @@
   (interactive "p")
   (if (buffer-modified-p)
       (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
-	  (save-buffer)))
+          (save-buffer)))
   (if (and (eq pfx 1)
-	   compilation-last-buffer)
+           compilation-last-buffer)
       (progn
-	(set-buffer compilation-last-buffer)
-	(revert-buffer t t))
+        (set-buffer compilation-last-buffer)
+        (revert-buffer t t))
     (call-interactively 'compile)))
 
 ;; Set the shortcut command
@@ -245,23 +298,21 @@
   "Notify that the compilation is finished, close the *compilation* BUFFER if the compilation is successful, and set the focus back to Emacs frame (show MSG)."
   (if (string-match "^finished" msg)
       (progn
-	(delete-windows-on buffer)
-	(message success-message)
-	(when (display-graphic-p)
-	  (tooltip-show success-message))
-	)
+        (delete-windows-on buffer)
+        (message success-message)
+        (when (display-graphic-p)
+          (tooltip-show success-message))
+        )
     (message fail-message)
     (when (display-graphic-p)
       (tooltip-show fail-message))
-    (setq compilation-last-buffer nil) ;; resets compile buffer so as
-				       ;; not to interfere with
-				       ;; 'compile-again
+    (setq compilation-last-buffer nil) ;; resets compile buffer so as not to interfere with 'compile-again
     )
   (defvar current-frame (car (car (cdr (current-frame-configuration)))))
   (select-frame-set-input-focus current-frame))
 
 (add-to-list 'compilation-finish-functions
-	     'notify-compilation-result)
+             'notify-compilation-result)
 
 
 ;;================================================================================
@@ -300,18 +351,18 @@
   :config
 
   (c-add-style "my-cpp-style"
-	       '("stroustrup"
-		 (c-offsets-alist
-		  (innamespace . 0)
-		  (inline-open . 0)
-		  (arglist-close . 0))))
+               '("stroustrup"
+                 (c-offsets-alist
+                  (innamespace . 0)
+                  (inline-open . 0)
+                  (arglist-close . 0))))
 
   (defun my-cpp-mode-hook ()
     (setq-default helm-make-build-dir "build")
     (add-to-list 'projectile-other-file-alist
-		 '("C" "H" "hpp" "hxx"))
+                 '("C" "H" "hpp" "hxx"))
     (add-to-list 'projectile-other-file-alist
-		 '("H" "cpp"))
+                 '("H" "cpp"))
     (c-set-style "my-cpp-style")
     (setq c-basic-offset 2))
 
@@ -355,8 +406,8 @@
   :init
   ;; Make Fortran indent at the level of the code. Not a fixed width.
   (add-hook 'f90-mode-hook
-	    '(lambda ()
-	       (setq fortran-comment-indent-style 'relative))))
+            '(lambda ()
+               (setq fortran-comment-indent-style 'relative))))
 
 
 ;;================================================================================
@@ -390,8 +441,8 @@
   ("M-L [" . insert-left-right-bracket)
   :config
   (add-to-list 'TeX-command-list
-		'("Make" "make" TeX-run-compile nil t
-		  :help "Compile with Makefile"))
+               '("Make" "make" TeX-run-compile nil t
+                 :help "Compile with Makefile"))
 
   ;; function to replace all \n with %\n in a region. Useful for latex
   ;; when you are in the minipage environment.
@@ -444,8 +495,7 @@
     (insert "\\left[ \\right]") (backward-char 8))
 
   (setq TeX-auto-save t
-	TeX-parse-self t))
-
+        TeX-parse-self t))
 
 (use-package bibtex
   :ensure t
@@ -457,83 +507,67 @@
 ;; Dictionary stuff
 ;;
 ;;================================================================================
+(use-package ispell
+  :ensure t
+  :config
+  ;; Switch dictionaries
+  (defun fd-switch-dictionary()
+    "Binding to switch between dictionaries."
+    (interactive)
+    (let* ((dic ispell-current-dictionary)
+           (change (if (string= dic "francais") "en_US" "francais")))
+      (ispell-change-dictionary change)
+      (message "Dictionary switched from %s to %s" dic change)
+      ))
 
-;; use aspell if there, if not use hunspell. Somewhat inspired by
-;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
-(cond
- ((executable-find "aspell")
-  ;; you may also need `ispell-extra-args'
-  (setq ispell-program-name "aspell"))
- ((executable-find "hunspell")
-  (setq ispell-program-name "hunspell")
-  
-  ;; Please note that `ispell-local-dictionary` itself will be passed to hunspell cli with "-d"
-  ;; it's also used as the key to lookup ispell-local-dictionary-alist
-  ;; if we use different dictionary
-  (setq ispell-local-dictionary "en_US")
-  (setq ispell-local-dictionary-alist
-	'(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
- (t (setq ispell-program-name nil)))
+  (setq ispell-program-name (executable-find "aspell"))
+  (setq ispell-extra-args '("--sug-mode=ultra"
+                            "--lang=en_US"))
 
+  (use-package flyspell
+    :ensure t
+    :diminish flyspell-mode
+    :config
+    (use-package flyspell-correct
+      :ensure t
+      :bind
+      ("C-c s" . 'flyspell-correct-previous-word-generic)
+      :init
+      (use-package flyspell-correct-helm
+        :ensure t))
 
-;; No spell check for embedded snippets in org-mode
-;; From http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled/9347#9347
-(defadvice org-mode-flyspell-verify (after org-mode-flyspell-verify-hack activate)
-  (let ((rlt ad-return-value)
-	(begin-regexp "^[ \t]*#\\+begin_\\(src\\|html\\|latex\\)")
-	(end-regexp "^[ \t]*#\\+end_\\(src\\|html\\|latex\\)")
-	old-flag
-	b e)
-    (when ad-return-value
-      (save-excursion
-	(setq old-flag case-fold-search)
-	(setq case-fold-search t)
-	(setq b (re-search-backward begin-regexp nil t))
-	(if b (setq e (re-search-forward end-regexp nil t)))
-	(setq case-fold-search old-flag))
-      (if (and b e (< (point) e)) (setq rlt nil)))
-    (setq ad-return-value rlt)))
+    ;; No spell check for embedded snippets in org-mode
+    ;; From http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled/9347#9347
+    (defadvice org-mode-flyspell-verify (after org-mode-flyspell-verify-hack activate)
+      (let ((rlt ad-return-value)
+            (begin-regexp "^[ \t]*#\\+begin_\\(src\\|html\\|latex\\)")
+            (end-regexp "^[ \t]*#\\+end_\\(src\\|html\\|latex\\)")
+            old-flag
+            b e)
+        (when ad-return-value
+          (save-excursion
+            (setq old-flag case-fold-search)
+            (setq case-fold-search t)
+            (setq b (re-search-backward begin-regexp nil t))
+            (if b (setq e (re-search-forward end-regexp nil t)))
+            (setq case-fold-search old-flag))
+          (if (and b e (< (point) e)) (setq rlt nil)))
+        (setq ad-return-value rlt)))
 
-;; No spell check for code snippets in Markdown
-(defun flyspell-generic-textmode-verify ()
-  "Used for `flyspell-generic-check-word-predicate' in text modes."
-  ;; (point) is next char after the word. Must check one char before.
-  (let ((f (get-text-property (- (point) 1) 'face)))
-    (not (memq f '(markdown-pre-face)))))
-(setq flyspell-generic-check-word-predicate 'flyspell-generic-textmode-verify)
+    ;; No spell check for code snippets in Markdown
+    (defun flyspell-generic-textmode-verify ()
+      "Used for `flyspell-generic-check-word-predicate' in text modes."
+      ;; (point) is next char after the word. Must check one char before.
+      (let ((f (get-text-property (- (point) 1) 'face)))
+        (not (memq f '(markdown-pre-face)))))
+    (setq flyspell-generic-check-word-predicate 'flyspell-generic-textmode-verify)
 
-;; Automatically launch flyspell (check all text) for the following
-;; modes (https://www.emacswiki.org/emacs/FlySpell)
-(dolist (hook '(text-mode-hook
-		org-mode-hook
-		latex-mode-hook
-		tex-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
+    (add-hook 'text-mode-hook #'flyspell-mode)
+    (add-hook 'org-mode-hook #'flyspell-mode)
+    (add-hook 'latex-mode-hook #'flyspell-mode)
+    (add-hook 'tex-mode-hook #'flyspell-mode)
+    (add-hook 'prog-mode-hook #'flyspell-prog-mode)))
 
-;; Spell check only comments in these programming languages
-(dolist (hook '(lisp-mode-hook
-		emacs-lisp-mode-hook
-		python-mode-hook
-		shell-mode-hook
-		php-mode-hook
-		css-mode-hook
-		crontab-mode-hook))
-  (add-hook hook 'flyspell-prog-mode))
-
-;; Better performance (https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-spelling.el)
-(setq flyspell-issue-message-flag nil)
-
-;; Convenient switching between dictionnaries.
-(defun fd-switch-dictionary()
-  (interactive)
-  (let* ((dic ispell-current-dictionary)
-    	 (change (if (string= dic "francais") "en_US" "francais")))
-    (ispell-change-dictionary change)
-    (message "Dictionary switched from %s to %s" dic change)
-    ))
-(global-set-key (kbd "<f8>")   'fd-switch-dictionary)
-
-(eval-after-load "flyspell" '(diminish 'flyspell-mode))
 
 ;;================================================================================
 ;;
@@ -598,13 +632,13 @@
   ;; "This recalls the R statement from your R statement history, but it
   ;; tries to match it with the one which is already on your line."
   (add-hook 'inferior-ess-mode-hook
-	    '(lambda nil
-	       (define-key inferior-ess-mode-map [\C-up]
-		 'comint-previous-matching-input-from-input)
-	       (define-key inferior-ess-mode-map [\C-down]
-		 'comint-next-matching-input-from-input)
-	       (define-key inferior-ess-mode-map [\C-x \t]
-		 'comint-dynamic-complete-filename)))
+            '(lambda nil
+               (define-key inferior-ess-mode-map [\C-up]
+                 'comint-previous-matching-input-from-input)
+               (define-key inferior-ess-mode-map [\C-down]
+                 'comint-next-matching-input-from-input)
+               (define-key inferior-ess-mode-map [\C-x \t]
+                 'comint-dynamic-complete-filename)))
 
   ;; To assign ":" to "<-" and to stop the assignment of underscore
   ;; (underbar) "_" to "<-"
@@ -664,8 +698,8 @@
   :config
   (if (executable-find "python3")
       (progn
-	(setq elpy-rpc-python-command "python3")
-	(setq python-shell-interpreter "python3")))
+        (setq elpy-rpc-python-command "python3")
+        (setq python-shell-interpreter "python3")))
 
   ;; Use flycheck instead of flymake
   (when (require 'flycheck nil t)
@@ -770,21 +804,21 @@
   :init
   ;; Customize the colors of the non-current changes
   (add-hook 'ediff-load-hook
-	    (lambda ()
-	      (setq ediff-split-window-function 'split-window-horizontally)
-	      (setq ediff-merge-split-window-function 'split-window-horizontally)
-	      (set-face-background
-	       ediff-odd-diff-face-A "dim gray")
-	      (set-face-background
-	       ediff-even-diff-face-A "dim gray")
-	      (set-face-background
-	       ediff-odd-diff-face-B "dim gray")
-	      (set-face-background
-	       ediff-even-diff-face-B "dim gray")
-	      (set-face-background
-	       ediff-odd-diff-face-C "dim gray")
-	      (set-face-background
-	       ediff-even-diff-face-C "dim gray"))))
+            (lambda ()
+              (setq ediff-split-window-function 'split-window-horizontally)
+              (setq ediff-merge-split-window-function 'split-window-horizontally)
+              (set-face-background
+               ediff-odd-diff-face-A "dim gray")
+              (set-face-background
+               ediff-even-diff-face-A "dim gray")
+              (set-face-background
+               ediff-odd-diff-face-B "dim gray")
+              (set-face-background
+               ediff-even-diff-face-B "dim gray")
+              (set-face-background
+               ediff-odd-diff-face-C "dim gray")
+              (set-face-background
+               ediff-even-diff-face-C "dim gray"))))
 
 
 ;;================================================================================
@@ -831,24 +865,24 @@
     (setq emms-info-functions '(emms-info-libtag))
 
     (if (eq system-type 'darwin)
-	(progn
-	  (setq emms-player-vlc-command-name
-		"/Applications/VLC.app/Contents/MacOS/VLC")))
+        (progn
+          (setq emms-player-vlc-command-name
+                "/Applications/VLC.app/Contents/MacOS/VLC")))
 
     (setq emms-source-file-default-directory my-music-directory
-	  emms-playlist-buffer-name "*Music Playlist*"
-	  emms-playlist-default-major-mode 'emms-playlist-mode
-	  emms-show-format "♪ %s"
-	  emms-browser-default-covers (list (concat (file-name-as-directory my-music-directory) "cover_small.jpg")
-					    (concat (file-name-as-directory my-music-directory) "cover_med.jpg")
-					    nil)
-	  emms-browser-info-artist-format "%i● %n"
-	  emms-browser-info-album-format "%i◎%cS%n (%y)"
-	  emms-browser-info-genre-format "%i● %n"
-	  emms-browser-info-title-format "%i♪ %T. %n"
-	  emms-browser-playlist-info-artist-format emms-browser-info-artist-format
-	  emms-browser-playlist-info-album-format emms-browser-info-album-format
-	  emms-browser-playlist-info-title-format emms-browser-info-title-format))
+          emms-playlist-buffer-name "*Music Playlist*"
+          emms-playlist-default-major-mode 'emms-playlist-mode
+          emms-show-format "♪ %s"
+          emms-browser-default-covers (list (concat (file-name-as-directory my-music-directory) "cover_small.jpg")
+                                            (concat (file-name-as-directory my-music-directory) "cover_med.jpg")
+                                            nil)
+          emms-browser-info-artist-format "%i● %n"
+          emms-browser-info-album-format "%i◎%cS%n"
+          emms-browser-info-genre-format "%i● %n"
+          emms-browser-info-title-format "%i♪ %T. %n"
+          emms-browser-playlist-info-artist-format emms-browser-info-artist-format
+          emms-browser-playlist-info-album-format emms-browser-info-album-format
+          emms-browser-playlist-info-title-format emms-browser-info-title-format))
 
   (defun my-music-layout ()
     (interactive)
@@ -877,22 +911,22 @@
     """Diff files in dired mode by pressing 'e'. From https://oremacs.com/2017/03/18/dired-ediff."""
     (interactive)
     (let ((files (dired-get-marked-files))
-	  (wnd (current-window-configuration)))
+          (wnd (current-window-configuration)))
       (if (<= (length files) 2)
-	  (let ((file1 (car files))
-		(file2 (if (cdr files)
-			   (cadr files)
-			 (read-file-name
-			  "file: "
-			  (dired-dwim-target-directory)))))
-	    (if (file-newer-than-file-p file1 file2)
-		(ediff-files file2 file1)
-	      (ediff-files file1 file2))
-	    (add-hook 'ediff-after-quit-hook-internal
-		      (lambda ()
-			(setq ediff-after-quit-hook-internal nil)
-			(set-window-configuration wnd))))
-	(error "No more than 2 files should be marked"))))
+          (let ((file1 (car files))
+                (file2 (if (cdr files)
+                           (cadr files)
+                         (read-file-name
+                          "file: "
+                          (dired-dwim-target-directory)))))
+            (if (file-newer-than-file-p file1 file2)
+                (ediff-files file2 file1)
+              (ediff-files file1 file2))
+            (add-hook 'ediff-after-quit-hook-internal
+                      (lambda ()
+                        (setq ediff-after-quit-hook-internal nil)
+                        (set-window-configuration wnd))))
+        (error "No more than 2 files should be marked"))))
   (define-key dired-mode-map "e" 'dired-ediff-files))
 
 
@@ -984,9 +1018,9 @@
 (defun emacs-reloaded()
   "Custom startup message."
   (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
-			 (substring (emacs-version) 0 16)
-			 ".")
-		  0 0)
+                         (substring (emacs-version) 0 16)
+                         ".")
+                  0 0)
   (newline-and-indent) (newline-and-indent))
 (add-hook 'after-init-hook 'emacs-reloaded)
 (custom-set-faces
