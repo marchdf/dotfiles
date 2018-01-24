@@ -992,6 +992,16 @@
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
+;;================================================================================
+;;
+;; Auto-indentation
+;;
+;;================================================================================
+(defun set-newline-and-indent ()
+  "Newline and indent for programming modes."
+  (local-set-key (kbd "RET") 'newline-and-indent))
+(add-hook 'prog-mode-hook 'set-newline-and-indent)
+
 
 ;;================================================================================
 ;;
@@ -1032,7 +1042,6 @@
     (define-key map (kbd "M-r") 'yank-rectangle)
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "C-c M-z") 'uncomment-region)
-    (define-key map (kbd "RET") 'newline-and-indent) ;; always auto-indent on newline
     (define-key map (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
     (define-key map (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
     (define-key map (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
