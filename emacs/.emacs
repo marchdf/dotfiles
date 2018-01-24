@@ -2,7 +2,7 @@
 ;; Written by Marc Henry de Frahan
 ;;
 ;; Required externals:
-;; - aspell
+;; - aspell or hunspell
 ;; - emms-print-metadata
 ;; - global
 ;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
@@ -29,7 +29,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -510,6 +510,15 @@
 (use-package ispell
   :ensure t
   :config
+  (cond
+   ((executable-find "aspell")
+    (setq ispell-program-name "aspell")
+    (setq ispell-extra-args   '("--sug-mode=ultra"
+                                "--lang=en_US")))
+   ((executable-find "hunspell")
+    (setq ispell-program-name "hunspell")
+    (setq ispell-extra-args   '("-d en_US"))))
+
   ;; Switch dictionaries
   (defun fd-switch-dictionary()
     "Binding to switch between dictionaries."
@@ -519,10 +528,6 @@
       (ispell-change-dictionary change)
       (message "Dictionary switched from %s to %s" dic change)
       ))
-
-  (setq ispell-program-name (executable-find "aspell"))
-  (setq ispell-extra-args '("--sug-mode=ultra"
-                            "--lang=en_US"))
 
   (use-package flyspell
     :ensure t
