@@ -50,9 +50,15 @@
 ;; dotfiles thing)
 (setq vc-follow-symlinks nil)
 
-;; Prevent Emacs from making backup files
-(setq make-backup-files nil)
+;; Backup. A lot.
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq delete-old-versions -1)
+(setq version-control t)
+(setq vc-make-backup-files t)
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
+;; Change "yes or no" to "y or n"
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;;================================================================================
 ;;
@@ -136,21 +142,6 @@
   :after (irony)
   :config
   (add-hook 'irony-mode-hook #'irony-eldoc))
-
-
-;; ;;================================================================================
-;; ;;
-;; ;; Semantic
-;; ;;
-;; ;;================================================================================
-;; (use-package semantic
-;;   :ensure t
-;;   :init
-;;   (use-package stickyfunc-enhance
-;;     :ensure t)
-;;   :config
-;;   (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-;;   (semantic-mode 1))
 
 
 ;;================================================================================
@@ -1004,18 +995,6 @@
 
 ;;================================================================================
 ;;
-;; Auto-indentation: http://www.emacswiki.org/emacs/AutoIndentation
-;;
-;;================================================================================
-(defun set-newline-and-indent ()
-  "Newline and indent for C-mode."
-  (local-set-key (kbd "RET") 'newline-and-indent))
-(add-hook 'lisp-mode-hook 'set-newline-and-indent)
-(add-hook 'c-mode-common-hook 'set-newline-and-indent)
-
-
-;;================================================================================
-;;
 ;; Fun startup message
 ;;
 ;;================================================================================
@@ -1053,6 +1032,7 @@
     (define-key map (kbd "M-r") 'yank-rectangle)
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "C-c M-z") 'uncomment-region)
+    (define-key map (kbd "RET") 'newline-and-indent) ;; always auto-indent on newline
     (define-key map (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
     (define-key map (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
     (define-key map (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
