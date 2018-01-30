@@ -994,13 +994,13 @@
 
 ;;================================================================================
 ;;
-;; Auto-indentation
+;; Programming mode
 ;;
 ;;================================================================================
-(defun set-newline-and-indent ()
-  "Newline and indent for programming modes."
-  (local-set-key (kbd "RET") 'newline-and-indent))
-(add-hook 'prog-mode-hook 'set-newline-and-indent)
+(use-package prog-mode
+  :defer t
+  :bind
+  ("RET" . newline-and-indent))
 
 
 ;;================================================================================
