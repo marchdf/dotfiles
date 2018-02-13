@@ -189,6 +189,8 @@
   ("C-x p"   . helm-top)
   ("C-x C-b" . helm-buffers-list)
   ("C-x b"   . helm-mini)
+  ("C-s"     . helm-occur)
+  ("C-r"     . helm-occur)
   :init
   (use-package helm-projectile
     :ensure    helm-projectile
@@ -198,27 +200,13 @@
     :config
     (setq shell-file-name "/bin/bash"))
 
-  (use-package helm-swoop
-    :ensure    helm-swoop
-    :bind
-    ("M-i" . helm-swoop)
-    ("C-c M-i" . helm-multi-swoop)
-    ("C-x M-i" . helm-multi-swoop-all)
-    :config
-    (setq helm-swoop-split-direction 'split-window-horizontally)
-    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-    (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-    (define-key helm-swoop-map (kbd "C-s") 'helm-next-line))
-
   (use-package helm-git-grep
     :ensure    helm-git-grep
     :bind
     ("C-c g" . helm-git-grep)
     :config
     (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
-    (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
-    (define-key helm-git-grep-map (kbd "C-r") 'helm-previous-line)
-    (define-key helm-git-grep-map (kbd "C-s") 'helm-next-line))
+    (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
 
   (use-package helm-gtags
     :ensure    helm-gtags
@@ -230,6 +218,35 @@
 
   (use-package helm-make
     :ensure    helm-make)
+
+  ;; Enable helm-follow-mode for some helm sources
+  (defvar my-helm-follow-sources '()
+    "List of sources for which helm-follow-mode should be enabled")
+
+  (add-to-list 'my-helm-follow-sources 'helm-source-occur)
+  (add-to-list 'my-helm-follow-sources 'helm-source-moccur)
+  (add-to-list 'my-helm-follow-sources 'helm-source-grep-ag)
+  (add-to-list 'my-helm-follow-sources 'helm-source-grep)
+
+  (defun my-helm-set-follow ()
+    """Enable helm-follow-mode for the sources specified in the
+    list variable `my-helm-follow-sources'. This function is
+    meant to be run during `helm-initialize' and should be added
+    to the hook `helm-before-initialize-hook'."""
+    (mapc (lambda (source)
+            (when (memq source my-helm-follow-sources)
+              (helm-attrset 'follow 1 (symbol-value source))))
+          helm-sources))
+
+  (add-hook 'helm-before-initialize-hook 'my-helm-set-follow)
+
+  ;; Wrap around when reaching to bottom of helm
+  (setq helm-move-to-line-cycle-in-source t)
+
+  ;; C-s/C-r like C-n/C-p
+  (progn
+    (define-key helm-map (kbd "C-s") 'helm-next-line)
+    (define-key helm-map (kbd "C-r") 'helm-previous-line))
 
   (helm-mode t))
 
