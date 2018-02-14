@@ -695,11 +695,6 @@
 ;; Python
 ;;
 ;;================================================================================
-(use-package jedi
-  :ensure t)
-
-(use-package py-autopep8
-  :ensure t)
 
 ;; (use-package pyvenv
 ;;   :ensure t
@@ -714,6 +709,15 @@
         (setq elpy-rpc-python-command "python3")
         (setq python-shell-interpreter "python3")))
 
+  (use-package jedi
+    :ensure t)
+
+  (use-package py-autopep8
+    :ensure t
+    :config
+    (setq py-autopep8-options '("--aggressive" "--aggressive"))
+    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+
   ;; Use flycheck instead of flymake
   (when (require 'flycheck nil t)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
@@ -721,9 +725,7 @@
 
   (elpy-enable)
 
-  (setq elpy-rpc-backend "jedi")
-
-  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+  (setq elpy-rpc-backend "jedi"))
 
 
 ;;================================================================================
