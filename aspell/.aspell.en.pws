@@ -1,4 +1,4 @@
-personal_ws-1.1 en 325 
+personal_ws-1.1 en 331 
 Ryutov
 HLLC
 Gryngarten
@@ -18,8 +18,8 @@ RKDG
 hypersonic
 Igra
 Cyrille
-anisotropy
 incompressible
+anisotropy
 Appl
 hohlraum
 Sadot
@@ -48,6 +48,7 @@ Cavallo
 baroclinic
 Schlieren
 Latini
+encodings
 radiographs
 jubilations
 fiducial
@@ -139,8 +140,8 @@ NVIDIA's
 Harish
 Dimotakis
 Brouillette
-IOP
 kgf
+IOP
 ker
 hydrostatic
 Ludovic
@@ -158,6 +159,7 @@ Abgrall
 Srebro
 intergration
 priori
+backpropagation
 impactor
 fractionation
 Friedrichs
@@ -217,6 +219,7 @@ centerline
 Riordon
 unphysical
 Franquet
+vectorized
 plasmas
 inviscid
 OpenAcc
@@ -268,8 +271,10 @@ observables
 MTS
 advected
 isentropic
+AMReX
 Courant
 Landen
+ReLU
 Larmor
 lithotripsy
 bcc
@@ -318,6 +323,7 @@ ansatz
 APS
 discretization
 Collisionality
+sigmoid
 dissipative
 Pati
 Harten

@@ -1,12 +1,13 @@
 ;;
 ;; Written by Marc Henry de Frahan
 ;;
-;; Required externals:
+;; Required/nice to have externals:
 ;; - aspell or hunspell
 ;; - emms-print-metadata
 ;; - global
 ;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
 ;; - mp3info
+;; - shellcheck
 ;; - vlc
 ;; - vorbis-tools
 

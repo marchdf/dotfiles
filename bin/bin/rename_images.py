@@ -35,7 +35,7 @@ def extract_jpeg_exif_time(fname):
             exifdata = im._getexif()
             ctime = exifdata[0x9003]
             return ctime
-    except:
+    except BaseException:
         _type, value, traceback = sys.exc_info()
         print("Error:\n%r", value)
 
@@ -66,7 +66,7 @@ def rename_jpeg_file(fname):
     print("Renaming", base, "to", prefix + ext)
     try:
         os.rename(fname, os.path.join(path, oname))
-    except:
+    except BaseException:
         print('ERROR rename %s --> %s' % (fname, oname))
         return 0
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Get the image file names
-    extensions = ['*.jpg', '*,jpeg', '*.JPG', '*.JPEG']
+    extensions = ['*.jpg', '*.jpeg', '*.JPG', '*.JPEG']
     fnames = []
     for ext in extensions:
         fnames.extend(glob.glob(os.path.join(args.folder, ext)))

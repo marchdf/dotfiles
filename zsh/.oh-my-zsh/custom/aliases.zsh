@@ -35,3 +35,8 @@ alias weather='curl wttr.in/\?m'
 # periodically check this to make sure that pip didn't add this new feature
 alias pip2_upgrade_all='pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install -U'
 alias pip3_upgrade_all='pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip3 install -U' 
+
+# Mass renaming of files
+# e.g. mmv *.dat *.dat_old
+autoload -U zmv
+alias mmv='noglob zmv -W'

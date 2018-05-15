@@ -22,12 +22,12 @@ case "$1" in
     *)
 	echo "Converting $1 to an gif file."
 	MYTEMPDIR=$(mktemp -d)
-	ffmpeg -i $1 $MYTEMPDIR/out%04d.gif # Extracts each frame of the video as a single gif
-	convert -delay 4 $MYTEMPDIR/out*.gif $MYTEMPDIR/anim.gif # Combines all the frames into one very nicely animated gif.
-	convert -layers Optimize $MYTEMPDIR/anim.gif $2 # Optimizes the gif using imagemagick
+	ffmpeg -i "$1" "$MYTEMPDIR/out%04d.gif" # Extracts each frame of the video as a single gif
+	convert -delay 4 "$MYTEMPDIR/out*.gif" "$MYTEMPDIR/anim.gif" # Combines all the frames into one very nicely animated gif.
+	convert -layers Optimize "$MYTEMPDIR/anim.gif" "$2" # Optimizes the gif using imagemagick
 
 	# Cleans up the leftovers
-	rm -r $MYTEMPDIR
+	rm -r "$MYTEMPDIR"
 	shift
 	;;
 esac 

@@ -20,7 +20,7 @@
 if [ "$(uname)" == "Darwin" ]; then
 
     # Make sure you installed terminal-notifier with homebrew
-    /usr/local/bin/terminal-notifier -title "You should upgrade your system." -message $'brew update; brew outdated; brew upgrade; pip_upgrade_all' -contentImage $HOME/bin/shadow.png;
+    /usr/local/bin/terminal-notifier -title "You should upgrade your system." -message $'brew update; brew outdated; brew upgrade; pip_upgrade_all' -contentImage "$HOME/bin/shadow.png";
 
 #================================================================================
 #
@@ -38,5 +38,5 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     fi
 
     # Send the notification
-    notify-send -i $HOME/bin/shadow.png -u critical "You should upgrade your system." "<b>- remove unused programs:</b> pacman -Rns \$(pacman -Qtdq)\\n<b>- upgrade:</b> pacman -Syu\\n<b>- upgrade AUR:</b> cd builds; cower -vduf\\n<b>- merge pac files:</b> sudo DIFFPROG=meld pacdiff" ;
+    notify-send -i "$HOME/bin/shadow.png" -u critical "You should upgrade your system." "<b>- remove unused programs:</b> pacman -Rns \$(pacman -Qtdq)\\n<b>- upgrade:</b> pacman -Syu\\n<b>- upgrade AUR:</b> cd builds; cower -vduf\\n<b>- merge pac files:</b> sudo DIFFPROG=meld pacdiff" ;
 fi
