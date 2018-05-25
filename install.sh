@@ -45,13 +45,19 @@ uninstall_dotfiles() {
 
 # Install virtual environment for the dotfiles
 install_dotfiles_venv(){
-    venv_name="dotfiles"
-    source /usr/local/bin/virtualenvwrapper.sh
-    rmvirtualenv ${venv_name}
-    mkvirtualenv ${venv_name}
-    workon ${venv_name}
-    pip install autopep8 flake8 importmagic jedi rope yapf
-    deactivate
+    # Make sure pipenv is installed
+    if ! command -v pipenv >/dev/null 2>&1; then
+        echo "Please install pipenv"
+        exit 1
+    fi
+
+    # Install packages
+    export WORKON_HOME=${HOME}/.virtualenvs
+    pipenv install
+
+    # Make it convenient to access
+    short_name="dotfiles"
+    ln -s "$(pipenv --venv)" "${WORKON_HOME}/${short_name}"
 }
 
 
@@ -68,4 +74,4 @@ fi
 install_dotfiles
 
 # setup a dotfiles virtualenvwrapper
-#install_dotfiles_venv
+install_dotfiles_venv

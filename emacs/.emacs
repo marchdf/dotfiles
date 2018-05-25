@@ -1,16 +1,20 @@
-;;
-;; Written by Marc Henry de Frahan
-;;
-;; Required/nice to have externals:
-;; - aspell or hunspell
-;; - emms-print-metadata
-;; - global
-;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
-;; - mp3info
-;; - shellcheck
-;; - vlc
-;; - vorbis-tools
-
+;;; package -- Summary
+;;;
+;;; Commentary:
+;;;
+;;; Written by Marc Henry de Frahan
+;;;
+;;; Required externals:
+;;; - aspell or hunspell
+;;; - emms-print-metadata
+;;; - global
+;;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
+;;; - mp3info
+;;; - shellcheck
+;;; - vlc
+;;; - vorbis-tools
+;;;
+;;; Code:
 
 ;;================================================================================
 ;;
@@ -241,9 +245,6 @@
 
   (add-hook 'helm-before-initialize-hook 'my-helm-set-follow)
 
-  ;; Wrap around when reaching to bottom of helm
-  (setq helm-move-to-line-cycle-in-source t)
-
   ;; C-s/C-r like C-n/C-p
   (progn
     (define-key helm-map (kbd "C-s") 'helm-next-line)
@@ -284,7 +285,7 @@
 ;; buffer. So you would have to manually switch to the compile buffer
 ;; and do compile there. This is what the above command does."
 (defun compile-again (pfx)
-  """Run the same compile as the last time. If there was no last time, or there is a prefix argument (PFX), this acts like M-x compile."""
+  """Run the same compile as the last time: if there was no last time, or there is a prefix argument PFX, this acts like M-x compile."""
   (interactive "p")
   (if (buffer-modified-p)
       (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
@@ -390,7 +391,7 @@
     (let ((beg (point)))
       (insert "for(int " i "=0; " i "<" imax "; " i "++){\n\n}")
       (indent-region beg (point))
-      (previous-line 1)
+      (forward-line -1)
       (c-indent-command))))
 
 
@@ -697,11 +698,6 @@
 ;;
 ;;================================================================================
 
-;; (use-package pyvenv
-;;   :ensure t
-;;   :config
-;;   (pyvenv-workon "dotfiles"))
-
 (use-package elpy
   :ensure t
   :config
@@ -709,6 +705,11 @@
       (progn
         (setq elpy-rpc-python-command "python3")
         (setq python-shell-interpreter "python3")))
+
+  (use-package pyvenv
+    :ensure t
+    :config
+    (pyvenv-workon "dotfiles"))
 
   (use-package jedi
     :ensure t)

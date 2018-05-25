@@ -12,7 +12,6 @@ $HOME/bin/get_dbus_address.sh
 #
 #================================================================================
 export WORKON_HOME=${HOME}/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=$(which python3)
 
 #================================================================================
 #

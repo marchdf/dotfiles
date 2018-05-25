@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"autopep8" = "*"
+"flake8" = "*"
+jedi = "*"
+yapf = "*"
+rope = "*"
+importmagic = "*"
+numpy = "*"
+pandas = "*"
+scipy = "*"
+matplotlib = "*"
+seaborn = "*"
+scikit-learn = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
