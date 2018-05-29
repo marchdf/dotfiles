@@ -29,7 +29,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -108,8 +108,12 @@
     :ensure t
     :defer t)
 
+  (use-package company-shell
+    :ensure t
+    :defer t)
+
   (setq company-show-numbers t
-        company-backends     '((company-irony company-irony-c-headers company-gtags)))
+        company-backends     '((company-shell company-shell-env company-irony company-irony-c-headers company-gtags)))
   (global-company-mode))
 
 

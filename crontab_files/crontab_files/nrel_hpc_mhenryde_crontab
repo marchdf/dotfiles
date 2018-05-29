@@ -27,6 +27,14 @@
 # home backup to data drive every day at 1:00
 00 1 * * *    date > rsync.log; rsync -avzu --progress --delete --exclude-from=/home/mhenryde/rsync_excludes/rsync_homedir_excludes.txt /home/mhenryde /scratch/mhenryde/backup_home 1>>rsync.log 2>rsync.err
 
+#================================================================================
+#
+# Backup scratch
+#
+#================================================================================
+
+# scratch backup to mss every day at 3:00
+00 3 * * *    date > rsync.log; rsync -avzu --progress --max-size=10m /scratch/mhenryde /mss/users/mhenryde/backup_scratch 1>>rsync.log 2>rsync.err
 
 # need an new line at the end of the file
 

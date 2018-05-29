@@ -5,14 +5,17 @@
 #================================================================================
 $HOME/bin/get_dbus_address.sh
 
-
 #================================================================================
 #
 # Python virtual environment
 #
 #================================================================================
 export WORKON_HOME=${HOME}/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=$(which python3)
+if [ -x "$(command -v python3)" ]; then
+    export VIRTUALENVWRAPPER_PYTHON=$(which python3)
+else
+    export VIRTUALENVWRAPPER_PYTHON=$(which python2)
+fi
 
 #================================================================================
 #

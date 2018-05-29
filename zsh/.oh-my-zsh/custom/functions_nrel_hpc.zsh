@@ -36,19 +36,65 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	{
 	    . /etc/bashrc
 	    module purge
-	    module use /nopt/nrel/apps/modules/candidate/modulefiles
-	    module load gcc/5.2.0
-	    module load openmpi-gcc/1.10.0-5.2.0
-	    module use /projects/windsim/exawind/BaseSoftware/spack/share/spack/modules/linux-centos6-x86_64
+            module use /nopt/nrel/ecom/ecp/base/c/spack/share/spack/modules/linux-centos7-x86_64/gcc-6.2.0
+            module load gcc/6.2.0
+            module load openmpi/1.10.4
+            module load git/2.17.0
 	    module load binutils
+            module load cmake
 	    module load emacs
 	    module load git
 	    module load global
             module load htop
             module load libtool
-	    module load llvm/5.0.0
+	    module load llvm/6.0.0
 	    module load python/2.7.14
-	    module load swig
+            module load py-alabaster/0.7.10-py2
+            module load py-autopep8/1.3.3-py2
+            module load py-babel/2.4.0-py2
+            module load py-bottleneck/1.0.0-py2
+            module load py-configparser/3.5.0-py2
+            module load py-cycler/0.10.0-py2
+            module load py-cython/0.25.2-py2
+            module load py-dateutil/2.5.2-py2
+            module load py-docutils/0.13.1-py2
+            module load py-enum34/1.1.6-py2
+            module load py-flake8/3.5.0-py2
+            module load py-functools32/3.2.3-2-py2
+            module load py-imagesize/0.7.1-py2
+            module load py-jedi/0.10.0-py2
+            module load py-jinja2/2.9.6-py2
+            module load py-lit/0.5.0-py2
+            module load py-mako/1.0.4-py2
+            module load py-markupsafe/1.0-py2
+            module load py-matplotlib/2.2.2-py2
+            module load py-mccabe/0.6.1-py2
+            module load py-nose/1.3.7-py2
+            module load py-numexpr/2.6.1-py2
+            module load py-numpy/1.13.3-py2
+            module load py-pandas/0.21.1-py2
+            module load py-pillow/3.2.0-py2
+            module load py-pip/9.0.1-py2
+            module load py-pycodestyle/2.3.1-py2
+            module load py-pyflakes/1.6.0-py2
+            module load py-pygments/2.2.0-py2
+            module load py-pyparsing/2.2.0-py2
+            module load py-pytz/2017.2-py2
+            module load py-pyyaml/3.11-py2
+            module load py-requests/2.14.2-py2
+            module load py-rope/0.10.5-py2
+            module load py-scipy/1.0.0-py2
+            module load py-seaborn/0.7.1-py2
+            module load py-setuptools/39.0.1-py2
+            module load py-six/1.11.0-py2
+            module load py-snowballstemmer/1.2.1-py2
+            module load py-sphinx/1.6.3-py2
+            module load py-sphinx-rtd-theme/0.2.5b1-py2
+            module load py-sphinxcontrib-websupport/1.0.1-py2
+            module load py-subprocess32/3.2.7-py2
+            module load py-typing/3.6.1-py2
+            module load py-yapf/0.2.1-py2
+            module load swig
 	    module load texlive
 	} &> /dev/null
     }
