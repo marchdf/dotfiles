@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 
-function myHelp () {
+myHelp () {
     cat <<-END
 Usage:
 ------

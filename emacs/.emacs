@@ -1,15 +1,20 @@
-;;
-;; Written by Marc Henry de Frahan
-;;
-;; Required externals:
-;; - aspell or hunspell
-;; - emms-print-metadata
-;; - global
-;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
-;; - mp3info
-;; - vlc
-;; - vorbis-tools
-
+;;; package -- Summary
+;;;
+;;; Commentary:
+;;;
+;;; Written by Marc Henry de Frahan
+;;;
+;;; Required externals:
+;;; - aspell or hunspell
+;;; - emms-print-metadata
+;;; - global
+;;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
+;;; - mp3info
+;;; - shellcheck
+;;; - vlc
+;;; - vorbis-tools
+;;;
+;;; Code:
 
 ;;================================================================================
 ;;
@@ -193,6 +198,8 @@
   ("C-x p"   . helm-top)
   ("C-x C-b" . helm-buffers-list)
   ("C-x b"   . helm-mini)
+  ("C-s"     . helm-occur)
+  ("C-r"     . helm-occur)
   :init
   (use-package helm-projectile
     :ensure    helm-projectile
@@ -202,27 +209,13 @@
     :config
     (setq shell-file-name "/bin/bash"))
 
-  (use-package helm-swoop
-    :ensure    helm-swoop
-    :bind
-    ("M-i" . helm-swoop)
-    ("C-c M-i" . helm-multi-swoop)
-    ("C-x M-i" . helm-multi-swoop-all)
-    :config
-    (setq helm-swoop-split-direction 'split-window-horizontally)
-    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-    (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-    (define-key helm-swoop-map (kbd "C-s") 'helm-next-line))
-
   (use-package helm-git-grep
     :ensure    helm-git-grep
     :bind
     ("C-c g" . helm-git-grep)
     :config
     (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
-    (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
-    (define-key helm-git-grep-map (kbd "C-r") 'helm-previous-line)
-    (define-key helm-git-grep-map (kbd "C-s") 'helm-next-line))
+    (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
 
   (use-package helm-gtags
     :ensure    helm-gtags
@@ -234,6 +227,32 @@
 
   (use-package helm-make
     :ensure    helm-make)
+
+  ;; Enable helm-follow-mode for some helm sources
+  (defvar my-helm-follow-sources '()
+    "List of sources for which helm-follow-mode should be enabled")
+
+  (add-to-list 'my-helm-follow-sources 'helm-source-occur)
+  (add-to-list 'my-helm-follow-sources 'helm-source-moccur)
+  (add-to-list 'my-helm-follow-sources 'helm-source-grep-ag)
+  (add-to-list 'my-helm-follow-sources 'helm-source-grep)
+
+  (defun my-helm-set-follow ()
+    """Enable helm-follow-mode for the sources specified in the
+    list variable `my-helm-follow-sources'. This function is
+    meant to be run during `helm-initialize' and should be added
+    to the hook `helm-before-initialize-hook'."""
+    (mapc (lambda (source)
+            (when (memq source my-helm-follow-sources)
+              (helm-attrset 'follow 1 (symbol-value source))))
+          helm-sources))
+
+  (add-hook 'helm-before-initialize-hook 'my-helm-set-follow)
+
+  ;; C-s/C-r like C-n/C-p
+  (progn
+    (define-key helm-map (kbd "C-s") 'helm-next-line)
+    (define-key helm-map (kbd "C-r") 'helm-previous-line))
 
   (helm-mode t))
 
@@ -270,7 +289,7 @@
 ;; buffer. So you would have to manually switch to the compile buffer
 ;; and do compile there. This is what the above command does."
 (defun compile-again (pfx)
-  """Run the same compile as the last time. If there was no last time, or there is a prefix argument (PFX), this acts like M-x compile."""
+  """Run the same compile as the last time: if there was no last time, or there is a prefix argument PFX, this acts like M-x compile."""
   (interactive "p")
   (if (buffer-modified-p)
       (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
@@ -376,7 +395,7 @@
     (let ((beg (point)))
       (insert "for(int " i "=0; " i "<" imax "; " i "++){\n\n}")
       (indent-region beg (point))
-      (previous-line 1)
+      (forward-line -1)
       (c-indent-command))))
 
 
@@ -682,16 +701,6 @@
 ;; Python
 ;;
 ;;================================================================================
-(use-package jedi
-  :ensure t)
-
-(use-package py-autopep8
-  :ensure t)
-
-;; (use-package pyvenv
-;;   :ensure t
-;;   :config
-;;   (pyvenv-workon "dotfiles"))
 
 (use-package elpy
   :ensure t
@@ -701,6 +710,20 @@
         (setq elpy-rpc-python-command "python3")
         (setq python-shell-interpreter "python3")))
 
+  (use-package pyvenv
+    :ensure t
+    :config
+    (pyvenv-workon "dotfiles"))
+
+  (use-package jedi
+    :ensure t)
+
+  (use-package py-autopep8
+    :ensure t
+    :config
+    (setq py-autopep8-options '("--aggressive" "--aggressive"))
+    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+
   ;; Use flycheck instead of flymake
   (when (require 'flycheck nil t)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
@@ -708,9 +731,7 @@
 
   (elpy-enable)
 
-  (setq elpy-rpc-backend "jedi")
-
-  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+  (setq elpy-rpc-backend "jedi"))
 
 
 ;;================================================================================
@@ -998,13 +1019,13 @@
 
 ;;================================================================================
 ;;
-;; Auto-indentation
+;; Programming mode
 ;;
 ;;================================================================================
-(defun set-newline-and-indent ()
-  "Newline and indent for programming modes."
-  (local-set-key (kbd "RET") 'newline-and-indent))
-(add-hook 'prog-mode-hook 'set-newline-and-indent)
+(use-package prog-mode
+  :defer t
+  :bind
+  ("RET" . newline-and-indent))
 
 
 ;;================================================================================

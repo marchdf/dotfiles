@@ -18,7 +18,7 @@ fi
 if [ "$(uname)" == "Darwin" ]; then
 
     # Wait the specified time (need to brew install coreutils)
-    gsleep $TIME;
+    gsleep "$TIME";
 
     # Make sure sound is enabled
     osascript -e "set Volume 2"
@@ -27,7 +27,7 @@ if [ "$(uname)" == "Darwin" ]; then
     # Also increase the notification banner time by doing:
     # defaults write com.apple.notificationcenterui bannerTime 15
     # taken from: https://9to5mac.com/2014/01/30/how-to-change-os-x-banner-notification-duration-using-terminal/
-    terminal-notifier -title "Your tea is ready!" -message "" -sound default -contentImage $HOME/bin/tea.jpg;
+    terminal-notifier -title "Your tea is ready!" -message "" -sound default -contentImage "$HOME/bin/tea.jpg";
 
     # Make my own sound aiff with the old system beep? and play it like this
     #afplay /System/Library/Sounds/Funk.aiff
@@ -45,10 +45,10 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
     # Wait the specified time
-    sleep $TIME;
+    sleep "$TIME";
 
     # Send the notification
-    notify-send -t 10000 -i $HOME/bin/tea.jpg "Your tea is ready!";
+    notify-send -t 10000 -i "$HOME/bin/tea.jpg" "Your tea is ready!";
 
     # Run the system beep thing. 
     #
