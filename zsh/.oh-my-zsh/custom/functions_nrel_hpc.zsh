@@ -48,10 +48,21 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
             module load htop
             module load libtool
 	    module load llvm/6.0.0
+            module load swig
+	    module load texlive
+	} &> /dev/null
+    }
+
+    function load_spack_python2 {
+
+	{
+	    . /etc/bashrc
+            module use /nopt/nrel/ecom/ecp/base/c/spack/share/spack/modules/linux-centos7-x86_64/gcc-6.2.0
 	    module load python/2.7.14
             module load py-alabaster/0.7.10-py2
             module load py-autopep8/1.3.3-py2
             module load py-babel/2.4.0-py2
+            module load py-backports-functools-lru-cache/1.5-py2
             module load py-bottleneck/1.0.0-py2
             module load py-configparser/3.5.0-py2
             module load py-cycler/0.10.0-py2
@@ -94,8 +105,6 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
             module load py-subprocess32/3.2.7-py2
             module load py-typing/3.6.1-py2
             module load py-yapf/0.2.1-py2
-            module load swig
-	    module load texlive
 	} &> /dev/null
     }
 
