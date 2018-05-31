@@ -12,6 +12,7 @@ install_dotfiles() {
     stow bin
     stow crontab_files
     stow emacs
+    stow flake8
     stow git
     stow karabiner
     stow mypython
@@ -32,6 +33,7 @@ uninstall_dotfiles() {
     stow -D bin
     stow -D crontab_files
     stow -D emacs
+    stow -D flake8
     stow -D git
     stow -D karabiner
     stow -D mypython
