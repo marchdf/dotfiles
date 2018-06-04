@@ -34,7 +34,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit py-autopep8 smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -718,11 +718,11 @@
   (use-package jedi
     :ensure t)
 
-  (use-package py-autopep8
-    :ensure t
-    :config
-    (setq py-autopep8-options '("--aggressive" "--aggressive"))
-    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+  ;; Automatically run Black on buffer save
+  (add-hook 'elpy-mode-hook
+            '(lambda ()
+               (add-hook 'before-save-hook 'elpy-black-fix-code)
+               ))
 
   ;; Use flycheck instead of flymake
   (when (require 'flycheck nil t)
