@@ -721,8 +721,8 @@
   ;; Automatically run Black on buffer save
   (add-hook 'elpy-mode-hook
             '(lambda ()
-               (add-hook 'before-save-hook 'elpy-black-fix-code)
-               ))
+               (when (eq major-mode 'python-mode)
+                 (add-hook 'before-save-hook 'elpy-black-fix-code))))
 
   ;; Use flycheck instead of flymake
   (when (require 'flycheck nil t)
