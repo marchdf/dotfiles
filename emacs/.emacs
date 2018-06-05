@@ -34,7 +34,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete)))
+    (company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-gtags helm-git-grep helm-projectile projectile diminish use-package bind-key)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -701,7 +701,6 @@
 ;; Python
 ;;
 ;;================================================================================
-
 (use-package elpy
   :ensure t
   :config
