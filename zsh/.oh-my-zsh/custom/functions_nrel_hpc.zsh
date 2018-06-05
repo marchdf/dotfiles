@@ -36,7 +36,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	{
 	    . /etc/bashrc
 	    module purge
-            module use /nopt/nrel/ecom/ecp/base/c/spack/share/spack/modules/linux-centos7-x86_64/gcc-6.2.0
+            module use /nopt/nrel/ecom/ecp/base/modules/gcc-6.2.0
             module load gcc/6.2.0
             module load openmpi/1.10.4
             module load git/2.17.0
@@ -57,7 +57,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 
 	{
 	    . /etc/bashrc
-            module use /nopt/nrel/ecom/ecp/base/c/spack/share/spack/modules/linux-centos7-x86_64/gcc-6.2.0
+            module use /nopt/nrel/ecom/ecp/base/modules/gcc-6.2.0
 	    module load python/2.7.14
             module load py-alabaster/0.7.10-py2
             module load py-autopep8/1.3.3-py2
