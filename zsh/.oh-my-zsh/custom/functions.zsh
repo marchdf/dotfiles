@@ -36,6 +36,7 @@ function load_spack(){
     fi
 }
 
-
-
-
+# Grep through all python scrips in home directory
+function grep_python() {
+    grep -r --include=\*.py --exclude-dir=.virtualenvs --exclude-dir=.emacs.d --exclude-dir=spack --exclude-dir=.oh-my-zsh "${1}" ${HOME}
+}

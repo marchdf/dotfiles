@@ -65,6 +65,10 @@
 ;; Change "yes or no" to "y or n"
 (fset 'yes-or-no-p 'y-or-n-p)
 
+
+;; warn when opening files bigger than 200MB
+(setq large-file-warning-threshold 200000000)
+
 ;;================================================================================
 ;;
 ;; Package management
@@ -476,7 +480,7 @@
   (defun insert-equation-reference ()
     "Insert an equation reference for LaTex."
     (interactive)
-    (insert "Equation\\,(\\ref{equ:})") (backward-char 2))
+    (insert "Equation\\,(\\ref{eq:})") (backward-char 2))
 
   (defun insert-table-reference ()
     "Insert a table reference for LaTex."
