@@ -21,11 +21,18 @@ alias rmpdf='rm -i *.pdf'
 alias rmself='self=`pwd`; rm -r *; cd `dirname $self`; rm -r $self;'
 alias sx='source ~/.xinitrc'
 alias fls="fast_ls"  # fast ls from TACC
-alias c21='vlc http://www.static.rtbf.be/radio/classic21/m3u/classic21_128k.m3u'
-if [[ -x `which htop` ]]; then alias top="htop"; fi
 alias sshot='import ~/Desktop/screenshot.jpg' # screenshot (pick area to grab)
 alias empty_space='printf ''\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n'''
 alias qs='qstat -u $USER'
+
+# Improving CLI
+if [[ -x `which htop` ]]; then alias top="htop"; fi
+if [[ -x `which bat` ]]; then alias cat="bat"; fi
+if [[ -x `which prettyping` ]]; then alias ping="prettyping"; fi
+if [[ -x `which tldr` ]]; then alias help="tldr"; fi
+
+# Classic 21 radio, if not working check something like https://fluxradios.blogspot.com/2014/07/flux-url-classic-21.html
+alias c21='vlc https://www.static.rtbf.be/radio/classic21/m3u/classic21-mp3.m3u'
 
 # Weather using https://github.com/chubin/wttr.in
 alias weather='curl wttr.in/\?m'

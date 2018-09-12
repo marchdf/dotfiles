@@ -10,6 +10,7 @@
 ;;; - global
 ;;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
 ;;; - mp3info
+;;; - mpv
 ;;; - shellcheck
 ;;; - vlc
 ;;; - vorbis-tools
@@ -34,7 +35,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-gtags helm-git-grep helm-projectile projectile diminish use-package bind-key)))
+    (elfeed company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-gtags helm-git-grep helm-projectile projectile diminish use-package bind-key)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -64,7 +65,6 @@
 
 ;; Change "yes or no" to "y or n"
 (fset 'yes-or-no-p 'y-or-n-p)
-
 
 ;; warn when opening files bigger than 200MB
 (setq large-file-warning-threshold 200000000)
@@ -677,15 +677,18 @@
 ;;
 ;;================================================================================
 (use-package markdown-mode
-  :ensure t)
+  :ensure t
+  :mode
+  ("README\\.md\\'" . gfm-mode)
+  ("\\.md\\'" . markdown-mode)
+  ("\\.markdown\\'" . markdown-mode))
 
 (use-package polymode
   :ensure t
   :mode
   ("\\.Snw" . poly-noweb+r-mode)
   ("\\.Rnw" . poly-noweb+r-mode)
-  ("\\.Rmd" . poly-markdown+r-mode)
-  ("\\.md" . poly-markdown-mode))
+  ("\\.Rmd" . poly-markdown+r-mode))
 
 
 ;;================================================================================
@@ -921,6 +924,20 @@
   (defun go-to-pianobar ()
     (interactive)
     (switch-to-buffer-other-window "*Pianobar*")))
+
+
+;;================================================================================
+;;
+;; RSS feeds with elfeed
+;;
+;;================================================================================
+(use-package elfeed
+  :ensure t
+  :bind
+  ("C-x w" . elfeed)
+  :config
+  (setq elfeed-feeds
+        '(("http://rss.rtbf.be/media/rss/audio/c21-class_recent.xml" podcast))))
 
 
 ;;================================================================================

@@ -20,6 +20,7 @@ install_dotfiles() {
     stow rsync_excludes
     stow screen
     stow sleepwatcher
+    stow tmux
     stow woof
     stow zsh
 }
@@ -41,6 +42,7 @@ uninstall_dotfiles() {
     stow -D rsync_excludes
     stow -D screen
     stow -D sleepwatcher
+    stow -D tmux
     stow -D woof
     stow -D zsh
 }
