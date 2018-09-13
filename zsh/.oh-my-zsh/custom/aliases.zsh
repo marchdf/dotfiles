@@ -26,10 +26,10 @@ alias empty_space='printf ''\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\
 alias qs='qstat -u $USER'
 
 # Improving CLI
-if [[ -x `which htop` ]]; then alias top="htop"; fi
-if [[ -x `which bat` ]]; then alias cat="bat"; fi
-if [[ -x `which prettyping` ]]; then alias ping="prettyping"; fi
-if [[ -x `which tldr` ]]; then alias help="tldr"; fi
+if [[ -x "$(command -v htop)" ]]; then alias top="htop"; fi
+if [[ -x "$(command -v bat)" ]]; then alias cat="bat"; fi
+if [[ -x "$(command -v prettyping)" ]]; then alias ping="prettyping"; fi
+if [[ -x "$(command -v tldr)" ]]; then alias help="tldr"; fi
 
 # Classic 21 radio, if not working check something like https://fluxradios.blogspot.com/2014/07/flux-url-classic-21.html
 alias c21='vlc https://www.static.rtbf.be/radio/classic21/m3u/classic21-mp3.m3u'
