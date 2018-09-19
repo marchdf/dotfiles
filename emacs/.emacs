@@ -1087,9 +1087,6 @@
     (define-key map (kbd "M-r") 'yank-rectangle)
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "C-c M-z") 'uncomment-region)
-    (define-key map (kbd "M-(") (lambda () (interactive) (insert "()") (backward-char 1)))
-    (define-key map (kbd "M-{") (lambda () (interactive) (insert "{}") (backward-char 1)))
-    (define-key map (kbd "M-[") (lambda () (interactive) (insert "[]") (backward-char 1)))
     map)
   "Keymap my-keys-minor-mode.")
 
