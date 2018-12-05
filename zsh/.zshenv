@@ -55,7 +55,7 @@ fi
 # paths for NREL HPC (Peregrine)
 #
 #================================================================================
-if [[ `hostname -f` = *hpc.nrel.gov ]]; then
+if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 
     # Set scratch
     export SCRATCH=/scratch/${USER}

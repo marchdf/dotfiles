@@ -3,7 +3,7 @@
 # These are my custom aliases for my NREL HPC machines
 #
 #================================================================================
-if [[ `hostname -f` = *hpc.nrel.gov ]]; then
+if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 
     function conda_workon {
 
@@ -36,8 +36,11 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	{
 	    . /etc/bashrc
 	    module purge
-            module use /nopt/nrel/ecom/ecp/base/modules/gcc-6.2.0
-            module load gcc/6.2.0
+            module unuse /nopt/nrel/apps/modules/centos7/modulefiles
+            module use /nopt/nrel/ecom/hpacf/compilers/modules
+            module use /nopt/nrel/ecom/hpacf/utilities/modules
+            module use /nopt/nrel/ecom/hpacf/software/modules/gcc-7.3.0
+            module load gcc
             module load openmpi
 	    module load binutils
             module load cmake
@@ -50,6 +53,7 @@ if [[ `hostname -f` = *hpc.nrel.gov ]]; then
 	    module load llvm/6.0.0
             module load swig
 	    module load texlive
+            module load tmux
 	} &> /dev/null
     }
 
