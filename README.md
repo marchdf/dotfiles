@@ -11,7 +11,7 @@ Prerequisites: `GNU stow`, `zsh`, and `oh-my-zsh`
 
 Then you can do the following:
 ``` bash
-git clone git://github.com/marchdf/dotfiles ${HOME}/dotfiles
+git clone git@github.com:marchdf/dotfiles.git ${HOME}/dotfiles
 cd ~/dotfiles
 ./install.sh
 ```
