@@ -7,7 +7,7 @@ symlinks the new dotfiles to those in the `~/dotfiles`.
 Installation
 ------------
 
-Prerequisites: `GNU stow`, `zsh`, and `oh-my-zsh`
+Prerequisites: `GNU stow`, `zsh`, [`oh-my-zsh`](https://github.com/robbyrussell/oh-my-zsh), and [`fzf`](https://github.com/junegunn/fzf)
 
 Then you can do the following:
 ``` bash
