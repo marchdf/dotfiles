@@ -116,20 +116,23 @@ bindkey "^[[1;5A" up-line-or-history    # [CTRL] + Cursor up
 bindkey "^[[1;5B" down-line-or-history  # [CTRL] + Cursor down
 
 # fzf setup
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zs
 
-# Ctrl-t is context aware fuzzy searching
-export FZF_COMPLETION_TRIGGER=''
-bindkey '^T' fzf-completion
-bindkey '^I' $fzf_default_completion
+if [ -f ~/.fzf.zsh ]; then
 
-# Ctrl-x Ctrl-R is directly executing the command
-fzf-history-widget-accept() {
-     fzf-history-widget
-     zle accept-line
-}
-zle     -N     fzf-history-widget-accept
-bindkey '^X^R' fzf-history-widget-accept
+    # Ctrl-t is context aware fuzzy searching
+    export FZF_COMPLETION_TRIGGER=''
+    bindkey '^T' fzf-completion
+    bindkey '^I' $fzf_default_completion
+
+    # Ctrl-x Ctrl-R is directly executing the command
+    fzf-history-widget-accept() {
+        fzf-history-widget
+        zle accept-line
+    }
+    zle     -N     fzf-history-widget-accept
+    bindkey '^X^R' fzf-history-widget-accept
+fi
 
 # Longer history
 HISTSIZE=100000

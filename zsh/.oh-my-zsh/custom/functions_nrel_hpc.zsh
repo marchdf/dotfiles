@@ -54,6 +54,7 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
             module load swig
 	    module load texlive
             module load tmux
+            module load zsh
 	} &> /dev/null
     }
 
