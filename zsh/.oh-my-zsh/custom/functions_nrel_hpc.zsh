@@ -36,6 +36,7 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 	{
 	    . /etc/bashrc
 	    module purge
+            module unuse /nopt/nrel/apps/modules/default/modulefiles
             module unuse /nopt/nrel/apps/modules/centos7/modulefiles
             module use /nopt/nrel/ecom/hpacf/compilers/modules
             module use /nopt/nrel/ecom/hpacf/utilities/modules
@@ -47,10 +48,14 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 	    module load emacs
             module load git
 	    module load global
+            module load gnutls
             module load htop
             module load image-magick
             module load libtool
 	    module load llvm/6.0.0
+            module load python/3.6.5
+            module load py-setuptools/40.4.3-py3
+            module load stow
             module load swig
 	    module load texlive
             module load tmux

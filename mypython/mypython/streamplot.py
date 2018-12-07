@@ -7,17 +7,30 @@ See
 http://tonysyu.github.com/plotting-streamlines-with-matplotlib-and-sympy.html
 """
 
-version = '4'
+version = "4"
 
 import numpy
 import pylab
 import matplotlib
 import matplotlib.patches as mpp
 
-def streamplot(x, y, u, v, density=1, linewidth=1,
-               color='k', cmap=None, norm=None, vmax=None, vmin=None,
-               arrowsize=1, INTEGRATOR='RK4'):
-    '''Draws streamlines of a vector flow.
+
+def streamplot(
+    x,
+    y,
+    u,
+    v,
+    density=1,
+    linewidth=1,
+    color="k",
+    cmap=None,
+    norm=None,
+    vmax=None,
+    vmin=None,
+    arrowsize=1,
+    INTEGRATOR="RK4",
+):
+    """Draws streamlines of a vector flow.
 
     * x and y are 1d arrays defining an *evenly spaced* grid.
     * u and v are 2d arrays (shape [y,x]) giving velocities.
@@ -30,11 +43,11 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
       A value of None gives the default for each.
 
     INTEGRATOR is experimental. Currently, RK4 should be used.
-      '''
+      """
 
     ## Sanity checks.
-    assert len(x.shape)==1
-    assert len(y.shape)==1
+    assert len(x.shape) == 1
+    assert len(y.shape) == 1
     assert u.shape == (len(y), len(x))
     assert v.shape == (len(y), len(x))
     if type(linewidth) == numpy.ndarray:
@@ -46,15 +59,15 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
     NGX = len(x)
     NGY = len(y)
     ## Constants used to convert between grid index coords and user coords.
-    DX = x[1]-x[0]
-    DY = y[1]-y[0]
+    DX = x[1] - x[0]
+    DY = y[1] - y[0]
     XOFF = x[0]
     YOFF = y[0]
 
     ## Now rescale velocity onto axes-coordinates
-    u = u / (x[-1]-x[0])
-    v = v / (y[-1]-y[0])
-    speed = numpy.sqrt(u*u+v*v)
+    u = u / (x[-1] - x[0])
+    v = v / (y[-1] - y[0])
+    speed = numpy.sqrt(u * u + v * v)
     ## s (path length) will now be in axes-coordinates, but we must
     ## rescale u for integrations.
     u *= NGX
@@ -68,24 +81,23 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
     ## approximate spacing between trajectories.
     if type(density) == float or type(density) == int:
         assert density > 0
-        NBX = int(30*density)
-        NBY = int(30*density)
+        NBX = int(30 * density)
+        NBY = int(30 * density)
     else:
         assert len(density) > 0
-        NBX = int(30*density[0])
-        NBY = int(30*density[1])            
-    blank = numpy.zeros((NBY,NBX))
-    
+        NBX = int(30 * density[0])
+        NBY = int(30 * density[1])
+    blank = numpy.zeros((NBY, NBX))
+
     ## Constants for conversion between grid-index space and
     ## blank-index space
-    bx_spacing = NGX/float(NBX-1)
-    by_spacing = NGY/float(NBY-1)
+    bx_spacing = NGX / float(NBX - 1)
+    by_spacing = NGY / float(NBY - 1)
 
     def blank_pos(xi, yi):
         ## Takes grid space coords and returns nearest space in
         ## the blank array.
-        return int((xi / bx_spacing) + 0.5), \
-               int((yi / by_spacing) + 0.5)
+        return int((xi / bx_spacing) + 0.5), int((yi / by_spacing) + 0.5)
 
     def value_at(a, xi, yi):
         ## Linear interpolation - nice and quick because we are
@@ -96,41 +108,41 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
         else:
             x = numpy.int(xi)
             y = numpy.int(yi)
-        a00 = a[y,x]
-        a01 = a[y,x+1]
-        a10 = a[y+1,x]
-        a11 = a[y+1,x+1]
+        a00 = a[y, x]
+        a01 = a[y, x + 1]
+        a10 = a[y + 1, x]
+        a11 = a[y + 1, x + 1]
         xt = xi - x
         yt = yi - y
-        a0 = a00*(1-xt) + a01*xt
-        a1 = a10*(1-xt) + a11*xt
-        return a0*(1-yt) + a1*yt
+        a0 = a00 * (1 - xt) + a01 * xt
+        a1 = a10 * (1 - xt) + a11 * xt
+        return a0 * (1 - yt) + a1 * yt
 
     def rk4_integrate(x0, y0):
         ## This function does RK4 forward and back trajectories from
         ## the initial conditions, with the odd 'blank array'
         ## termination conditions. TODO tidy the integration loops.
-        
+
         def f(xi, yi):
-            dt_ds = 1./value_at(speed, xi, yi)
+            dt_ds = 1.0 / value_at(speed, xi, yi)
             ui = value_at(u, xi, yi)
             vi = value_at(v, xi, yi)
-            return ui*dt_ds, vi*dt_ds
+            return ui * dt_ds, vi * dt_ds
 
         def g(xi, yi):
-            dt_ds = 1./value_at(speed, xi, yi)
+            dt_ds = 1.0 / value_at(speed, xi, yi)
             ui = value_at(u, xi, yi)
             vi = value_at(v, xi, yi)
-            return -ui*dt_ds, -vi*dt_ds
+            return -ui * dt_ds, -vi * dt_ds
 
-        check = lambda xi, yi: xi>=0 and xi<NGX-1 and yi>=0 and yi<NGY-1
+        check = lambda xi, yi: xi >= 0 and xi < NGX - 1 and yi >= 0 and yi < NGY - 1
 
         bx_changes = []
         by_changes = []
 
         ## Integrator function
         def rk4(x0, y0, f):
-            ds = 0.01 #min(1./NGX, 1./NGY, 0.01)
+            ds = 0.01  # min(1./NGX, 1./NGY, 0.01)
             stotal = 0
             xi = x0
             yi = y0
@@ -144,23 +156,24 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
                 # Next, advance one using RK4
                 try:
                     k1x, k1y = f(xi, yi)
-                    k2x, k2y = f(xi + .5*ds*k1x, yi + .5*ds*k1y)
-                    k3x, k3y = f(xi + .5*ds*k2x, yi + .5*ds*k2y)
-                    k4x, k4y = f(xi + ds*k3x, yi + ds*k3y)
+                    k2x, k2y = f(xi + 0.5 * ds * k1x, yi + 0.5 * ds * k1y)
+                    k3x, k3y = f(xi + 0.5 * ds * k2x, yi + 0.5 * ds * k2y)
+                    k4x, k4y = f(xi + ds * k3x, yi + ds * k3y)
                 except IndexError:
                     # Out of the domain on one of the intermediate steps
                     break
-                xi += ds*(k1x+2*k2x+2*k3x+k4x) / 6.
-                yi += ds*(k1y+2*k2y+2*k3y+k4y) / 6.
+                xi += ds * (k1x + 2 * k2x + 2 * k3x + k4x) / 6.0
+                yi += ds * (k1y + 2 * k2y + 2 * k3y + k4y) / 6.0
                 # Final position might be out of the domain
-                if not check(xi, yi): break
+                if not check(xi, yi):
+                    break
                 stotal += ds
                 # Next, if s gets to thres, check blank.
                 new_xb, new_yb = blank_pos(xi, yi)
                 if new_xb != xb or new_yb != yb:
                     # New square, so check and colour. Quit if required.
-                    if blank[new_yb,new_xb] == 0:
-                        blank[new_yb,new_xb] = 1
+                    if blank[new_yb, new_xb] == 0:
+                        blank[new_yb, new_xb] = 1
                         bx_changes.append(new_xb)
                         by_changes.append(new_yb)
                         xb = new_xb
@@ -170,7 +183,7 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
                 if stotal > 2:
                     break
             return stotal, xf_traj, yf_traj
-        
+
         ## Alternative Integrator function
 
         ## RK45 does not really help in it's current state. The
@@ -178,7 +191,7 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
         ## regions of high curvature and thus fairly ugly. Maybe a
         ## curvature based cap on the maximum ds permitted is the way
         ## forward.
-    
+
         def rk45(x0, y0, f):
             maxerror = 0.001
             maxds = 0.03
@@ -196,40 +209,94 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
                 # Next, advance one using RK45
                 try:
                     k1x, k1y = f(xi, yi)
-                    k2x, k2y = f(xi + .25*ds*k1x,
-                                 yi + .25*ds*k1y)
-                    k3x, k3y = f(xi + 3./32*ds*k1x + 9./32*ds*k2x,
-                                 yi + 3./32*ds*k1y + 9./32*ds*k2y)
-                    k4x, k4y = f(xi + 1932./2197*ds*k1x - 7200./2197*ds*k2x + 7296./2197*ds*k3x,
-                                 yi + 1932./2197*ds*k1y - 7200./2197*ds*k2y + 7296./2197*ds*k3y)
-                    k5x, k5y = f(xi + 439./216*ds*k1x - 8*ds*k2x + 3680./513*ds*k3x - 845./4104*ds*k4x,
-                                 yi + 439./216*ds*k1y - 8*ds*k2y + 3680./513*ds*k3y - 845./4104*ds*k4y)
-                    k6x, k6y = f(xi - 8./27*ds*k1x + 2*ds*k2x - 3544./2565*ds*k3x + 1859./4104*ds*k4x - 11./40*ds*k5x,
-                                 yi - 8./27*ds*k1y + 2*ds*k2y - 3544./2565*ds*k3y + 1859./4104*ds*k4y - 11./40*ds*k5y)
-                    
+                    k2x, k2y = f(xi + 0.25 * ds * k1x, yi + 0.25 * ds * k1y)
+                    k3x, k3y = f(
+                        xi + 3.0 / 32 * ds * k1x + 9.0 / 32 * ds * k2x,
+                        yi + 3.0 / 32 * ds * k1y + 9.0 / 32 * ds * k2y,
+                    )
+                    k4x, k4y = f(
+                        xi
+                        + 1932.0 / 2197 * ds * k1x
+                        - 7200.0 / 2197 * ds * k2x
+                        + 7296.0 / 2197 * ds * k3x,
+                        yi
+                        + 1932.0 / 2197 * ds * k1y
+                        - 7200.0 / 2197 * ds * k2y
+                        + 7296.0 / 2197 * ds * k3y,
+                    )
+                    k5x, k5y = f(
+                        xi
+                        + 439.0 / 216 * ds * k1x
+                        - 8 * ds * k2x
+                        + 3680.0 / 513 * ds * k3x
+                        - 845.0 / 4104 * ds * k4x,
+                        yi
+                        + 439.0 / 216 * ds * k1y
+                        - 8 * ds * k2y
+                        + 3680.0 / 513 * ds * k3y
+                        - 845.0 / 4104 * ds * k4y,
+                    )
+                    k6x, k6y = f(
+                        xi
+                        - 8.0 / 27 * ds * k1x
+                        + 2 * ds * k2x
+                        - 3544.0 / 2565 * ds * k3x
+                        + 1859.0 / 4104 * ds * k4x
+                        - 11.0 / 40 * ds * k5x,
+                        yi
+                        - 8.0 / 27 * ds * k1y
+                        + 2 * ds * k2y
+                        - 3544.0 / 2565 * ds * k3y
+                        + 1859.0 / 4104 * ds * k4y
+                        - 11.0 / 40 * ds * k5y,
+                    )
+
                 except IndexError:
                     # Out of the domain on one of the intermediate steps
                     break
-                dx4 = ds*(25./216*k1x + 1408./2565*k3x + 2197./4104*k4x - 1./5*k5x)
-                dy4 = ds*(25./216*k1y + 1408./2565*k3y + 2197./4104*k4y - 1./5*k5y)
-                dx5 = ds*(16./135*k1x + 6656./12825*k3x + 28561./56430*k4x - 9./50*k5x + 2./55*k6x)
-                dy5 = ds*(16./135*k1y + 6656./12825*k3y + 28561./56430*k4y - 9./50*k5y + 2./55*k6y)
+                dx4 = ds * (
+                    25.0 / 216 * k1x
+                    + 1408.0 / 2565 * k3x
+                    + 2197.0 / 4104 * k4x
+                    - 1.0 / 5 * k5x
+                )
+                dy4 = ds * (
+                    25.0 / 216 * k1y
+                    + 1408.0 / 2565 * k3y
+                    + 2197.0 / 4104 * k4y
+                    - 1.0 / 5 * k5y
+                )
+                dx5 = ds * (
+                    16.0 / 135 * k1x
+                    + 6656.0 / 12825 * k3x
+                    + 28561.0 / 56430 * k4x
+                    - 9.0 / 50 * k5x
+                    + 2.0 / 55 * k6x
+                )
+                dy5 = ds * (
+                    16.0 / 135 * k1y
+                    + 6656.0 / 12825 * k3y
+                    + 28561.0 / 56430 * k4y
+                    - 9.0 / 50 * k5y
+                    + 2.0 / 55 * k6y
+                )
 
                 ## Error is normalized to the axes coordinates (it's a distance)
-                error = numpy.sqrt(((dx5-dx4)/NGX)**2 + ((dy5-dy4)/NGY)**2)
+                error = numpy.sqrt(((dx5 - dx4) / NGX) ** 2 + ((dy5 - dy4) / NGY) ** 2)
                 if error < maxerror:
                     # Step is within tolerance so continue
                     xi += dx5
                     yi += dy5
                     # Final position might be out of the domain
-                    if not check(xi, yi): break
+                    if not check(xi, yi):
+                        break
                     stotal += ds
                     # Next, if s gets to thres, check blank.
                     new_xb, new_yb = blank_pos(xi, yi)
                     if new_xb != xb or new_yb != yb:
                         # New square, so check and colour. Quit if required.
-                        if blank[new_yb,new_xb] == 0:
-                            blank[new_yb,new_xb] = 1
+                        if blank[new_yb, new_xb] == 0:
+                            blank[new_yb, new_xb] = 1
                             bx_changes.append(new_xb)
                             by_changes.append(new_yb)
                             xb = new_xb
@@ -241,21 +308,30 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
                 # Modify ds for the next iteration.
                 if len(xf_traj) > 2:
                     ## hacky curvature dependance:
-                    v1 = numpy.array((xf_traj[-1]-xf_traj[-2], yf_traj[-1]-yf_traj[-2]))
-                    v2 = numpy.array((xf_traj[-2]-xf_traj[-3], yf_traj[-2]-yf_traj[-3]))
-                    costheta = (v1/numpy.sqrt((v1**2).sum()) * v2/numpy.sqrt((v2**2).sum())).sum()
-                    if costheta < .8:
-                        ds = .01
+                    v1 = numpy.array(
+                        (xf_traj[-1] - xf_traj[-2], yf_traj[-1] - yf_traj[-2])
+                    )
+                    v2 = numpy.array(
+                        (xf_traj[-2] - xf_traj[-3], yf_traj[-2] - yf_traj[-3])
+                    )
+                    costheta = (
+                        v1
+                        / numpy.sqrt((v1 ** 2).sum())
+                        * v2
+                        / numpy.sqrt((v2 ** 2).sum())
+                    ).sum()
+                    if costheta < 0.8:
+                        ds = 0.01
                         continue
-                ds = min(maxds, 0.85*ds*(maxerror/error)**.2)
+                ds = min(maxds, 0.85 * ds * (maxerror / error) ** 0.2)
             return stotal, xf_traj, yf_traj
 
         ## Forward and backward trajectories
-        if INTEGRATOR == 'RK4':
+        if INTEGRATOR == "RK4":
             integrator = rk4
-        elif INTEGRATOR == 'RK45':
+        elif INTEGRATOR == "RK45":
             integrator = rk45
-        
+
         sf, xf_traj, yf_traj = integrator(x0, y0, f)
         sb, xb_traj, yb_traj = integrator(x0, y0, g)
         stotal = sf + sb
@@ -263,8 +339,9 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
         y_traj = yb_traj[::-1] + yf_traj[1:]
 
         ## Tests to check length of traj. Remember, s in units of axes.
-        if len(x_traj) < 1: return None
-        if stotal > .2:
+        if len(x_traj) < 1:
+            return None
+        if stotal > 0.2:
             initxb, inityb = blank_pos(x0, y0)
             blank[inityb, initxb] = 1
             return x_traj, y_traj
@@ -275,91 +352,110 @@ def streamplot(x, y, u, v, density=1, linewidth=1,
 
     ## A quick function for integrating trajectories if blank==0.
     trajectories = []
+
     def traj(xb, yb):
         if xb < 0 or xb >= NBX or yb < 0 or yb >= NBY:
             return
         if blank[yb, xb] == 0:
-            t = rk4_integrate(xb*bx_spacing, yb*by_spacing)
+            t = rk4_integrate(xb * bx_spacing, yb * by_spacing)
             if t != None:
                 trajectories.append(t)
 
     ## Now we build up the trajectory set. I've found it best to look
     ## for blank==0 along the edges first, and work inwards.
-    for indent in range((max(NBX,NBY))/2):
-        for xi in range(max(NBX,NBY)-2*indent):
-            traj(xi+indent, indent)
-            traj(xi+indent, NBY-1-indent)
-            traj(indent, xi+indent)
-            traj(NBX-1-indent, xi+indent)
+    for indent in range((max(NBX, NBY)) / 2):
+        for xi in range(max(NBX, NBY) - 2 * indent):
+            traj(xi + indent, indent)
+            traj(xi + indent, NBY - 1 - indent)
+            traj(indent, xi + indent)
+            traj(NBX - 1 - indent, xi + indent)
 
     ## PLOTTING HERE.
-    #pylab.pcolormesh(numpy.linspace(x.min(), x.max(), NBX+1),
+    # pylab.pcolormesh(numpy.linspace(x.min(), x.max(), NBX+1),
     #                 numpy.linspace(y.min(), y.max(), NBY+1), blank)
-    
+
     # Load up the defaults - needed to get the color right.
     if type(color) == numpy.ndarray:
-        if vmin == None: vmin = color.min()
-        if vmax == None: vmax = color.max()
-        if norm == None: norm = matplotlib.colors.normalize
-        if cmap == None: cmap = matplotlib.cm.get_cmap(
-            matplotlib.rcParams['image.cmap'])
-    
+        if vmin == None:
+            vmin = color.min()
+        if vmax == None:
+            vmax = color.max()
+        if norm == None:
+            norm = matplotlib.colors.normalize
+        if cmap == None:
+            cmap = matplotlib.cm.get_cmap(matplotlib.rcParams["image.cmap"])
+
     for t in trajectories:
         # Finally apply the rescale to adjust back to user-coords from
         # grid-index coordinates.
-        tx = numpy.array(t[0])*DX+XOFF
-        ty = numpy.array(t[1])*DY+YOFF
+        tx = numpy.array(t[0]) * DX + XOFF
+        ty = numpy.array(t[1]) * DY + YOFF
 
         tgx = numpy.array(t[0])
         tgy = numpy.array(t[1])
-        
-        points = numpy.array([tx, ty]).T.reshape(-1,1,2)
+
+        points = numpy.array([tx, ty]).T.reshape(-1, 1, 2)
         segments = numpy.concatenate([points[:-1], points[1:]], axis=1)
 
         args = {}
         if type(linewidth) == numpy.ndarray:
-            args['linewidth'] = value_at(linewidth, tgx, tgy)[:-1]
-            arrowlinewidth = args['linewidth'][len(tgx)/2]
+            args["linewidth"] = value_at(linewidth, tgx, tgy)[:-1]
+            arrowlinewidth = args["linewidth"][len(tgx) / 2]
         else:
-            args['linewidth'] = linewidth
+            args["linewidth"] = linewidth
             arrowlinewidth = linewidth
-            
-        if type(color) == numpy.ndarray:            
-            args['color'] = cmap(norm(vmin=vmin,vmax=vmax)
-                                 (value_at(color, tgx, tgy)[:-1]))
-            arrowcolor = args['color'][len(tgx)/2]
+
+        if type(color) == numpy.ndarray:
+            args["color"] = cmap(
+                norm(vmin=vmin, vmax=vmax)(value_at(color, tgx, tgy)[:-1])
+            )
+            arrowcolor = args["color"][len(tgx) / 2]
         else:
-            args['color'] = color
+            args["color"] = color
             arrowcolor = color
-        
-        lc = matplotlib.collections.LineCollection\
-             (segments, **args)
+
+        lc = matplotlib.collections.LineCollection(segments, **args)
         pylab.gca().add_collection(lc)
-            
+
         ## Add arrows half way along each trajectory.
-        n = len(tx)/2
-        p = mpp.FancyArrowPatch((tx[n],ty[n]), (tx[n+1],ty[n+1]),
-                                arrowstyle='->', lw=arrowlinewidth,
-                                mutation_scale=20*arrowsize, color=arrowcolor)
+        n = len(tx) / 2
+        p = mpp.FancyArrowPatch(
+            (tx[n], ty[n]),
+            (tx[n + 1], ty[n + 1]),
+            arrowstyle="->",
+            lw=arrowlinewidth,
+            mutation_scale=20 * arrowsize,
+            color=arrowcolor,
+        )
         pylab.gca().add_patch(p)
 
     pylab.xlim(x.min(), x.max())
-    pylab.ylim(y.min(), y.max())    
+    pylab.ylim(y.min(), y.max())
     return
+
 
 def test():
     pylab.figure(1)
-    x = numpy.linspace(-3,3,100)
-    y = numpy.linspace(-3,3,100)
-    u = -1-x**2+y[:,numpy.newaxis]
-    v = 1+x-y[:,numpy.newaxis]**2
-    speed = numpy.sqrt(u*u + v*v)
+    x = numpy.linspace(-3, 3, 100)
+    y = numpy.linspace(-3, 3, 100)
+    u = -1 - x ** 2 + y[:, numpy.newaxis]
+    v = 1 + x - y[:, numpy.newaxis] ** 2
+    speed = numpy.sqrt(u * u + v * v)
     pylab.subplot(121)
-    streamplot(x, y, u, v, density=1, INTEGRATOR='RK4', color='b')
+    streamplot(x, y, u, v, density=1, INTEGRATOR="RK4", color="b")
     pylab.subplot(122)
-    streamplot(x, y, u, v, density=(1,1), INTEGRATOR='RK4', color=u,
-               linewidth=5*speed/speed.max())
+    streamplot(
+        x,
+        y,
+        u,
+        v,
+        density=(1, 1),
+        INTEGRATOR="RK4",
+        color=u,
+        linewidth=5 * speed / speed.max(),
+    )
     pylab.show()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     test()
