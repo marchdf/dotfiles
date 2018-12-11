@@ -134,7 +134,7 @@
 (use-package irony
   :ensure t
   :defer t
-  :config
+  :init
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
@@ -1067,6 +1067,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(emms-browser-artist-face ((t (:inherit font-lock-function-name-face))))
+ '(emms-browser-composer-face ((t (:inherit emms-browser-artist-face))))
+ '(emms-browser-performer-face ((t (:inherit emms-browser-artist-face))))
+ '(emms-browser-album-face ((t (:inherit font-lock-variable-name-face))))
+ '(emms-browser-track-face ((t (:inherit default))))
+ '(emms-stream-url-face ((t (:inherit default))))
+ '(emms-stream-name-face ((t (:inherit emms-browser-artist-face))))
+ '(emms-playlist-track-face ((t (:inherit default))))
+ '(emms-playlist-selected-face ((t (:inherit font-lock-string-face))))
  )
 
 

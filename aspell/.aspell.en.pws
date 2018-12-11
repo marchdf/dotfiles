@@ -1,4 +1,4 @@
-personal_ws-1.1 en 331 
+personal_ws-1.1 en 336 
 Ryutov
 HLLC
 Gryngarten
@@ -12,6 +12,7 @@ mentorship
 der
 Livermore
 Shu
+NVIDIA
 compressive
 polycrystalline
 RKDG
@@ -33,6 +34,7 @@ Biswas
 Adaleena
 doi
 compressions
+cardinality
 spallation
 DNS
 exascale
@@ -87,6 +89,7 @@ ICF
 Waals
 phonon
 Galerkin
+variational
 Siddhesh
 reshock
 Von
@@ -99,6 +102,7 @@ Baer
 quadratically
 uniaxial
 SHPB
+quantiles
 eigenspace
 LLNL
 athermal
@@ -158,8 +162,8 @@ eigenvectors
 Abgrall
 Srebro
 intergration
-priori
 backpropagation
+priori
 impactor
 fractionation
 Friedrichs
@@ -249,6 +253,7 @@ Gruneisen
 Shyue
 Richtmyer
 MPS
+approximators
 Dowling
 Arnaud
 collimator
