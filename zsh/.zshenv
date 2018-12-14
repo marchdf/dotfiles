@@ -6,6 +6,12 @@
 PATH=$HOME/bin:$HOME/mypython:$HOME/.local/bin:$PATH
 export PYTHONPATH=$PYTHONPATH:$HOME/mypython
 
+# miniconda
+MINICONDA_DIR=$HOME/miniconda3
+if [ -d "$MINICONDA_DIR" ]; then
+    . ${MINICONDA_DIR}/etc/profile.d/conda.sh
+fi
+
 # Datathief bin dir
 DATATHIEF_DIR=$HOME/datathief
 if [ -d "$DATATHIEF_DIR" ]; then
