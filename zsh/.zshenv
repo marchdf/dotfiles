@@ -36,11 +36,6 @@ export MASA_HOME=$CCSE_DIR/install/MASA
 #================================================================================
 if [ "$(uname)" = "Darwin" ]; then
 
-    # homebrew compilers
-    #export HOMEBREW_CC=gcc-6
-    #export HOMEBREW_CXX=g++-6
-    #export HOMEBREW_FC=gfortran-6
-
     # github tokens
     source $HOME/.github_tokens
 
