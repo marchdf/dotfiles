@@ -5,39 +5,15 @@
 #================================================================================
 if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 
-    function conda_workon {
-
-	module unload python
-
-	local CONDA_PATH=${HOME}/miniconda3/bin
-
-	if test -z "$1" ; then
-            ${CONDA_PATH}/conda info --envs
-	else
-	    source ${CONDA_PATH}/activate $1
-	fi
-    }
-
-    function conda_stop {
-
-	local CONDA_PATH=${HOME}/miniconda3/bin
-
-	if test -z "$1" ; then
-            ${CONDA_PATH}/conda info --envs
-	else
-	    source ${CONDA_PATH}/deactivate $1
-	fi
-
-	load_custom_modules
-    }
-
     function load_custom_modules {
 
 	{
 	    . /etc/bashrc
 	    module purge
-            module unuse /nopt/nrel/apps/modules/default/modulefiles
             module unuse /nopt/nrel/apps/modules/centos7/modulefiles
+            module unuse /nopt/nrel/apps/modules/default/modulefiles
+            module unuse /usr/share/Modules/modulefiles
+            module unuse /nopt/modulefiles
             module use /nopt/nrel/ecom/hpacf/compilers/modules
             module use /nopt/nrel/ecom/hpacf/utilities/modules
             module use /nopt/nrel/ecom/hpacf/software/modules/gcc-7.3.0
@@ -52,7 +28,7 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
             module load htop
             module load image-magick
             module load libtool
-	    module load llvm/6.0.0
+	    module load llvm
             module load python/3.6.5
             module load py-setuptools/40.4.3-py3
             module load stow
