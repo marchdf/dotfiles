@@ -1,4 +1,4 @@
-personal_ws-1.1 en 336 
+personal_ws-1.1 en 350 
 Ryutov
 HLLC
 Gryngarten
@@ -19,6 +19,7 @@ RKDG
 hypersonic
 Igra
 Cyrille
+SciPy
 incompressible
 anisotropy
 Appl
@@ -41,6 +42,7 @@ exascale
 NNSA
 tunable
 Steinberg
+Leibler
 supercomputing
 misalignments
 Kuranz
@@ -52,6 +54,7 @@ Schlieren
 Latini
 encodings
 radiographs
+scikit
 jubilations
 fiducial
 radiograph
@@ -62,6 +65,7 @@ atomizations
 collisional
 viscosities
 Jonsson
+notational
 EOS
 uneisen
 overdriven
@@ -88,8 +92,8 @@ Krivodonova
 ICF
 Waals
 phonon
-Galerkin
 variational
+Galerkin
 Siddhesh
 reshock
 Von
@@ -101,8 +105,8 @@ Manganin
 Baer
 quadratically
 uniaxial
-SHPB
 quantiles
+SHPB
 eigenspace
 LLNL
 athermal
@@ -113,19 +117,23 @@ sinusoidally
 HLL
 ablator
 photochromatic
+Kullback
 thermodynamically
 Lebedev
+Favre
 repeatability
 Peclet
 Rhebergen
 multicomponent
 shocktube
+RMSE
 HPC
 runtime
 minmod
 Sedov
 Meshkov
 turbomachine
+convoluting
 nonlinearity
 Kuzmin
 shocklessly
@@ -144,19 +152,21 @@ NVIDIA's
 Harish
 Dimotakis
 Brouillette
-kgf
 IOP
+kgf
 ker
 hydrostatic
 Ludovic
 LeBlanc
 EBSD
 rarefactions
+situ
 Sreenivas
 DalMaso
 spanwise
 bremsstrahlung
 sphericity
+Jupyter
 scalable
 eigenvectors
 Abgrall
@@ -222,6 +232,7 @@ MUSCL
 centerline
 Riordon
 unphysical
+PyTorch
 Franquet
 vectorized
 plasmas
@@ -256,6 +267,7 @@ MPS
 approximators
 Dowling
 Arnaud
+regularizer
 collimator
 photodisintegration
 genta
@@ -275,6 +287,7 @@ singlefluid
 observables
 MTS
 advected
+axisymmetric
 isentropic
 AMReX
 Courant
@@ -303,6 +316,7 @@ Lund
 Mori
 resistive
 compressibility
+autoencoders
 Aditya
 Aku
 Movahed
