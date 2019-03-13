@@ -877,7 +877,10 @@
   (use-package emms
     :ensure t
     :bind
-    ("C-c e" . emms-smart-browse)
+    ("C-c e b" . emms-smart-browse)
+    ("C-c e p" . emms-pause)
+    ("C-c e n" . emms-next)
+    ("C-c e t" . emms-previous)
     :config
     (emms-all)
 

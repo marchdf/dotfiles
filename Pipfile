@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-"autopep8" = "*"
-"flake8" = "*"
+autopep8 = "*"
+flake8 = "*"
 jedi = "*"
 yapf = "*"
 rope = "*"
@@ -17,6 +17,7 @@ matplotlib = "*"
 seaborn = "*"
 scikit-learn = "*"
 black = "*"
+elpy = "*"
 
 [dev-packages]
 
