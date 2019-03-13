@@ -43,4 +43,7 @@ if [[ -x "$(command -v qstat)" ]]; then
     alias job_node_ids="qstat -u $USER -f | grep -e 'Job\ Id\|exec_host\|Job_Name'"
 fi
 
-if [[ -x "$(command -v squeue)" ]]; then alias qs="squeue -u $USER"; fi
+if [[ -x "$(command -v squeue)" ]]; then
+    alias qs="squeue -u $USER -o '%12i %.9P %20j %.2t %.10M %.6D %r %N'"
+    alias qnodes="sinfo -o '%24P %.5a  %.12l  %.16F'"
+fi

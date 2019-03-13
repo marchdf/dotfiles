@@ -208,8 +208,12 @@
   (use-package helm-projectile
     :ensure    helm-projectile
     :bind
-    ("C-c h" . helm-projectile)
-    ("C-c x" . helm-projectile-find-file-dwim)
+    ("C-c p h" . helm-projectile)
+    ("C-c p p" . helm-projectile-switch-project)
+    ("C-c p f" . helm-projectile-find-file)
+    ("C-c p g" . helm-projectile-find-file-dwim)
+    ("C-c p a" . helm-projectile-find-other-file)
+    ("C-c p e" . helm-projectile-recentf)
     :config
     (setq shell-file-name "/bin/bash"))
 
@@ -1070,16 +1074,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(emms-browser-album-face ((t (:inherit font-lock-variable-name-face))))
  '(emms-browser-artist-face ((t (:inherit font-lock-function-name-face))))
  '(emms-browser-composer-face ((t (:inherit emms-browser-artist-face))))
  '(emms-browser-performer-face ((t (:inherit emms-browser-artist-face))))
- '(emms-browser-album-face ((t (:inherit font-lock-variable-name-face))))
  '(emms-browser-track-face ((t (:inherit default))))
- '(emms-stream-url-face ((t (:inherit default))))
- '(emms-stream-name-face ((t (:inherit emms-browser-artist-face))))
- '(emms-playlist-track-face ((t (:inherit default))))
  '(emms-playlist-selected-face ((t (:inherit font-lock-string-face))))
- )
+ '(emms-playlist-track-face ((t (:inherit default))))
+ '(emms-stream-name-face ((t (:inherit emms-browser-artist-face))))
+ '(emms-stream-url-face ((t (:inherit default)))))
 
 
 ;;================================================================================

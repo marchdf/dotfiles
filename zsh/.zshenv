@@ -63,7 +63,7 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 
     # Set the tmp dir to scratch. This is because /tmp was filling up
     # when compiling Nalu with intel compilers and the debug flag
-    export TMPDIR=${SCRATCH}/.tmp
+    # export TMPDIR=${SCRATCH}/.tmp
 
     # Load some custom modules
     . ${HOME}/.oh-my-zsh/custom/functions_nrel_hpc.zsh
