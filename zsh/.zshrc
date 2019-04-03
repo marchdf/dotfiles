@@ -116,8 +116,8 @@ bindkey "^[[1;5A" up-line-or-history    # [CTRL] + Cursor up
 bindkey "^[[1;5B" down-line-or-history  # [CTRL] + Cursor down
 
 # Use ctrl-p/n to go up/down search
-bindkey "^P" up-line-or-search
-bindkey "^N" down-line-or-search
+bindkey "^P" up-line-or-beginning-search
+bindkey "^N" down-line-or-beginning-search
 
 # fzf setup
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

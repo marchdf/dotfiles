@@ -10,7 +10,6 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 	{
 	    . /etc/bashrc
 	    module purge
-            module purge
             module unuse ${MODULEPATH}
             module use /nopt/nrel/ecom/hpacf/compilers/modules
             module use /nopt/nrel/ecom/hpacf/utilities/modules
@@ -38,10 +37,12 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
 
     function load_spack_python2 {
 
-	{
+        {
 	    . /etc/bashrc
-            module use /nopt/nrel/ecom/ecp/base/modules/gcc-6.2.0
-	    module load python
+            module use /nopt/nrel/ecom/hpacf/compilers/modules
+            module use /nopt/nrel/ecom/hpacf/utilities/modules
+            module use /nopt/nrel/ecom/hpacf/software/modules/gcc-7.3.0
+	    module load python/2.7.15
             module load py-alabaster/0.7.10-py2
             module load py-autopep8/1.3.3-py2
             module load py-babel/2.4.0-py2
@@ -65,8 +66,8 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
             module load py-mccabe/0.6.1-py2
             module load py-nose/1.3.7-py2
             module load py-numexpr/2.6.1-py2
-            module load py-numpy/1.13.3-py2
-            module load py-pandas/0.21.1-py2
+            module load py-numpy/1.15.2-py2
+            module load py-pandas/0.23.4-py2
             module load py-pillow/3.2.0-py2
             module load py-pip/9.0.1-py2
             module load py-pycodestyle/2.3.1-py2
@@ -74,7 +75,7 @@ if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
             module load py-pygments/2.2.0-py2
             module load py-pyparsing/2.2.0-py2
             module load py-pytz/2017.2-py2
-            module load py-pyyaml/3.11-py2
+            module load py-pyyaml/3.13-py2
             module load py-requests/2.14.2-py2
             module load py-rope/0.10.5-py2
             module load py-scipy/1.0.0-py2
