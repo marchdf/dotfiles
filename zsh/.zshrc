@@ -117,7 +117,7 @@ bindkey "^[[1;5B" down-line-or-history  # [CTRL] + Cursor down
 
 # Use ctrl-p/n to go up/down search
 bindkey "^P" up-line-or-beginning-search
-bindkey "^N" down-line-or-beginning-search
+# bindkey "^N" down-line-or-beginning-search
 
 # fzf setup
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -138,6 +138,9 @@ if [ -f ~/.fzf.zsh ]; then
     bindkey '^X^R' fzf-history-widget-accept
 fi
 
-# Longer history
+# Better history
+HISTFILE=~/.zsh_history
 HISTSIZE=100000
-SAVEHIST=100000
+SAVEHIST=$HISTSIZE
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
