@@ -23,10 +23,6 @@ SPACK_DIR=$HOME/spack
 
 # specify where all the CCSE codes live
 export CCSE_DIR=$HOME/combustion
-export AMREX_HOME=$CCSE_DIR/amrex
-export PELE_HOME=$CCSE_DIR/Pele
-export PELEC_HOME=$PELE_HOME/PeleC
-export PELE_PHYSICS_HOME=$PELE_HOME/PelePhysics
 export MASA_HOME=$CCSE_DIR/install/MASA
 
 #================================================================================
