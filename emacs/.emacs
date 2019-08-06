@@ -204,7 +204,7 @@
   ("C-x b"   . helm-mini)
   ("C-s"     . helm-occur)
   ("C-r"     . helm-occur)
-  :init
+  :config
   (use-package helm-projectile
     :ensure    helm-projectile
     :bind
@@ -261,6 +261,9 @@
   (progn
     (define-key helm-map (kbd "C-s") 'helm-next-line)
     (define-key helm-map (kbd "C-r") 'helm-previous-line))
+
+  ;; Arrow key behavior
+  (customize-set-variable 'helm-ff-lynx-style-map t)
 
   (helm-mode t))
 
@@ -517,6 +520,7 @@
     (insert "\\left[ \\right]") (backward-char 8))
 
   (setq TeX-auto-save t
+        TeX-newline-function 'reindent-then-newline-and-indent
         TeX-parse-self t))
 
 (use-package bibtex

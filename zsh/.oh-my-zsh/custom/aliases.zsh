@@ -16,6 +16,7 @@ alias rmpng="rm *.png"
 alias rmpdf="rm -i *.pdf"
 alias sshot="import ~/Desktop/screenshot.jpg" # screenshot (pick area to grab)
 alias empty_space="printf ''\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n''"
+alias lt="ls -lt"
 
 # Improving CLI
 if [[ -x "$(command -v htop)" ]]; then alias top="htop"; fi
