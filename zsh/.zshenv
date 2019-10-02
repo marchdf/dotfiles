@@ -25,6 +25,11 @@ SPACK_DIR=$HOME/spack
 export CCSE_DIR=$HOME/combustion
 export MASA_HOME=$CCSE_DIR/install/MASA
 
+# CCLS server
+if [ -d "${HOME}/ccls" ]; then
+    export PATH="${HOME}/ccls/Release/:$PATH"
+fi
+
 #================================================================================
 #
 # paths for Mac OSX

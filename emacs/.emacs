@@ -8,7 +8,8 @@
 ;;; - aspell or hunspell
 ;;; - emms-print-metadata
 ;;; - global
-;;; - libclang (after brew install llvm, try something like: cmake -DCMAKE_INSTALL_PREFIX\=/Users/mhenryde/.emacs.d/irony/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH=/usr/local/Cellar/llvm/5.0.1 /usr/local/Cellar/llvm/5.0.1/ /Users/mhenryde/.emacs.d/elpa/irony-20180104.1109/server && cmake --build . --use-stderr --config Release --target install)
+;;; - clang/llvm
+;;; - ccls (instructions below)
 ;;; - mp3info
 ;;; - mpv
 ;;; - shellcheck
@@ -30,12 +31,13 @@
  '(custom-safe-themes
    (quote
     ("03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5e3fc08bcadce4c6785fc49be686a4a82a356db569f55d411258984e952f194a" "7153b82e50b6f7452b4519097f880d968a6eaf6f6ef38cc45a144958e553fbc6" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "bc40f613df8e0d8f31c5eb3380b61f587e1b5bc439212e03d4ea44b26b4f408a" "b571f92c9bfaf4a28cb64ae4b4cdbda95241cd62cf07d942be44dc8f46c491f4" "9ff70d8009ce8da6fa204e803022f8160c700503b6029a8d8880a7a78c5ff2e5" "cd03a600a5f470994ba01dd3d1ff52d5809b59b4a37357fa94ca50a6f7f07473" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "524c8884ab3635936c11344662e2c1b647203721855366facdf726010aed5cb1" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
+ '(helm-ff-lynx-style-map t)
  '(inhibit-startup-screen t)
  '(kill-ring-max 70)
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (elfeed company-shell flyspell-correct flyspell-correct-helm irony company-irony-c-headers flycheck-irony irony-eldoc company-irony intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-gtags helm-git-grep helm-projectile projectile diminish use-package bind-key)))
+    (modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-gtags helm-git-grep helm-projectile projectile diminish use-package bind-key)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -105,56 +107,55 @@
 (use-package company
   :ensure t
   :defer t
-  :after (irony)
+  :after (lsp-mode)
   :bind
   ("C-;" . company-complete-common)
   :config
-  (use-package company-irony
+  (use-package company-lsp
     :ensure t
-    :defer t)
-
-  (use-package company-irony-c-headers
-    :ensure t
-    :defer t)
+    :defer t
+    :commands company-lsp)
 
   (use-package company-shell
     :ensure t
     :defer t)
 
   (setq company-show-numbers t
-        company-backends     '((company-shell company-shell-env company-irony company-irony-c-headers company-gtags)))
+        company-backends     '((company-shell company-shell-env company-gtags company-lsp)))
   (global-company-mode))
 
 
 ;;================================================================================
 ;;
-;; Irony
+;; LSP
 ;;
 ;;================================================================================
-(use-package irony
+(use-package lsp-mode
   :ensure t
   :defer t
-  :init
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-
-(use-package flycheck-irony
-  :after (irony)
+  :commands lsp
+  :hook ((c-mode c++-mode objc-mode) . lsp)
   :config
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  (use-package lsp-ui
+    :ensure t
+    :after (lsp-mode)
+    :hook (lsp-mode . lsp-ui-mode))
 
-(use-package irony-eldoc
-  :after (irony)
-  :config
-  (add-hook 'irony-mode-hook #'irony-eldoc))
+  ;; Servers
+  ;; I need high Sierra or newer for brew install ccls (replaces cquery)
+  ;; So I compiled from source:
+  ;;  $ git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+  ;;  $ cd ccls
+  ;;  $ cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local/opt/llvm -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm/bin/clang++
+  ;;  $ VERBOSE=1 cmake --build Release
+  (use-package ccls
+    :ensure t
+    :after (lsp-mode)
+    :hook ((c-mode c++-mode objc-mode) .
+           (lambda () (require 'ccls) (lsp))))
+
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-file-watch-threshold 20000))
 
 
 ;;================================================================================
@@ -165,6 +166,7 @@
 (use-package flycheck
   :ensure t
   :defer t
+  :hook ((c-mode c++-mode objc-mode) . flycheck-mode)
   :config
   (global-flycheck-mode)
 
@@ -182,12 +184,15 @@
   :config
   (setq projectile-globally-ignored-files
         (append projectile-globally-ignored-files
-                '(".DS_Store"))
+                '(".DS_Store" ".dir-locals.el"))
+        projectile-globally-ignored-directories
+        (append projectile-globally-ignored-directories
+                '(".ccls-cache"))
         projectile-enable-caching t
         projectile-completion-system 'helm
         projectile-switch-project-action 'helm-projectile)
 
-  (projectile-global-mode))
+  (projectile-mode))
 
 (use-package helm
   :ensure t
@@ -370,10 +375,14 @@
   :mode
   ("\\.geo" . c++-mode)  ;; Gmsh files
   ("\\.cu$" . c++-mode)  ;; CUDA files
+  ("\\.C$" . c++-mode)
   :bind
   ("C-M-l" . forloop)
   ("C-M-p" . printf-binding)
   :config
+  (use-package modern-cpp-font-lock
+    :ensure t
+    :hook (c++-mode . modern-c++-font-lock-mode))
 
   (c-add-style "my-cpp-style"
                '("stroustrup"
@@ -1068,7 +1077,7 @@
 (defun emacs-reloaded()
   "Custom startup message."
   (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
-                         (substring (emacs-version) 0 16)
+                         (substring (emacs-version) 0 15)
                          ".")
                   0 0)
   (newline-and-indent) (newline-and-indent))
