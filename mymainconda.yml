@@ -1,0 +1,28 @@
+# Configuring:
+# install miniconda
+# conda config --set ssl_verify false
+# conda env create -f mymainconda.yml
+name: main
+channels: !!python/tuple
+  - defaults
+dependencies:
+  - conda-forge::breathe
+  - h5py
+  - ipython
+  - line_profiler
+  - matplotlib
+  - mpi4py
+  - netcdf4
+  - nose
+  - numba
+  - numpy
+  - pandas
+  - pip
+  - pyyaml
+  - scipy
+  - seaborn
+  - snakeviz
+  - sphinx
+  - yt
+prefix: /home/mhenryde/miniconda3/envs/main
+

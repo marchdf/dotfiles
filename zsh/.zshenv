@@ -54,13 +54,40 @@ fi
 
 #================================================================================
 #
-# paths for NREL HPC (Peregrine)
+# paths for NREL HPC
 #
 #================================================================================
-if [ "${NREL_CLUSTER}" = "peregrine" ] || [ "${NREL_CLUSTER}" = "eagle" ]; then
+if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
 
     # Set scratch
-    export SCRATCH=/scratch/${USER}
+    if [ -d "/scratch/${USER}" ]; then
+        export SCRATCH=/scratch/${USER}
+    fi
+
+    # Set the modules
+    if [ "${NREL_CLUSTER}" = "eagle" ]; then
+        . /etc/bashrc
+        module purge
+        MODULES=modules-2019-05-08
+        COMPILER=gcc-7.4.0
+        module unuse ${MODULEPATH}
+        module use /nopt/nrel/ecom/hpacf/binaries/${MODULES}
+        module use /nopt/nrel/ecom/hpacf/compilers/${MODULES}
+        module use /nopt/nrel/ecom/hpacf/utilities/${MODULES}
+        module use /nopt/nrel/ecom/hpacf/software/${MODULES}/${COMPILER}
+    elif [ "${NREL_CLUSTER}" = "rhodes" ]; then
+        export MODULE_PREFIX=/opt/utilities/modules_prefix
+        export PATH=${MODULE_PREFIX}/bin:${PATH}
+        module() { eval $(${MODULE_PREFIX}/bin/modulecmd $(basename ${SHELL}) $*); }
+
+        MODULES=modules
+        COMPILER=gcc-7.4.0
+        module purge
+        module unuse ${MODULEPATH}
+        module use /opt/compilers/${MODULES}
+        module use /opt/utilities/${MODULES}
+        module use /opt/software/${MODULES}/${COMPILER}
+    fi
 
     # Set the tmp dir to scratch. This is because /tmp was filling up
     # when compiling Nalu with intel compilers and the debug flag
@@ -89,13 +116,13 @@ if [[ ${(%):-%M} = *navier* ]]; then
 
     # TAU stuff
     PATH=$PATH:$HOME/tau-2.23.1/x86_64/bin
-    
+
     # SCALASCA/CUBE stuff
     PATH=$PATH:/opt/cube/bin
-    
+
     # CUDA stuff
     export PATH=/usr/local/cuda/bin:/home/marchdf/MATLAB/R2011a/bin:$PATH
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
     export PATH
-    
+
 fi
