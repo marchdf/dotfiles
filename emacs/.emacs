@@ -654,8 +654,12 @@
 ;;================================================================================
 (use-package org
   :ensure t
+  :bind
+  ("C-c a" . org-agenda)
   :init
-  (setq org-startup-truncated nil))
+  (setq org-startup-truncated nil)
+  (setq org-log-done t)
+  (setq org-agenda-files (list "~/org/work.org")))
 
 
 ;;================================================================================
