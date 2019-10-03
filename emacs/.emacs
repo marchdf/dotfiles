@@ -37,7 +37,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-gtags helm-git-grep helm-projectile projectile diminish use-package bind-key)))
+    (modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -121,7 +121,7 @@
     :defer t)
 
   (setq company-show-numbers t
-        company-backends     '((company-shell company-shell-env company-gtags company-lsp)))
+        company-backends     '((company-shell company-shell-env company-lsp)))
   (global-company-mode))
 
 
@@ -135,11 +135,21 @@
   :defer t
   :commands lsp
   :hook ((c-mode c++-mode objc-mode) . lsp)
+  :bind
+  ("C-c f d" . lsp-find-definition)
+  ("C-c f r" . lsp-find-references)
+  ("C-c f p" . xref-pop-marker-stack)
   :config
   (use-package lsp-ui
     :ensure t
     :after (lsp-mode)
-    :hook (lsp-mode . lsp-ui-mode))
+    :hook (lsp-mode . lsp-ui-mode)
+    :bind
+    ("C-c f u" . lsp-ui-imenu)
+    ("C-c f D" . lsp-ui-peek-find-definitions)
+    ("C-c f R" . lsp-ui-peek-find-references)
+    :config
+    (setq lsp-ui-flycheck-enable t))
 
   ;; Servers
   ;; I need high Sierra or newer for brew install ccls (replaces cquery)
@@ -151,6 +161,9 @@
   (use-package ccls
     :ensure t
     :after (lsp-mode)
+    :bind
+    ("C-c f m" . ccls-member-hierarchy)
+    ("C-c f i" .  ccls-inheritance-hierarchy)
     :hook ((c-mode c++-mode objc-mode) .
            (lambda () (require 'ccls) (lsp))))
 
@@ -229,14 +242,6 @@
     :config
     (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
     (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
-
-  (use-package helm-gtags
-    :ensure    helm-gtags
-    :bind
-    ("C-c f" . helm-gtags-dwim)
-    :config
-    (add-hook 'c-mode-hook 'helm-gtags-mode)
-    (add-hook 'c++-mode-hook 'helm-gtags-mode))
 
   (use-package helm-make
     :ensure    helm-make)
