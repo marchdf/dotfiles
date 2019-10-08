@@ -34,10 +34,10 @@
  '(helm-ff-lynx-style-map t)
  '(inhibit-startup-screen t)
  '(kill-ring-max 70)
- '(org-agenda-files nil)
+ '(org-agenda-files nil t)
  '(package-selected-packages
    (quote
-    (modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
+    (gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -225,6 +225,7 @@
   :config
   (use-package helm-projectile
     :ensure    helm-projectile
+    :diminish helm-projectile-mode
     :bind
     ("C-c p h" . helm-projectile)
     ("C-c p p" . helm-projectile-switch-project)
@@ -387,6 +388,7 @@
   :config
   (use-package modern-cpp-font-lock
     :ensure t
+    :diminish modern-c++-font-lock-mode
     :hook (c++-mode . modern-c++-font-lock-mode))
 
   (c-add-style "my-cpp-style"
