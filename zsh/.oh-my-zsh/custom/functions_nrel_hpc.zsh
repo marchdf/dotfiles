@@ -15,19 +15,14 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
             module load cmake
             module load emacs
             module load git
-            module load global
             module load gnutls
             module load htop
             module load image-magick
             module load libtool
-            module load llvm
             module load python/3.7.3
             module load py-setuptools/40.8.0-py3
-            module load swig
             module load texlive
             module load tmux
-            module load wget
-            module load zsh
         } &> /dev/null
     }
 

@@ -66,9 +66,9 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
 
     # Set the modules
     if [ "${NREL_CLUSTER}" = "eagle" ]; then
-        . /etc/bashrc
+        source /nopt/nrel/utils/lmod/lmod/init/zsh
         module purge
-        MODULES=modules-2019-05-08
+        MODULES=modules
         COMPILER=gcc-7.4.0
         module unuse ${MODULEPATH}
         module use /nopt/nrel/ecom/hpacf/binaries/${MODULES}
