@@ -292,6 +292,19 @@
 
 ;;================================================================================
 ;;
+;; Wgrep
+;;
+;;================================================================================
+(use-package wgrep
+  :ensure t
+  :config
+  (use-package wgrep-helm
+  :ensure t
+  :after (helm wgrep)))
+
+
+;;================================================================================
+;;
 ;; Compile commands inspired from http://www.emacswiki.org/emacs/CompileCommand
 ;;
 ;;================================================================================
@@ -660,7 +673,7 @@
   ("C-c a" . org-agenda)
   :init
   (setq org-startup-truncated nil)
-  (setq org-log-done t)
+  (setq org-log-done 'note)
   (setq org-agenda-files (list "~/org/work.org")))
 
 
@@ -898,7 +911,7 @@
 (use-package music-setup
   :bind
   ("C-c m" . my-music-layout)
-  ("C-c C-p" . go-to-pianobar)
+  ;;("C-c p" . go-to-pianobar)
   :init
   (defvar my-music-directory "~/my_music")
 
