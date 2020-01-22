@@ -37,7 +37,7 @@
  '(org-agenda-files nil t)
  '(package-selected-packages
    (quote
-    (gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
+    (dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -169,6 +169,27 @@
 
   (setq lsp-prefer-flymake nil)
   (setq lsp-file-watch-threshold 20000))
+
+(use-package dap-mode
+  :ensure t
+  :after lsp-mode
+  :functions dap-hydra/nil
+  :config
+  (dap-register-debug-template
+   "LLDB::PeleG"
+   (list :type "lldb"
+         :cwd "/Users/mhenryde/combustion/Pele/PeleG/MyBuild"
+         :request "launch"
+         :program "pelec"
+         :args ["input-3d"]
+         :name "LLDB::PeleG"))
+  :hook ((after-init . dap-mode)
+         (dap-mode . dap-ui-mode)
+         (dap-mode . dap-tooltip-mode)
+         (dap-session-created . (lambda (_args) (dap-hydra)))
+         (dap-stopped . (lambda (_args) (dap-hydra)))
+         (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))
+         ((c-mode c++-mode objc-mode) . (lambda () (require 'dap-lldb)))))
 
 
 ;;================================================================================
