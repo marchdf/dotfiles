@@ -9,7 +9,7 @@
 ;;; - emms-print-metadata
 ;;; - global
 ;;; - clang/llvm
-;;; - ccls (instructions below)
+;;; - ccls
 ;;; - mp3info
 ;;; - mpv
 ;;; - shellcheck
@@ -152,8 +152,7 @@
     (setq lsp-ui-flycheck-enable t))
 
   ;; Servers
-  ;; I need high Sierra or newer for brew install ccls (replaces cquery)
-  ;; So I compiled from source:
+  ;; ccls is in homebrew, to compile from source do:
   ;;  $ git clone --depth=1 --recursive https://github.com/MaskRay/ccls
   ;;  $ cd ccls
   ;;  $ cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local/opt/llvm -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm/bin/clang++
