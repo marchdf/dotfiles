@@ -1,3 +1,5 @@
+.DS_Store
+
 *.pyc
 Pipfile.lock
 
@@ -8,11 +10,15 @@ Pipfile.lock
 bin/bin/irony-server
 
 # emacs files and folders
+*/.emacs.d/.dap-breakpoints
+*/.emacs.d/.extension/
 */.emacs.d/.last-package-update-day
+*/.emacs.d/.lsp-session-v1
 */.emacs.d/abbrev_defs
 */.emacs.d/auto-save-list/
 */.emacs.d/backups/
 */.emacs.d/elpa/
+*/.emacs.d/elpy/
 */.emacs.d/emms/cache
 */.emacs.d/emms/history
 */.emacs.d/emms/scores
@@ -23,3 +29,4 @@ bin/bin/irony-server
 */.emacs.d/recentf
 */.emacs.d/srecode-map.el
 */.emacs.d/tramp
+*/.emacs.d/transient/

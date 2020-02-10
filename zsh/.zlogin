@@ -3,7 +3,6 @@
 # Run these functions on login
 #
 #================================================================================
-$HOME/bin/get_dbus_address.sh
 
 #================================================================================
 #
@@ -18,6 +17,8 @@ export WORKON_HOME=${HOME}/.virtualenvs
 #
 #================================================================================
 if [[ ${(%):-%M} = *laptop* ]]; then
+
+   $HOME/bin/get_dbus_address.sh
    
    # Autostart X at login. Taken from the Arch wiki
    # the -z $DISPLAY returns true if $DISPLAY has zero length
