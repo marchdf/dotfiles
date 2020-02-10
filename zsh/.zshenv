@@ -19,7 +19,9 @@ if [ -d "${DATATHIEF_DIR}" ]; then
 fi
 
 # Spack home directory
-SPACK_DIR="${HOME}/spack"
+if [ -d "${HOME}/spack" ]; then
+    export SPACK_DIR="${HOME}/spack"
+fi
 
 # combustion directory
 export COMBUSTION_DIR="${HOME}/combustion"
