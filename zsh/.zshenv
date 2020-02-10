@@ -40,8 +40,8 @@ if [ "$(uname)" = "Darwin" ]; then
     # github tokens
     source "${HOME}/.github_tokens"
 
-    # homebrew paths
-    export PATH="${HOME}/.brew/bin:${HOME}/.brew/sbin:${PATH}"
+    # homebrew sbin path
+    export PATH="/usr/local/sbin:${PATH}"
 
     # openmpi fails because tmp dir name is too long
     # see: https://www.open-mpi.org/faq/?category=osx
