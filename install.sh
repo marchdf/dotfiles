@@ -21,6 +21,7 @@ install_dotfiles() {
     stow screen
     stow sleepwatcher
     stow tmux
+    stow vscode
     stow woof
     stow zsh
 }
@@ -43,6 +44,7 @@ uninstall_dotfiles() {
     stow -D screen
     stow -D sleepwatcher
     stow -D tmux
+    stow -D vscode
     stow -D woof
     stow -D zsh
 }
