@@ -137,11 +137,6 @@ bindkey "^P" up-line-or-beginning-search
 
 if [ -f ~/.fzf.zsh ]; then
 
-    # Ctrl-t is context aware fuzzy searching
-    export FZF_COMPLETION_TRIGGER=''
-    bindkey '^T' fzf-completion
-    bindkey '^I' $fzf_default_completion
-
     # Ctrl-x Ctrl-R is directly executing the command
     fzf-history-widget-accept() {
         fzf-history-widget
