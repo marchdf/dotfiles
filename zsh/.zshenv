@@ -63,6 +63,8 @@ if [ "$(uname)" = "Darwin" ]; then
 
     # Set vlc for terminal
     alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
+
+    export ZPLUG_HOME=/usr/local/opt/zplug
 fi
 
 

@@ -68,7 +68,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(battery emacs git screen tmux)
+plugins=(battery emacs git screen tmux fasd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -144,6 +144,13 @@ if [ -f ~/.fzf.zsh ]; then
     }
     zle     -N     fzf-history-widget-accept
     bindkey '^X^R' fzf-history-widget-accept
+fi
+
+# zplug
+if [ -d "${ZPLUG_HOME}" ]; then
+    source "${ZPLUG_HOME}/init.zsh"
+    zplug "wookayin/fzf-fasd"
+    zplug load
 fi
 
 # Better history
