@@ -44,6 +44,11 @@ if [ -d "${HOME}/ccls" ]; then
     export PATH="${HOME}/ccls/Release/:${PATH}"
 fi
 
+# Zplug
+if [ -d "${HOME}/.zplug" ]; then
+    export ZPLUG_HOME="${HOME}/.zplug"
+fi
+
 #================================================================================
 #
 # paths for Mac OSX
@@ -64,7 +69,6 @@ if [ "$(uname)" = "Darwin" ]; then
     # Set vlc for terminal
     alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
 
-    export ZPLUG_HOME=/usr/local/opt/zplug
 fi
 
 
