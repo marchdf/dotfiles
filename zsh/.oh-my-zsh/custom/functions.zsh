@@ -40,3 +40,33 @@ function load_spack(){
 function grep_python() {
     grep -r --include=\*.py --exclude-dir=.virtualenvs --exclude-dir=.emacs.d --exclude-dir=spack --exclude-dir=.oh-my-zsh "${1}" ${HOME}
 }
+
+# runs TensorBoard with a comma-separated list of all provided logdirs
+# usage: multitb LOGDIR [LOGDIR...]
+# from: https://github.com/tensorflow/tensorboard/issues/179
+multitb() (
+    set -eu
+    if [ $# -eq 0 ]; then
+        printf >&2 'fatal: provide at least one logdir\n'
+        return 1
+    fi
+    tmpdir="$(mktemp -d)"
+    for arg; do
+        case "${arg}" in
+            /*) ln -s "${arg}" "${tmpdir}/" ;;
+            *) ln -s "${PWD}/${arg}" "${tmpdir}/" ;;
+        esac
+    done
+    exit_code=0
+    \command ls -l "${tmpdir}"
+    printf 'tensorboard --logdir %s\n' "${tmpdir}"
+    tensorboard --logdir "${tmpdir}" || exit_code=$?
+    # This really should be 'find -H "${tmpdir}" -type l -delete` to
+    # account for logdirs whose names start with `.`, which should
+    # behave correctly on any POSIX system, but it is much more clear
+    # that the version below cannot under any circumstances delete the
+    # underlying data (e.g., with non-POSIX-compliant `find`(1)).
+    rm "${tmpdir}"/*
+    rmdir "${tmpdir}"
+    return "${exit_code}"
+)
