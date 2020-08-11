@@ -51,19 +51,21 @@ uninstall_dotfiles() {
 
 # Install virtual environment for the dotfiles
 install_dotfiles_venv(){
-    # Make sure pipenv is installed
-    if ! command -v pipenv >/dev/null 2>&1; then
-        echo "Please install pipenv"
+    # Make sure python3 is installed
+    if ! command -v python3 >/dev/null 2>&1; then
+        echo "Please install python3"
         exit 1
     fi
 
-    # Install packages
-    export WORKON_HOME=${HOME}/.virtualenvs
-    pipenv install
+    local_name=".venv"
+    python3 -m venv "${local_name}"
+    source .venv/bin/activate
+    pip install -r requirements.txt
 
-    # Make it convenient to access
+    export WORKON_HOME=${HOME}/.virtualenvs
     short_name="dotfiles"
-    ln -s "$(pipenv --venv)" "${WORKON_HOME}/${short_name}"
+    rm "${WORKON_HOME}/${short_name}"
+    ln -s "$(pwd)/${local_name}" "${WORKON_HOME}/${short_name}"
 }
 
 
