@@ -34,7 +34,9 @@
  '(helm-ff-lynx-style-map t)
  '(inhibit-startup-screen t)
  '(kill-ring-max 70)
- '(org-agenda-files nil t)
+ '(org-agenda-files
+   (quote
+    ("~/org/hpacf/followup.org" "~/org/work.org" "~/org/hpacf/hpacf.org" "~/org/hpacf/2c00-admin.org")))
  '(package-selected-packages
    (quote
     (yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
@@ -140,12 +142,14 @@
   :ensure t
   :defer t
   :commands lsp
-  :hook ((c-mode c++-mode objc-mode) . lsp)
+  :hook ((c-mode c++-mode objc-mode python-mode) . lsp)
   :bind
   ("C-c f d" . lsp-find-definition)
   ("C-c f r" . lsp-find-references)
   ("C-c f p" . xref-pop-marker-stack)
   :config
+  (setq lsp-pyls-plugins-autopep8-enabled nil)
+  (setq lsp-pyls-plugins-yapf-enabled nil)
   (use-package lsp-ui
     :ensure t
     :after (lsp-mode)
@@ -699,8 +703,7 @@
   ("C-c a" . org-agenda)
   :init
   (setq org-startup-truncated nil)
-  (setq org-log-done 'note)
-  (setq org-agenda-files (list "~/org/work.org")))
+  (setq org-log-done 'note))
 
 
 ;;================================================================================
@@ -776,35 +779,16 @@
 ;; Python
 ;;
 ;;================================================================================
-(use-package elpy
+(use-package python
+  :hook ((python-mode . (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil 'local)))))
+
+(use-package pyvenv
   :ensure t
   :config
-  (if (executable-find "python3")
-      (progn
-        (setq elpy-rpc-python-command "python3")
-        (setq python-shell-interpreter "python3")))
+  (pyvenv-workon "dotfiles"))
 
-  (use-package pyvenv
-    :ensure t
-    :config
-    (pyvenv-workon "dotfiles"))
-
-  (use-package jedi
-    :ensure t)
-
-  ;; Automatically run Black on buffer save
-  (add-hook 'elpy-mode-hook
-            '(lambda ()
-               (add-hook 'before-save-hook 'elpy-black-fix-code nil 'make-it-local)))
-
-  ;; Use flycheck instead of flymake
-  (when (require 'flycheck nil t)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-  (elpy-enable)
-
-  (setq elpy-rpc-backend "jedi"))
+(use-package jedi
+  :ensure t)
 
 
 ;;================================================================================
