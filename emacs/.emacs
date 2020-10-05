@@ -12,6 +12,7 @@
 ;;; - ccls
 ;;; - mp3info
 ;;; - mpv
+;;; - pianobar
 ;;; - shellcheck
 ;;; - vlc
 ;;; - vorbis-tools
@@ -39,7 +40,7 @@
     ("~/org/hpacf/followup.org" "~/org/work.org" "~/org/hpacf/hpacf.org" "~/org/hpacf/2c00-admin.org")))
  '(package-selected-packages
    (quote
-    (yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
+    (pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key)))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -921,7 +922,6 @@
 (use-package music-setup
   :bind
   ("C-c m" . my-music-layout)
-  ;;("C-c p" . go-to-pianobar)
   :init
   (defvar my-music-directory "~/my_music")
 
@@ -965,20 +965,21 @@
           emms-browser-playlist-info-album-format emms-browser-info-album-format
           emms-browser-playlist-info-title-format emms-browser-info-title-format))
 
+  (use-package pianobar
+    :ensure t
+    :bind
+    ("C-c b p" . pianobar-play-or-pause)
+    ("C-c b n" . pianobar-next-song)
+    ("C-c b q" . pianobar-quit)
+    ("C-c b s" . pianobar-change-station)
+    ("C-c b t" . pianobar-ban-current-song)
+    :config
+    (setq pianobar-config t))
+
   (defun my-music-layout ()
     (interactive)
     (delete-other-windows)
-    (emms-smart-browse)
-    (next-multiframe-window)
-    (split-window-vertically)
-    (next-multiframe-window)
-    (cd (getenv "HOME"))
-    (ansi-term (getenv "SHELL") "Pianobar")
-    (next-multiframe-window))
-
-  (defun go-to-pianobar ()
-    (interactive)
-    (switch-to-buffer-other-window "*Pianobar*")))
+    (emms-smart-browse)))
 
 
 ;;================================================================================
