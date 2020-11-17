@@ -10,7 +10,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
         {
             module purge
             module load gcc
-            module load mpich
+            module load mpt
             module load binutils
             module load cmake
             module load emacs
@@ -19,8 +19,8 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
             module load htop
             module load image-magick
             module load libtool
-            module load python/3.7.4
-            module load py-setuptools/41.4.0-py3
+            module load python/3.7.7
+            module load py-setuptools-scm
             module load texlive
             module load tmux
         } &> /dev/null
@@ -29,7 +29,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
     function load_spack_python3 {
 
         {
-            module load python/3.7.4
+            module load python/3.7.7
             #pymodules="$(module --raw --redirect avail | grep -o 'py-[^ ]*py2' | tr '\n' ' ')"
             # echo $pymodules
             while read -r line ; do

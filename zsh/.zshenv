@@ -88,8 +88,10 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
     if [ "${NREL_CLUSTER}" = "eagle" ]; then
         source /nopt/nrel/utils/lmod/lmod/init/zsh
         module purge
-        MODULES=modules
-        COMPILER=gcc-7.4.0
+        MODULES=modules-2020-07
+        COMPILER=gcc-8.4.0 #MPT 2.22
+        #COMPILER=clang-10.0.0 #OpenMPI 4.0.4 w/verbs
+        #COMPILER=intel-18.0.4 #Intel-MPI 2018.4
         module unuse ${MODULEPATH}
         module use /nopt/nrel/ecom/hpacf/binaries/${MODULES}
         module use /nopt/nrel/ecom/hpacf/compilers/${MODULES}
@@ -119,5 +121,8 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
 
     # Nek5000
     export PATH="${HOME}/Nek5000/bin:${PATH}"
+
+    # fasd
+    export PATH="${HOME}/builds/fasd:${PATH}"
 
 fi
