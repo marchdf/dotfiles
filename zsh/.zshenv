@@ -125,4 +125,6 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
     # fasd
     export PATH="${HOME}/builds/fasd:${PATH}"
 
+    export TMPDIR=/scratch/mhenryde/.tmp
+
 fi

@@ -38,4 +38,27 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
         } &> /dev/null
     }
 
+    function pv58server() {
+        source /nopt/nrel/ecom/exawind/exawind/scripts/exawind-env-gcc.sh
+        module load paraview/5.8.1-server
+        case $# in
+            "0" )
+                srun -n 1 -c 1 --cpu_bind=cores pvserver
+                ;;
+            "1" )
+                srun -n $1 -c 1 --cpu_bind=cores pvserver
+                ;;
+        esac
+    }
+
+    function pv58gui() {
+        source /nopt/nrel/ecom/exawind/exawind/scripts/exawind-env-gcc.sh
+        module load paraview/5.8.1-gui
+        vglrun paraview
+    }
+
+    function pvtunnel() {
+        ssh -L 11111:$1:11111 mhenryde@$1
+    }
+
 fi
