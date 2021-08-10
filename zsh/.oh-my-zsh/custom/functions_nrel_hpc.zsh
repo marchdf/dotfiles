@@ -38,6 +38,23 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
         } &> /dev/null
     }
 
+    function pv59server() {
+        source /nopt/nrel/ecom/exawind/exawind/scripts/exawind-env-gcc.sh
+        case $# in
+            "0" )
+                srun -n 1 -c 1 --cpu_bind=cores /nopt/nrel/ecom/exawind/exawind/install/paraview/5.9.0/bin/pvserver
+                ;;
+            "1" )
+                srun -n $1 -c 1 --cpu_bind=cores /nopt/nrel/ecom/exawind/exawind/install/paraview/5.9.0/bin/pvserver
+                ;;
+        esac
+    }
+
+    function pv59gui() {
+        source /nopt/nrel/ecom/exawind/exawind/scripts/exawind-env-gcc.sh
+        vglrun /nopt/nrel/ecom/exawind/exawind/install/paraview/5.9.0/bin/paraview
+    }
+
     function pv58server() {
         source /nopt/nrel/ecom/exawind/exawind/scripts/exawind-env-gcc.sh
         module load paraview/5.8.1-server
