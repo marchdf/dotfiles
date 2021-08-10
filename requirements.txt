@@ -8,9 +8,10 @@ pandas
 pycodestyle
 pydocstyle
 pyflakes
-pyls-black
+python-lsp-black
+python-lsp-server
+pyls-flake8
 pylint
-python-language-server
 scikit-learn
 scipy
 seaborn

@@ -59,7 +59,7 @@ install_dotfiles_venv(){
 
     local_name=".venv"
     python3 -m venv "${local_name}"
-    source .venv/bin/activate
+    source ${local_name}/bin/activate
     pip install -r requirements.txt
 
     export WORKON_HOME=${HOME}/.virtualenvs

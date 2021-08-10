@@ -775,8 +775,9 @@
 ;; Python
 ;;
 ;;================================================================================
-(use-package python
-  :hook ((python-mode . (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil 'local)))))
+(use-package python)
+;; add this to autoformat before saving:
+;;  :hook ((python-mode . (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil 'local)))))
 
 (use-package pyvenv
   :ensure t
