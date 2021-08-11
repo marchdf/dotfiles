@@ -146,6 +146,26 @@
   :config
   (setq lsp-pyls-plugins-autopep8-enabled nil)
   (setq lsp-pyls-plugins-yapf-enabled nil)
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\plt\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\chk\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp_build_dir\\'")
+
+  ;; Increase garbage collection threshold
+  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+  ;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
+  (setq gc-cons-threshold 100000000)
+  (defun my-minibuffer-setup-hook ()
+    (setq gc-cons-threshold most-positive-fixnum))
+
+  (defun my-minibuffer-exit-hook ()
+    (setq gc-cons-threshold 100000000))
+
+  (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+  (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
+
+  ;; Increase the amount of data which Emacs reads from the process
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
   (use-package lsp-ui
     :ensure t
     :after (lsp-mode)
