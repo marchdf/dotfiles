@@ -31,6 +31,7 @@ bin/bin/irony-server
 */.emacs.d/srecode-map.el
 */.emacs.d/tramp
 */.emacs.d/transient/
+*/.emacs.d/eln-cache/
 
 # vscode
 vscode/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin
