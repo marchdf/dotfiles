@@ -23,9 +23,6 @@
 
 [push]
 	default = simple
-
-[diff]
-	tool = meld
 [rerere]
 	enabled = true
 [init]
