@@ -506,8 +506,8 @@
   :init
   ;; Make Fortran indent at the level of the code. Not a fixed width.
   (add-hook 'f90-mode-hook
-            '(lambda ()
-               (setq fortran-comment-indent-style 'relative))))
+            (lambda ()
+              (setq fortran-comment-indent-style 'relative))))
 
 
 ;;================================================================================
@@ -742,13 +742,13 @@
   ;; "This recalls the R statement from your R statement history, but it
   ;; tries to match it with the one which is already on your line."
   (add-hook 'inferior-ess-mode-hook
-            '(lambda nil
-               (define-key inferior-ess-mode-map [\C-up]
-                 'comint-previous-matching-input-from-input)
-               (define-key inferior-ess-mode-map [\C-down]
-                 'comint-next-matching-input-from-input)
-               (define-key inferior-ess-mode-map [\C-x \t]
-                 'comint-dynamic-complete-filename)))
+            (lambda nil
+              (define-key inferior-ess-mode-map [\C-up]
+                'comint-previous-matching-input-from-input)
+              (define-key inferior-ess-mode-map [\C-down]
+                'comint-next-matching-input-from-input)
+              (define-key inferior-ess-mode-map [\C-x \t]
+                'comint-dynamic-complete-filename)))
 
   ;; To assign ":" to "<-" and to stop the assignment of underscore
   ;; (underbar) "_" to "<-"
