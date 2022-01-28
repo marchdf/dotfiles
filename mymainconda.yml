@@ -3,10 +3,11 @@
 # conda config --set ssl_verify false
 # conda env create -f mymainconda.yml
 name: main
-channels: !!python/tuple
+channels:
+  - conda-forge
   - defaults
 dependencies:
-  - conda-forge::breathe
+  - python=3.8
   - h5py
   - ipython
   - line_profiler
@@ -19,10 +20,12 @@ dependencies:
   - pandas
   - pip
   - pyyaml
+  - scikit-learn
   - scipy
   - seaborn
   - snakeviz
   - sphinx
+  - toml
   - yt
 prefix: /home/mhenryde/miniconda3/envs/main
 

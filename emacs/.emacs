@@ -140,6 +140,8 @@
   :commands lsp
   :hook ((c-mode c++-mode objc-mode python-mode) . lsp)
   :bind
+  ("C-c i" . lsp-format-region)
+  ("C-c u" . lsp-format-buffer)
   ("C-c f d" . lsp-find-definition)
   ("C-c f r" . lsp-find-references)
   ("C-c f p" . xref-pop-marker-stack)
@@ -148,6 +150,9 @@
   (setq lsp-pyls-plugins-yapf-enabled nil)
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\plt\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\chk\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\PeleCGoldFiles\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\Submodules\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\submods\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp_build_dir\\'")
 
   ;; Increase garbage collection threshold
@@ -491,10 +496,7 @@
 ;;
 ;;================================================================================
 (use-package clang-format
-  :ensure t
-  :bind
-  ("C-c i" . clang-format-region)
-  ("C-c u" . clang-format-buffer))
+  :ensure t)
 
 
 ;;================================================================================
