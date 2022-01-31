@@ -89,17 +89,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
         source /nopt/nrel/utils/lmod/lmod/init/zsh
         source /nopt/nrel/ecom/hpacf/env.sh
     elif [ "${NREL_CLUSTER}" = "rhodes" ]; then
-        export MODULE_PREFIX=/opt/utilities/modules_prefix
-        export PATH="${MODULE_PREFIX}/bin:${PATH}"
-        module() { eval $(${MODULE_PREFIX}/bin/modulecmd $(basename ${SHELL}) $*); }
-
-        MODULES=modules
-        COMPILER=gcc-7.4.0
-        module purge
-        module unuse ${MODULEPATH}
-        module use /opt/compilers/${MODULES}
-        module use /opt/utilities/${MODULES}
-        module use /opt/software/${MODULES}/${COMPILER}
+        source /opt/base/env.sh
     fi
 
     # Set the tmp dir to scratch. This is because /tmp was filling up
