@@ -8,6 +8,7 @@ channels:
   - defaults
 dependencies:
   - python=3.8
+  - black
   - h5py
   - ipython
   - line_profiler

@@ -87,16 +87,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
     # Set the modules
     if [ "${NREL_CLUSTER}" = "eagle" ]; then
         source /nopt/nrel/utils/lmod/lmod/init/zsh
-        module purge
-        MODULES=modules-2020-07
-        COMPILER=gcc-8.4.0 #MPT 2.22
-        #COMPILER=clang-10.0.0 #OpenMPI 4.0.4 w/verbs
-        #COMPILER=intel-18.0.4 #Intel-MPI 2018.4
-        module unuse ${MODULEPATH}
-        module use /nopt/nrel/ecom/hpacf/binaries/${MODULES}
-        module use /nopt/nrel/ecom/hpacf/compilers/${MODULES}
-        module use /nopt/nrel/ecom/hpacf/utilities/${MODULES}
-        module use /nopt/nrel/ecom/hpacf/software/${MODULES}/${COMPILER}
+        source /nopt/nrel/ecom/hpacf/env.sh
     elif [ "${NREL_CLUSTER}" = "rhodes" ]; then
         export MODULE_PREFIX=/opt/utilities/modules_prefix
         export PATH="${MODULE_PREFIX}/bin:${PATH}"
