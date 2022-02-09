@@ -248,10 +248,10 @@
   :config
   (setq projectile-globally-ignored-files
         (append projectile-globally-ignored-files
-                '(".DS_Store" ".dir-locals.el"))
+                '(".DS_Store" ".dir-locals.el" ".pyc"))
         projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
-                '(".ccls-cache"))
+                '("build" "__pycache__"))
         projectile-enable-caching t
         projectile-completion-system 'helm
         projectile-switch-project-action 'helm-projectile)
@@ -1130,8 +1130,7 @@
 (defun emacs-reloaded()
   "Custom startup message."
   (animate-string (concat";;Initialization successful. Greetings, Commander, and welcome to a world of pain: "
-                         (substring (emacs-version) 0 15)
-                         ".")
+                         (substring (emacs-version) 0 15))
                   0 0)
   (newline-and-indent) (newline-and-indent))
 (add-hook 'after-init-hook 'emacs-reloaded)
