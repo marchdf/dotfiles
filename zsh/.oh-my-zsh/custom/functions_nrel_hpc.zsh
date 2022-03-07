@@ -30,11 +30,9 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
 
         {
             module load python/3.7.7
-            #pymodules="$(module --raw --redirect avail | grep -o 'py-[^ ]*py2' | tr '\n' ' ')"
-            # echo $pymodules
             while read -r line ; do
                 module load $line
-            done < <(module --raw --redirect avail | grep -o 'py-[^ ]*py3')
+            done < <(module --raw --redirect avail | grep -o 'py-\S*')
         } &> /dev/null
     }
 

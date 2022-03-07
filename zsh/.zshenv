@@ -108,4 +108,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
 
     export TMPDIR=/scratch/mhenryde/.tmp
 
+    export SPACK_MANAGER=${HOME}/exawind/spack-manager
+    source ${SPACK_MANAGER}/start.sh
+
 fi
