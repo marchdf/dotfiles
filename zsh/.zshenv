@@ -49,6 +49,12 @@ if [ -d "${HOME}/.zplug" ]; then
     export ZPLUG_HOME="${HOME}/.zplug"
 fi
 
+# spack-manager
+if [ -d "${HOME}/exawind/spack-manager" ]; then
+    export SPACK_MANAGER=${HOME}/exawind/spack-manager
+    source ${SPACK_MANAGER}/start.sh
+fi
+
 #================================================================================
 #
 # paths for Mac OSX
@@ -107,8 +113,5 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
     export PATH="${HOME}/builds/fasd:${PATH}"
 
     export TMPDIR=/scratch/mhenryde/.tmp
-
-    export SPACK_MANAGER=${HOME}/exawind/spack-manager
-    source ${SPACK_MANAGER}/start.sh
 
 fi
