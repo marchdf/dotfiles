@@ -38,3 +38,9 @@ vscode/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin
 vscode/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/lib
 vscode/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/node_modules
 vscode/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/package*.json
+
+# karabiner
+karabiner/.config/karabiner/automatic_backups/
+
+# emacs
+emacs/emacs.d-bkp/
