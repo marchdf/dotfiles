@@ -37,7 +37,7 @@
  '(org-agenda-files
    '("~/org/hpacf/followup.org" "~/org/work.org" "~/org/hpacf/hpacf.org" "~/org/hpacf/2c00-admin.org"))
  '(package-selected-packages
-   '(pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
+   '(consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -242,92 +242,142 @@
 ;; Projectile and helm
 ;;
 ;;================================================================================
-(use-package projectile
+;; (use-package projectile
+;;   :ensure t
+;;   :diminish projectile-mode
+;;   :config
+;;   (setq projectile-globally-ignored-files
+;;         (append projectile-globally-ignored-files
+;;                 '(".DS_Store" ".dir-locals.el" ".pyc"))
+;;         projectile-globally-ignored-directories
+;;         (append projectile-globally-ignored-directories
+;;                 '("build" "__pycache__"))
+;;         projectile-enable-caching t
+;;         projectile-completion-system 'helm
+;;         projectile-switch-project-action 'helm-projectile)
+
+;;   (projectile-mode))
+
+;; (use-package helm
+;;   :ensure t
+;;   :diminish helm-mode
+;;   :bind
+;;   ("M-x"     . helm-M-x)
+;;   ("C-x C-f" . helm-find-files)
+;;   ("C-x r l" . helm-bookmarks)
+;;   ("C-h i"   . helm-google-suggest)
+;;   ("M-y"     . helm-show-kill-ring)
+;;   ("C-h a"   . helm-apropos)
+;;   ("C-x p"   . helm-top)
+;;   ("C-x C-b" . helm-buffers-list)
+;;   ("C-x b"   . helm-mini)
+;;   ("C-s"     . helm-occur)
+;;   ("C-r"     . helm-occur)
+;;   :config
+;;   (use-package helm-projectile
+;;     :ensure    helm-projectile
+;;     :diminish helm-projectile-mode
+;;     :bind
+;;     ("C-c p h" . helm-projectile)
+;;     ("C-c p p" . helm-projectile-switch-project)
+;;     ("C-c p f" . helm-projectile-find-file)
+;;     ("C-c p g" . helm-projectile-find-file-dwim)
+;;     ("C-c p a" . helm-projectile-find-other-file)
+;;     ("C-c p e" . helm-projectile-recentf)
+;;     :config
+;;     (setq shell-file-name "/bin/bash"))
+
+;;   (use-package helm-git-grep
+;;     :ensure    helm-git-grep
+;;     :bind
+;;     ("C-c g" . helm-git-grep)
+;;     :config
+;;     (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
+;;     (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
+
+;;   (use-package helm-make
+;;     :ensure    helm-make)
+
+;;   ;; Enable helm-follow-mode for some helm sources
+;;   (defvar my-helm-follow-sources '()
+;;     "List of sources for which helm-follow-mode should be enabled")
+
+;;   (add-to-list 'my-helm-follow-sources 'helm-source-occur)
+;;   (add-to-list 'my-helm-follow-sources 'helm-source-moccur)
+;;   (add-to-list 'my-helm-follow-sources 'helm-source-grep-ag)
+;;   (add-to-list 'my-helm-follow-sources 'helm-source-grep)
+
+;;   (defun my-helm-set-follow ()
+;;     """Enable helm-follow-mode for the sources specified in the
+;;     list variable `my-helm-follow-sources'. This function is
+;;     meant to be run during `helm-initialize' and should be added
+;;     to the hook `helm-before-initialize-hook'."""
+;;     (mapc (lambda (source)
+;;             (when (memq source my-helm-follow-sources)
+;;               (helm-attrset 'follow 1 (symbol-value source))))
+;;           helm-sources))
+
+;;   (add-hook 'helm-before-initialize-hook 'my-helm-set-follow)
+
+;;   ;; C-s/C-r like C-n/C-p
+;;   (progn
+;;     (define-key helm-map (kbd "C-s") 'helm-next-line)
+;;     (define-key helm-map (kbd "C-r") 'helm-previous-line))
+
+;;   ;; Arrow key behavior
+;;   (customize-set-variable 'helm-ff-lynx-style-map t)
+
+;;   (helm-mode t))
+
+;;================================================================================
+;;
+;; Selectrum
+;;
+;;================================================================================
+(use-package selectrum
   :ensure t
-  :diminish projectile-mode
+  :init
+  (selectrum-mode +1))
+
+(use-package prescient
+  :ensure t
+  :after selectrum
   :config
-  (setq projectile-globally-ignored-files
-        (append projectile-globally-ignored-files
-                '(".DS_Store" ".dir-locals.el" ".pyc"))
-        projectile-globally-ignored-directories
-        (append projectile-globally-ignored-directories
-                '("build" "__pycache__"))
-        projectile-enable-caching t
-        projectile-completion-system 'helm
-        projectile-switch-project-action 'helm-projectile)
+  (prescient-persist-mode +1))
 
-  (projectile-mode))
-
-(use-package helm
+(use-package selectrum-prescient
   :ensure t
-  :diminish helm-mode
+  :after selectrum
+  :init
+  (selectrum-prescient-mode +1))
+
+(use-package consult
   :bind
-  ("M-x"     . helm-M-x)
-  ("C-x C-f" . helm-find-files)
-  ("C-x r l" . helm-bookmarks)
-  ("C-h i"   . helm-google-suggest)
-  ("M-y"     . helm-show-kill-ring)
-  ("C-h a"   . helm-apropos)
-  ("C-x p"   . helm-top)
-  ("C-x C-b" . helm-buffers-list)
-  ("C-x b"   . helm-mini)
-  ("C-s"     . helm-occur)
-  ("C-r"     . helm-occur)
+  (("C-c h" . consult-history)
+   ("C-x b" . consult-buffer)
+   ("M-g g" . consult-goto-line)
+   ("M-g M-g" . consult-goto-line)
+   ("C-c g" . consult-git-grep)
+   ("M-s l" . consult-line)
+   ;; Isearch integration
+   ("M-s e" . consult-isearch-history)
+   :map isearch-mode-map
+   ("M-e" . consult-isearch-history)
+   ("M-s e" . consult-isearch-history)
+   ("M-s l" . consult-line)
+   ("M-s L" . consult-line-multi))
   :config
-  (use-package helm-projectile
-    :ensure    helm-projectile
-    :diminish helm-projectile-mode
-    :bind
-    ("C-c p h" . helm-projectile)
-    ("C-c p p" . helm-projectile-switch-project)
-    ("C-c p f" . helm-projectile-find-file)
-    ("C-c p g" . helm-projectile-find-file-dwim)
-    ("C-c p a" . helm-projectile-find-other-file)
-    ("C-c p e" . helm-projectile-recentf)
-    :config
-    (setq shell-file-name "/bin/bash"))
+  )
 
-  (use-package helm-git-grep
-    :ensure    helm-git-grep
-    :bind
-    ("C-c g" . helm-git-grep)
-    :config
-    (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
-    (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
-
-  (use-package helm-make
-    :ensure    helm-make)
-
-  ;; Enable helm-follow-mode for some helm sources
-  (defvar my-helm-follow-sources '()
-    "List of sources for which helm-follow-mode should be enabled")
-
-  (add-to-list 'my-helm-follow-sources 'helm-source-occur)
-  (add-to-list 'my-helm-follow-sources 'helm-source-moccur)
-  (add-to-list 'my-helm-follow-sources 'helm-source-grep-ag)
-  (add-to-list 'my-helm-follow-sources 'helm-source-grep)
-
-  (defun my-helm-set-follow ()
-    """Enable helm-follow-mode for the sources specified in the
-    list variable `my-helm-follow-sources'. This function is
-    meant to be run during `helm-initialize' and should be added
-    to the hook `helm-before-initialize-hook'."""
-    (mapc (lambda (source)
-            (when (memq source my-helm-follow-sources)
-              (helm-attrset 'follow 1 (symbol-value source))))
-          helm-sources))
-
-  (add-hook 'helm-before-initialize-hook 'my-helm-set-follow)
-
-  ;; C-s/C-r like C-n/C-p
-  (progn
-    (define-key helm-map (kbd "C-s") 'helm-next-line)
-    (define-key helm-map (kbd "C-r") 'helm-previous-line))
-
-  ;; Arrow key behavior
-  (customize-set-variable 'helm-ff-lynx-style-map t)
-
-  (helm-mode t))
+;;================================================================================
+;;
+;; Enable richer annotations using the Marginalia package
+;;
+;;================================================================================
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
 
 
 ;;================================================================================
@@ -1073,28 +1123,40 @@
 ;;================================================================================
 (use-package hydra
   :ensure t
+  :after consult
   :bind
-  ("C-y" . hydra-yank-pop/yank)
-  ("M-y" . hydra-yank-pop/yank-pop)
-  ("C-n" . hydra-move/next-line)
-  ("C-p" . hydra-move/previous-line)
-  ("C-f" . hydra-move/forward-char)
-  ("C-b" . hydra-move/backward-char)
-  ("C-a" . hydra-move/beginning-of-line)
-  ("C-e" . hydra-move/move-end-of-line)
-  ("C-v" . hydra-move/scroll-up-command)
-  ("M-v" . hydra-move/scroll-down-command)
-  ("C-l" . hydra-move/recenter-top-bottom)
+  (("C-y" . hydra-yank-pop/yank)
+   ("M-y" . hydra-yank-pop/yank-pop)
+   ("C-n" . hydra-move/next-line)
+   ("C-p" . hydra-move/previous-line)
+   ("C-f" . hydra-move/forward-char)
+   ("C-b" . hydra-move/backward-char)
+   ("C-a" . hydra-move/beginning-of-line)
+   ("C-e" . hydra-move/move-end-of-line)
+   ("C-v" . hydra-move/scroll-up-command)
+   ("M-v" . hydra-move/scroll-down-command)
+   ("C-l" . hydra-move/recenter-top-bottom)
+   :map minibuffer-local-map
+   ("C-n" . next-line)
+   ("C-p" . previous-line)
+   ("C-f" . forward-char)
+   ("C-b" . backward-char)
+   ("C-a" . beginning-of-line)
+   ("C-a" . beginning-of-line)
+   ("C-a" . beginning-of-line)
+   ("C-e" . move-end-of-line)
+   ("C-v" . scroll-up-command)
+   ("M-v" . scroll-down-command)
+   ("C-l" . recenter-top-bottom))
   :config
 
-  ;; Core emacs
   (defhydra hydra-yank-pop ()
     "yank"
-    ("C-y" yank nil)
-    ("M-y" yank-pop nil)
-    ("y" (yank-pop 1) "next")
-    ("Y" (yank-pop -1) "prev")
-    ("l" helm-show-kill-ring "list" :color blue))
+    ("C-y" consult-yank nil)
+    ("M-y" consult-yank-pop nil)
+    ("y" (consult-yank-pop 1) "next")
+    ("Y" (consult-yank-pop -1) "prev")
+    ("l" consult-yank-from-kill-ring "list" :color blue))
 
   (defhydra hydra-move ()
     "move"
