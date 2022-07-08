@@ -337,7 +337,9 @@
 (use-package selectrum
   :ensure t
   :init
-  (selectrum-mode +1))
+  (selectrum-mode +1)
+  :custom
+  (selectrum-cycle-movement t))
 
 (use-package prescient
   :ensure t
