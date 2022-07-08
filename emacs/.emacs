@@ -359,15 +359,13 @@
    ("M-g M-g" . consult-goto-line)
    ("C-c g" . consult-git-grep)
    ("M-s l" . consult-line)
-   ;; Isearch integration
-   ("M-s e" . consult-isearch-history)
-   :map isearch-mode-map
-   ("M-e" . consult-isearch-history)
-   ("M-s e" . consult-isearch-history)
-   ("M-s l" . consult-line)
-   ("M-s L" . consult-line-multi))
+   ("C-s" . consult-line-symbol-at-point)
+   ("C-r" . consult-line-symbol-at-point))
   :config
-  )
+  (defun consult-line-symbol-at-point ()
+    (interactive)
+    (consult-line (thing-at-point 'symbol))))
+
 
 ;;================================================================================
 ;;
@@ -1152,8 +1150,8 @@
 
   (defhydra hydra-yank-pop ()
     "yank"
-    ("C-y" consult-yank nil)
-    ("M-y" consult-yank-pop nil)
+    ("C-y" yank nil)
+    ("M-y" yank-pop nil)
     ("y" (consult-yank-pop 1) "next")
     ("Y" (consult-yank-pop -1) "prev")
     ("l" consult-yank-from-kill-ring "list" :color blue))
