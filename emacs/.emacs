@@ -541,6 +541,7 @@
   ("\\.geo" . c++-mode)  ;; Gmsh files
   ("\\.cu$" . c++-mode)  ;; CUDA files
   ("\\.C$" . c++-mode)
+  ("\\.H$" . c++-mode)
   :bind
   ("C-M-l" . forloop)
   ("C-M-p" . printf-binding)
