@@ -103,6 +103,16 @@
 
 ;;================================================================================
 ;;
+;; recentf
+;;
+;;================================================================================
+(use-package recentf
+  :config
+  (recentf-mode 1))
+
+
+;;================================================================================
+;;
 ;; Code completion
 ;;
 ;;================================================================================
@@ -246,6 +256,11 @@
   :diminish projectile-mode
   :bind
   ("C-c p a" . projectile-find-other-file)
+  ("C-c p p" . projectile-switch-project)
+  ("C-c p f" . projectile-find-file)
+  ("C-c p d" . projectile-find-dir)
+  ("C-c p b" . projectile-switch-to-buffer)
+  ("C-c p e" . projectile-recentf)
   :config
   (setq projectile-globally-ignored-files
         (append projectile-globally-ignored-files
@@ -329,10 +344,12 @@
   :after (consult projectile)
   :bind
   ("C-c p h" . consult-projectile)
-  ("C-c p p" . consult-projectile-switch-project)
-  ("C-c p b" . consult-projectile-switch-to-buffer)
-  ("C-c p f" . consult-projectile-find-file)
-  ("C-c p e" . consult-projectile-recentf))
+  ([remap projectile-switch-project] . consult-projectile-switch-project)
+  ([remap projectile-find-file] . consult-projectile-find-file)
+  ([remap projectile-find-dir] . consult-projectile-find-dir)
+  ([remap projectile-switch-to-buffer] . consult-projectile-switch-to-buffer)
+  ([remap projectile-recentf] . consult-projectile-recentf))
+
 
 ;;================================================================================
 ;;
