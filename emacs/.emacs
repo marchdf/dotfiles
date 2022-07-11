@@ -31,13 +31,12 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5e3fc08bcadce4c6785fc49be686a4a82a356db569f55d411258984e952f194a" "7153b82e50b6f7452b4519097f880d968a6eaf6f6ef38cc45a144958e553fbc6" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "bc40f613df8e0d8f31c5eb3380b61f587e1b5bc439212e03d4ea44b26b4f408a" "b571f92c9bfaf4a28cb64ae4b4cdbda95241cd62cf07d942be44dc8f46c491f4" "9ff70d8009ce8da6fa204e803022f8160c700503b6029a8d8880a7a78c5ff2e5" "cd03a600a5f470994ba01dd3d1ff52d5809b59b4a37357fa94ca50a6f7f07473" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "524c8884ab3635936c11344662e2c1b647203721855366facdf726010aed5cb1" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default))
- '(helm-ff-lynx-style-map t)
  '(inhibit-startup-screen t)
  '(kill-ring-max 70)
  '(org-agenda-files
    '("~/org/hpacf/followup.org" "~/org/work.org" "~/org/hpacf/hpacf.org" "~/org/hpacf/2c00-admin.org"))
  '(package-selected-packages
-   '(consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
+   '(consult-company consult-flycheck consult-flyspell consult-lsp consult-projectile embark embark-consult consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -118,7 +117,7 @@
   :defer t
   :after (lsp-mode)
   :bind
-  ("C-;" . company-complete-common)
+  ;;("M-[" . company-complete-common)
   :config
   (use-package company-shell
     :ensure t
@@ -142,9 +141,9 @@
   :bind
   ("C-c i" . lsp-format-region)
   ("C-c u" . lsp-format-buffer)
-  ("C-c f d" . lsp-find-definition)
-  ("C-c f r" . lsp-find-references)
-  ("C-c f p" . xref-pop-marker-stack)
+  ;;("C-c f d" . lsp-find-definition)
+  ;;("C-c f r" . lsp-find-references)
+  ;;("C-c f p" . xref-pop-marker-stack)
   :config
   (setq lsp-pyls-plugins-autopep8-enabled nil)
   (setq lsp-pyls-plugins-yapf-enabled nil)
@@ -239,95 +238,25 @@
 
 ;;================================================================================
 ;;
-;; Projectile and helm
+;; Projectile
 ;;
 ;;================================================================================
-;; (use-package projectile
-;;   :ensure t
-;;   :diminish projectile-mode
-;;   :config
-;;   (setq projectile-globally-ignored-files
-;;         (append projectile-globally-ignored-files
-;;                 '(".DS_Store" ".dir-locals.el" ".pyc"))
-;;         projectile-globally-ignored-directories
-;;         (append projectile-globally-ignored-directories
-;;                 '("build" "__pycache__"))
-;;         projectile-enable-caching t
-;;         projectile-completion-system 'helm
-;;         projectile-switch-project-action 'helm-projectile)
+(use-package projectile
+  :ensure t
+  :diminish projectile-mode
+  :bind
+  ("C-c p a" . projectile-find-other-file)
+  :config
+  (setq projectile-globally-ignored-files
+        (append projectile-globally-ignored-files
+                '(".DS_Store" ".dir-locals.el" ".pyc"))
+        projectile-globally-ignored-directories
+        (append projectile-globally-ignored-directories
+                '("build" "__pycache__" "Build"))
+        projectile-enable-caching t
+        projectile-completion-system 'default)
 
-;;   (projectile-mode))
-
-;; (use-package helm
-;;   :ensure t
-;;   :diminish helm-mode
-;;   :bind
-;;   ("M-x"     . helm-M-x)
-;;   ("C-x C-f" . helm-find-files)
-;;   ("C-x r l" . helm-bookmarks)
-;;   ("C-h i"   . helm-google-suggest)
-;;   ("M-y"     . helm-show-kill-ring)
-;;   ("C-h a"   . helm-apropos)
-;;   ("C-x p"   . helm-top)
-;;   ("C-x C-b" . helm-buffers-list)
-;;   ("C-x b"   . helm-mini)
-;;   ("C-s"     . helm-occur)
-;;   ("C-r"     . helm-occur)
-;;   :config
-;;   (use-package helm-projectile
-;;     :ensure    helm-projectile
-;;     :diminish helm-projectile-mode
-;;     :bind
-;;     ("C-c p h" . helm-projectile)
-;;     ("C-c p p" . helm-projectile-switch-project)
-;;     ("C-c p f" . helm-projectile-find-file)
-;;     ("C-c p g" . helm-projectile-find-file-dwim)
-;;     ("C-c p a" . helm-projectile-find-other-file)
-;;     ("C-c p e" . helm-projectile-recentf)
-;;     :config
-;;     (setq shell-file-name "/bin/bash"))
-
-;;   (use-package helm-git-grep
-;;     :ensure    helm-git-grep
-;;     :bind
-;;     ("C-c g" . helm-git-grep)
-;;     :config
-;;     (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
-;;     (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
-
-;;   (use-package helm-make
-;;     :ensure    helm-make)
-
-;;   ;; Enable helm-follow-mode for some helm sources
-;;   (defvar my-helm-follow-sources '()
-;;     "List of sources for which helm-follow-mode should be enabled")
-
-;;   (add-to-list 'my-helm-follow-sources 'helm-source-occur)
-;;   (add-to-list 'my-helm-follow-sources 'helm-source-moccur)
-;;   (add-to-list 'my-helm-follow-sources 'helm-source-grep-ag)
-;;   (add-to-list 'my-helm-follow-sources 'helm-source-grep)
-
-;;   (defun my-helm-set-follow ()
-;;     """Enable helm-follow-mode for the sources specified in the
-;;     list variable `my-helm-follow-sources'. This function is
-;;     meant to be run during `helm-initialize' and should be added
-;;     to the hook `helm-before-initialize-hook'."""
-;;     (mapc (lambda (source)
-;;             (when (memq source my-helm-follow-sources)
-;;               (helm-attrset 'follow 1 (symbol-value source))))
-;;           helm-sources))
-
-;;   (add-hook 'helm-before-initialize-hook 'my-helm-set-follow)
-
-;;   ;; C-s/C-r like C-n/C-p
-;;   (progn
-;;     (define-key helm-map (kbd "C-s") 'helm-next-line)
-;;     (define-key helm-map (kbd "C-r") 'helm-previous-line))
-
-;;   ;; Arrow key behavior
-;;   (customize-set-variable 'helm-ff-lynx-style-map t)
-
-;;   (helm-mode t))
+  (projectile-mode))
 
 ;;================================================================================
 ;;
@@ -341,11 +270,6 @@
   :custom
   (selectrum-cycle-movement t))
 
-(use-package prescient
-  :ensure t
-  :after selectrum
-  :config
-  (prescient-persist-mode +1))
 
 (use-package selectrum-prescient
   :ensure t
@@ -353,6 +277,22 @@
   :init
   (selectrum-prescient-mode +1))
 
+;;================================================================================
+;;
+;; Prescient
+;;
+;;================================================================================
+(use-package prescient
+  :ensure t
+  :after selectrum
+  :config
+  (prescient-persist-mode +1))
+
+;;================================================================================
+;;
+;; Consult
+;;
+;;================================================================================
 (use-package consult
   :bind
   (("C-c h" . consult-history)
@@ -360,14 +300,75 @@
    ("M-g g" . consult-goto-line)
    ("M-g M-g" . consult-goto-line)
    ("C-c g" . consult-git-grep)
-   ("M-s l" . consult-line)
+   ("C-c f" . consult-git-grep-symbol-at-point)
    ("C-s" . consult-line-symbol-at-point)
    ("C-r" . consult-line-symbol-at-point))
   :config
   (defun consult-line-symbol-at-point ()
+    "Use symbol at point for consult-line."
     (interactive)
-    (consult-line (thing-at-point 'symbol))))
+    (consult-line (thing-at-point 'symbol)))
+  (defun consult-git-grep-symbol-at-point ()
+    "Use symbol at point for consult-git-grep."
+    (interactive)
+    (require 'project)
+    (consult-git-grep (project-root (project-current)) (thing-at-point 'symbol))))
 
+(use-package consult-company
+  :ensure t
+  :after (consult company)
+  :config
+  (define-key company-mode-map [remap completion-at-point] #'consult-company))
+
+(use-package consult-lsp
+  :ensure t
+  :after (consult lsp))
+
+(use-package consult-projectile
+  :ensure t
+  :after (consult projectile)
+  :bind
+  ("C-c p h" . consult-projectile)
+  ("C-c p p" . consult-projectile-switch-project)
+  ("C-c p b" . consult-projectile-switch-to-buffer)
+  ("C-c p f" . consult-projectile-find-file)
+  ("C-c p e" . consult-projectile-recentf))
+
+;;================================================================================
+;;
+;; Embark
+;;
+;;================================================================================
+(use-package embark
+  :ensure t
+  :after consult
+  :bind
+  (("M-." . embark-act)
+   ("M-," . embark-dwim)
+   :map embark-general-map
+   ("C-s" . consult-line)
+   ("C-c g" . embark-consult-git-grep))
+  :custom
+  (embark-help-key "?")
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  (defun embark-consult-git-grep (target)
+    "Use consult-git-grep on target."
+    (consult-git-grep nil target))
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :demand t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;;================================================================================
 ;;
@@ -388,7 +389,7 @@
 (use-package avy
   :ensure t
   :bind
-  ("C-c ," . avy-goto-char))
+  ("M-;" . avy-goto-char-timer))
 
 
 ;;================================================================================
@@ -409,11 +410,7 @@
 ;;
 ;;================================================================================
 (use-package wgrep
-  :ensure t
-  :config
-  (use-package wgrep-helm
-  :ensure t
-  :after (helm wgrep)))
+  :ensure t)
 
 
 ;;================================================================================
@@ -525,7 +522,6 @@
                   (arglist-close . 0))))
 
   (defun my-cpp-mode-hook ()
-    (setq-default helm-make-build-dir "build")
     (add-to-list 'projectile-other-file-alist
                  '("C" "H" "hpp" "hxx"))
     (add-to-list 'projectile-other-file-alist
@@ -701,10 +697,7 @@
     (use-package flyspell-correct
       :ensure t
       :bind
-      ("C-c s" . 'flyspell-correct-previous-word-generic)
-      :init
-      (use-package flyspell-correct-helm
-        :ensure t))
+      ("C-c s" . 'flyspell-correct-previous-word-generic))
 
     ;; No spell check for embedded snippets in org-mode
     ;; From http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled/9347#9347
@@ -1235,10 +1228,9 @@
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-M-i") 'indent-region)
     (define-key map (kbd "C-c C-z") 'comment-region)
-    (define-key map (kbd "M-,") 'previous-buffer)
-    (define-key map (kbd "M-.") 'next-buffer)
     (define-key map (kbd "M-R") 'kill-rectangle)
     (define-key map (kbd "M-r") 'yank-rectangle)
+    (define-key map (kbd "M-k") 'kill-whole-line)
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "C-c M-z") 'uncomment-region)
     map)
