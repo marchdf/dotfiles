@@ -141,9 +141,9 @@
   :bind
   ("C-c i" . lsp-format-region)
   ("C-c u" . lsp-format-buffer)
-  ;;("C-c f d" . lsp-find-definition)
-  ;;("C-c f r" . lsp-find-references)
-  ;;("C-c f p" . xref-pop-marker-stack)
+  ("C-c f d" . lsp-find-definition)
+  ("C-c f r" . lsp-find-references)
+  ("C-c f p" . xref-pop-marker-stack)
   :config
   (setq lsp-pyls-plugins-autopep8-enabled nil)
   (setq lsp-pyls-plugins-yapf-enabled nil)
@@ -300,7 +300,7 @@
    ("M-g g" . consult-goto-line)
    ("M-g M-g" . consult-goto-line)
    ("C-c g" . consult-git-grep)
-   ("C-c f" . consult-git-grep-symbol-at-point)
+   ("C-c s" . consult-git-grep-symbol-at-point)
    ("C-s" . consult-line-symbol-at-point)
    ("C-r" . consult-line-symbol-at-point))
   :config
@@ -389,7 +389,26 @@
 (use-package avy
   :ensure t
   :bind
-  ("M-;" . avy-goto-char-timer))
+  ("M-;" . avy-goto-char-timer)
+  ("M-j" . hydra-avy/body)
+  :config
+  (defhydra hydra-avy (:exit t :hint nil)
+    "
+ Line^^       Region^^        Goto
+----------------------------------------------------------
+ [_y_] yank   [_Y_] yank      [_c_] timed char
+ [_m_] move   [_M_] move      [_w_] word
+ [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
+    ("c" avy-goto-char-timer)
+    ("w" avy-goto-word-1)
+    ("l" avy-goto-line)
+    ("L" avy-goto-end-of-line)
+    ("m" avy-move-line)
+    ("M" avy-move-region)
+    ("k" avy-kill-whole-line)
+    ("K" avy-kill-region)
+    ("y" avy-copy-line)
+    ("Y" avy-copy-region)))
 
 
 ;;================================================================================
@@ -697,7 +716,8 @@
     (use-package flyspell-correct
       :ensure t
       :bind
-      ("C-c s" . 'flyspell-correct-previous-word-generic))
+      ;;("C-c s" . 'flyspell-correct-previous-word-generic)
+      )
 
     ;; No spell check for embedded snippets in org-mode
     ;; From http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled/9347#9347
