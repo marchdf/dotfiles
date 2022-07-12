@@ -1154,7 +1154,7 @@
 ;;================================================================================
 (use-package hydra
   :ensure t
-  :after consult
+  :after (consult avy)
   :bind
   (("C-y" . hydra-yank-pop/yank)
    ("M-y" . hydra-yank-pop/yank-pop)
@@ -1199,7 +1199,8 @@
     ("e" move-end-of-line)
     ("v" scroll-up-command)
     ("V" scroll-down-command)
-    ("l" recenter-top-bottom)))
+    ("l" recenter-top-bottom)
+    (";" avy-goto-char-timer :color blue)))
 
 
 ;;================================================================================
