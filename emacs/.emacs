@@ -125,7 +125,6 @@
 (use-package company
   :ensure t
   :defer t
-  :after (lsp-mode)
   :bind
   ;;("M-[" . company-complete-common)
   :config
@@ -188,6 +187,8 @@
     ("C-c f u" . lsp-ui-imenu)
     ("C-c f D" . lsp-ui-peek-find-definitions)
     ("C-c f R" . lsp-ui-peek-find-references)
+    ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+    ([remap xref-find-references] . lsp-ui-peek-find-references)
     :config
     (setq lsp-ui-flycheck-enable t))
 
@@ -207,7 +208,7 @@
            (lambda () (require 'ccls) (lsp))))
 
   (setq lsp-prefer-flymake nil)
-  (setq lsp-file-watch-threshold 20000))
+  (setq lsp-file-watch-threshold 2000))
 
 (use-package dap-mode
   :ensure t
@@ -280,17 +281,31 @@
 ;;================================================================================
 (use-package selectrum
   :ensure t
+  :bind
+  (:map selectrum-minibuffer-map
+        ("<left>" . selectrum-fido-backward-updir)
+        ("<right>" . selectrum-insert-current-candidate))
   :init
   (selectrum-mode +1)
   :custom
-  (selectrum-cycle-movement t))
-
+  (selectrum-cycle-movement t)
+  :config
+  (defun selectrum-fido-backward-updir ()
+    "Move to char before or, if it's a file, go up directory/file."
+    (interactive)
+    (if (eq (selectrum--get-meta 'category) 'file)
+        (save-excursion
+          (goto-char (1- (point)))
+          (when (search-backward "/" (point-min) t)
+            (delete-region (1+ (point)) (point-max))))
+      (call-interactively 'left-char))))
 
 (use-package selectrum-prescient
   :ensure t
-  :after selectrum
+  :after (selectrum prescient)
   :init
   (selectrum-prescient-mode +1))
+
 
 ;;================================================================================
 ;;
@@ -299,7 +314,6 @@
 ;;================================================================================
 (use-package prescient
   :ensure t
-  :after selectrum
   :config
   (prescient-persist-mode +1))
 
@@ -1187,7 +1201,7 @@
     ("M-y" yank-pop nil)
     ("y" (consult-yank-pop 1) "next")
     ("Y" (consult-yank-pop -1) "prev")
-    ("l" consult-yank-from-kill-ring "list" :color blue))
+    ("l" consult-yank-replace "list" :color blue))
 
   (defhydra hydra-move ()
     "move"
@@ -1200,7 +1214,7 @@
     ("v" scroll-up-command)
     ("V" scroll-down-command)
     ("l" recenter-top-bottom)
-    (";" avy-goto-char-timer :color blue)))
+    ("." avy-goto-char-timer :color blue)))
 
 
 ;;================================================================================
