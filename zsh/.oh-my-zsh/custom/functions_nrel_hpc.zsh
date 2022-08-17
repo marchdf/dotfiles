@@ -14,6 +14,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
             module load binutils
             module load cmake
             module load emacs
+            module load ffmpeg/4.2.2
             module load git
             module load gnutls
             module load htop

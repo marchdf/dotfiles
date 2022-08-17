@@ -16,6 +16,13 @@ ZSH_THEME="random"
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
+# If this variable is set the random theme won't choose any of the
+# themes specified in this array. This is useful if you know
+# specifically the themes that you don't like or don't work correctly
+# in your environment. NOTE: if the ZSH_THEME_RANDOM_CANDIDATES
+# variable is set (see above), this setting has no effect.
+ZSH_THEME_RANDOM_IGNORED=( "dallas" "juanghurtado" )
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
