@@ -17,12 +17,9 @@ install_dotfiles() {
     stow karabiner
     stow mypython
     stow R
-    stow rsync_excludes
     stow screen
-    stow sleepwatcher
     stow tmux
     stow vscode
-    stow woof
     stow zsh
 }
 
@@ -40,12 +37,9 @@ uninstall_dotfiles() {
     stow -D karabiner
     stow -D mypython
     stow -D R
-    stow -D rsync_excludes
     stow -D screen
-    stow -D sleepwatcher
     stow -D tmux
     stow -D vscode
-    stow -D woof
     stow -D zsh
 }
 

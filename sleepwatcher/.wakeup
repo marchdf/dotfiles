@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# For OSX
-if [ "$(uname)" == "Darwin" ]; then
-    # from http://vocaro.com/trevor/blog/2007/02/11/a-set-of-scripts-to-unmount-drives-before-sleeping/
-    ls /dev/disk* | grep 'disk[1-9]s[1-9]' | xargs -I{} /usr/sbin/diskutil mount {}
-fi

@@ -1,5 +1,0 @@
-[main]
-port = 8008
-count = 1
-ip = navier.engin.umich.edu
-compression = Z
