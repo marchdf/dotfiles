@@ -3,6 +3,12 @@
 # I should be putting all the paths and things like that in this file
 
 # User specific environment and startup programs
+
+# homebrew
+if [ -d "/opt/homebrew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 export PATH="${HOME}/bin:${HOME}/mypython:${HOME}/.local/bin:${PATH}"
 export PYTHONPATH="${HOME}/mypython:${PYTHONPATH}"
 
@@ -64,9 +70,6 @@ if [ "$(uname)" = "Darwin" ]; then
 
     # github tokens
     source "${HOME}/.github_tokens"
-
-    # homebrew sbin path
-    export PATH="/usr/local/sbin:${PATH}"
 
     # openmpi fails because tmp dir name is too long
     # see: https://www.open-mpi.org/faq/?category=osx
