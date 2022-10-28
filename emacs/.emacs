@@ -36,7 +36,7 @@
  '(org-agenda-files
    '("~/org/hpacf/followup.org" "~/org/work.org" "~/org/hpacf/hpacf.org" "~/org/hpacf/2c00-admin.org"))
  '(package-selected-packages
-   '(consult-company consult-flycheck consult-flyspell consult-lsp consult-projectile embark embark-consult consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
+   '(prog-mode dired music-setup smartparens-config ess-site consult-company consult-flycheck consult-flyspell consult-lsp consult-projectile embark embark-consult consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -91,14 +91,16 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(eval-when-compile
+  (require 'use-package))
+
 
 ;;================================================================================
 ;;
 ;; Diminish
 ;;
 ;;================================================================================
-(use-package diminish
-    :ensure t)
+(use-package diminish)
 
 
 ;;================================================================================
@@ -124,13 +126,11 @@
 
 (use-package company
   :ensure t
-  :defer t
   :bind
   ;;("M-[" . company-complete-common)
   :config
   (use-package company-shell
-    :ensure t
-    :defer t)
+    :ensure t)
 
   (setq company-show-numbers t
         company-backends     '((company-shell company-shell-env company-capf)))
@@ -144,7 +144,6 @@
 ;;================================================================================
 (use-package lsp-mode
   :ensure t
-  :defer t
   :commands lsp
   :hook ((c-mode c++-mode objc-mode python-mode) . lsp)
   :bind
@@ -239,7 +238,6 @@
 ;;================================================================================
 (use-package flycheck
   :ensure t
-  :defer t
   :hook ((c-mode c++-mode objc-mode) . flycheck-mode)
   :config
   (global-flycheck-mode)
@@ -964,7 +962,7 @@
 ;;
 ;;================================================================================
 (use-package rainbow-delimiters
-  :ensure    rainbow-delimiters
+  :ensure t
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
@@ -1236,7 +1234,6 @@
 ;;
 ;;================================================================================
 (use-package prog-mode
-  :defer t
   :bind
   ("RET" . newline-and-indent))
 
