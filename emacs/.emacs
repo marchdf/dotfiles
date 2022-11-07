@@ -155,12 +155,17 @@
   :config
   (setq lsp-pyls-plugins-autopep8-enabled nil)
   (setq lsp-pyls-plugins-yapf-enabled nil)
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\plt\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\chk\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\PeleCGoldFiles\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\Submodules\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\submods\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp_build_dir\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]plt.+\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]chk.+\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]Submodules\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]submods\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]build\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]Build\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-build-.+\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]AMR-WindGoldFiles\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]test_files\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]PeleCGoldFiles\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]tmp_build_dir\\'")
 
   ;; Increase garbage collection threshold
   ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
@@ -557,6 +562,7 @@
   :bind
   ("C-M-l" . forloop)
   ("C-M-p" . printf-binding)
+  :after (projectile)
   :config
   (use-package modern-cpp-font-lock
     :ensure t
@@ -1166,7 +1172,6 @@
 ;;================================================================================
 (use-package hydra
   :ensure t
-  :after (consult avy)
   :bind
   (("C-y" . hydra-yank-pop/yank)
    ("M-y" . hydra-yank-pop/yank-pop)
