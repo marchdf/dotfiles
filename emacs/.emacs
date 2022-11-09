@@ -277,48 +277,63 @@
 
   (projectile-mode))
 
+
 ;;================================================================================
 ;;
-;; Selectrum
+;; Vertico
 ;;
 ;;================================================================================
-(use-package selectrum
+(use-package vertico
   :ensure t
-  :bind
-  (:map selectrum-minibuffer-map
-        ("<left>" . selectrum-fido-backward-updir)
-        ("<right>" . selectrum-insert-current-candidate))
   :init
-  (selectrum-mode +1)
+  (vertico-mode)
   :custom
-  (selectrum-cycle-movement t)
-  :config
-  (defun selectrum-fido-backward-updir ()
-    "Move to char before or, if it's a file, go up directory/file."
-    (interactive)
-    (if (eq (selectrum--get-meta 'category) 'file)
-        (save-excursion
-          (goto-char (1- (point)))
-          (when (search-backward "/" (point-min) t)
-            (delete-region (1+ (point)) (point-max))))
-      (call-interactively 'left-char))))
+  (vertico-cycle t))
 
-(use-package selectrum-prescient
+(use-package vertico-directory
+  :after vertico
+  :ensure nil
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("<right>" . vertico-directory-enter)
+              ("<left>" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+(use-package vertico-quick
+  :after vertico
+  :ensure nil
+  :bind (:map vertico-map
+              ("C-i" . vertico-quick-insert)
+              ("C-o" . vertico-quick-exit)))
+
+
+;;================================================================================
+;;
+;; Orderless
+;;
+;;================================================================================
+(use-package orderless
   :ensure t
-  :after (selectrum prescient)
   :init
-  (selectrum-prescient-mode +1))
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
 
 
 ;;================================================================================
 ;;
-;; Prescient
+;; savehist
 ;;
 ;;================================================================================
-(use-package prescient
-  :ensure t
-  :config
-  (prescient-persist-mode +1))
+;; Persist history over Emacs restarts.
+(use-package savehist
+  :init
+  (savehist-mode))
+
 
 ;;================================================================================
 ;;
@@ -403,6 +418,7 @@
   :demand t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
 
 ;;================================================================================
 ;;
