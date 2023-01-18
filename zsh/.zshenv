@@ -61,6 +61,18 @@ if [ -d "${HOME}/exawind/spack-manager" ]; then
     source ${SPACK_MANAGER}/start.sh
 fi
 
+# pyenv
+export PYENV_ROOT="${HOME}/.pyenv"
+if [ -d "${PYENV_ROOT}" ]; then
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+fi
+
+# poetry
+if [ -d "${HOME}/.poetry" ]; then
+    export PATH="$HOME/.poetry/bin:$PATH"
+fi
+
 #================================================================================
 #
 # paths for Mac OSX

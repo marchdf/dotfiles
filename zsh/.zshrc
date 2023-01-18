@@ -76,7 +76,7 @@ CORRECT_IGNORE_FILE='.*'
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(battery emacs git screen tmux fasd poetry)
+plugins=(battery emacs git screen tmux fasd poetry pyenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -167,20 +167,6 @@ HISTSIZE=100000
 SAVEHIST=$HISTSIZE
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
-
-# pyenv
-if command -v pyenv > /dev/null; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    if [ -d "$PYENV_ROOT" ]; then
-        export PATH="$PYENV_ROOT/bin:$PATH"
-    fi
-    eval "$(pyenv init -)"
-fi
-
-# poetry
-if [ -d "${HOME}/.poetry" ]; then
-    export PATH="$HOME/.poetry/bin:$PATH"
-fi
 
 if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
     umask u=rwx,go=rx,o=rx

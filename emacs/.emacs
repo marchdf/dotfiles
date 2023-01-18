@@ -31,13 +31,12 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5e3fc08bcadce4c6785fc49be686a4a82a356db569f55d411258984e952f194a" "7153b82e50b6f7452b4519097f880d968a6eaf6f6ef38cc45a144958e553fbc6" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "bc40f613df8e0d8f31c5eb3380b61f587e1b5bc439212e03d4ea44b26b4f408a" "b571f92c9bfaf4a28cb64ae4b4cdbda95241cd62cf07d942be44dc8f46c491f4" "9ff70d8009ce8da6fa204e803022f8160c700503b6029a8d8880a7a78c5ff2e5" "cd03a600a5f470994ba01dd3d1ff52d5809b59b4a37357fa94ca50a6f7f07473" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "524c8884ab3635936c11344662e2c1b647203721855366facdf726010aed5cb1" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default))
- '(helm-ff-lynx-style-map t)
  '(inhibit-startup-screen t)
  '(kill-ring-max 70)
  '(org-agenda-files
    '("~/org/hpacf/followup.org" "~/org/work.org" "~/org/hpacf/hpacf.org" "~/org/hpacf/2c00-admin.org"))
  '(package-selected-packages
-   '(pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
+   '(prog-mode dired music-setup smartparens-config ess-site consult-company consult-flycheck consult-flyspell consult-lsp consult-projectile embark embark-consult consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -92,14 +91,26 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(eval-when-compile
+  (require 'use-package))
+
 
 ;;================================================================================
 ;;
 ;; Diminish
 ;;
 ;;================================================================================
-(use-package diminish
-    :ensure t)
+(use-package diminish)
+
+
+;;================================================================================
+;;
+;; recentf
+;;
+;;================================================================================
+(use-package recentf
+  :config
+  (recentf-mode 1))
 
 
 ;;================================================================================
@@ -115,14 +126,11 @@
 
 (use-package company
   :ensure t
-  :defer t
-  :after (lsp-mode)
   :bind
-  ("C-;" . company-complete-common)
+  ;;("M-[" . company-complete-common)
   :config
   (use-package company-shell
-    :ensure t
-    :defer t)
+    :ensure t)
 
   (setq company-show-numbers t
         company-backends     '((company-shell company-shell-env company-capf)))
@@ -136,7 +144,6 @@
 ;;================================================================================
 (use-package lsp-mode
   :ensure t
-  :defer t
   :commands lsp
   :hook ((c-mode c++-mode objc-mode python-mode) . lsp)
   :bind
@@ -148,12 +155,30 @@
   :config
   (setq lsp-pyls-plugins-autopep8-enabled nil)
   (setq lsp-pyls-plugins-yapf-enabled nil)
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\plt\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\chk\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\PeleCGoldFiles\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\Submodules\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\submods\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp_build_dir\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]plt.+\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]chk.+\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]Submodules\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]submods\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]build\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]Build\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]AMR-WindGoldFiles\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]test_files\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]PeleCGoldFiles\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]tmp_build_dir\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-build-.+\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\].spack-env\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/.cache\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/.tmp\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/configs\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/docs\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/env-templates\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/golds\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/repos\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/scripts\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/spack\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/spack-scripting\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/stage\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-manager/tests\\'")
 
   ;; Increase garbage collection threshold
   ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
@@ -179,6 +204,8 @@
     ("C-c f u" . lsp-ui-imenu)
     ("C-c f D" . lsp-ui-peek-find-definitions)
     ("C-c f R" . lsp-ui-peek-find-references)
+    ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+    ([remap xref-find-references] . lsp-ui-peek-find-references)
     :config
     (setq lsp-ui-flycheck-enable t))
 
@@ -198,7 +225,7 @@
            (lambda () (require 'ccls) (lsp))))
 
   (setq lsp-prefer-flymake nil)
-  (setq lsp-file-watch-threshold 20000))
+  (setq lsp-file-watch-threshold 2000))
 
 (use-package dap-mode
   :ensure t
@@ -229,7 +256,6 @@
 ;;================================================================================
 (use-package flycheck
   :ensure t
-  :defer t
   :hook ((c-mode c++-mode objc-mode) . flycheck-mode)
   :config
   (global-flycheck-mode)
@@ -239,95 +265,183 @@
 
 ;;================================================================================
 ;;
-;; Projectile and helm
+;; Projectile
 ;;
 ;;================================================================================
 (use-package projectile
   :ensure t
   :diminish projectile-mode
+  :bind
+  ("C-c p a" . projectile-find-other-file)
+  ("C-c p p" . projectile-switch-project)
+  ("C-c p f" . projectile-find-file)
+  ("C-c p d" . projectile-find-dir)
+  ("C-c p b" . projectile-switch-to-buffer)
+  ("C-c p e" . projectile-recentf)
   :config
   (setq projectile-globally-ignored-files
         (append projectile-globally-ignored-files
                 '(".DS_Store" ".dir-locals.el" ".pyc"))
         projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
-                '("build" "__pycache__"))
+                '("build" "__pycache__" "Build"))
         projectile-enable-caching t
-        projectile-completion-system 'helm
-        projectile-switch-project-action 'helm-projectile)
+        projectile-completion-system 'default)
 
   (projectile-mode))
 
-(use-package helm
+
+;;================================================================================
+;;
+;; Vertico
+;;
+;;================================================================================
+(use-package vertico
   :ensure t
-  :diminish helm-mode
+  :init
+  (vertico-mode)
+  :custom
+  (vertico-cycle t))
+
+(use-package vertico-directory
+  :after vertico
+  :ensure nil
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("<right>" . vertico-directory-enter)
+              ("<left>" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+(use-package vertico-quick
+  :after vertico
+  :ensure nil
+  :bind (:map vertico-map
+              ("C-i" . vertico-quick-insert)
+              ("C-o" . vertico-quick-exit)))
+
+
+;;================================================================================
+;;
+;; Orderless
+;;
+;;================================================================================
+(use-package orderless
+  :ensure t
+  :init
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+
+;;================================================================================
+;;
+;; savehist
+;;
+;;================================================================================
+;; Persist history over Emacs restarts.
+(use-package savehist
+  :init
+  (savehist-mode))
+
+
+;;================================================================================
+;;
+;; Consult
+;;
+;;================================================================================
+(use-package consult
   :bind
-  ("M-x"     . helm-M-x)
-  ("C-x C-f" . helm-find-files)
-  ("C-x r l" . helm-bookmarks)
-  ("C-h i"   . helm-google-suggest)
-  ("M-y"     . helm-show-kill-ring)
-  ("C-h a"   . helm-apropos)
-  ("C-x p"   . helm-top)
-  ("C-x C-b" . helm-buffers-list)
-  ("C-x b"   . helm-mini)
-  ("C-s"     . helm-occur)
-  ("C-r"     . helm-occur)
+  (("C-c h" . consult-history)
+   ("C-x b" . consult-buffer)
+   ("M-g g" . consult-goto-line)
+   ("M-g M-g" . consult-goto-line)
+   ("C-c g" . consult-git-grep)
+   ("C-c s" . consult-git-grep-symbol-at-point)
+   ("C-s" . consult-line-symbol-at-point)
+   ("C-r" . consult-line-symbol-at-point))
   :config
-  (use-package helm-projectile
-    :ensure    helm-projectile
-    :diminish helm-projectile-mode
-    :bind
-    ("C-c p h" . helm-projectile)
-    ("C-c p p" . helm-projectile-switch-project)
-    ("C-c p f" . helm-projectile-find-file)
-    ("C-c p g" . helm-projectile-find-file-dwim)
-    ("C-c p a" . helm-projectile-find-other-file)
-    ("C-c p e" . helm-projectile-recentf)
-    :config
-    (setq shell-file-name "/bin/bash"))
+  (defun consult-line-symbol-at-point ()
+    "Use symbol at point for consult-line."
+    (interactive)
+    (consult-line (thing-at-point 'symbol)))
+  (defun consult-git-grep-symbol-at-point ()
+    "Use symbol at point for consult-git-grep."
+    (interactive)
+    (require 'project)
+    (consult-git-grep (project-root (project-current)) (thing-at-point 'symbol))))
 
-  (use-package helm-git-grep
-    :ensure    helm-git-grep
-    :bind
-    ("C-c g" . helm-git-grep)
-    :config
-    (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
-    (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm))
+(use-package consult-company
+  :ensure t
+  :after (consult company)
+  :config
+  (define-key company-mode-map [remap completion-at-point] #'consult-company))
 
-  (use-package helm-make
-    :ensure    helm-make)
+(use-package consult-lsp
+  :ensure t
+  :after (consult lsp))
 
-  ;; Enable helm-follow-mode for some helm sources
-  (defvar my-helm-follow-sources '()
-    "List of sources for which helm-follow-mode should be enabled")
+(use-package consult-projectile
+  :ensure t
+  :after (consult projectile)
+  :bind
+  ("C-c p h" . consult-projectile)
+  ([remap projectile-switch-project] . consult-projectile-switch-project)
+  ([remap projectile-find-file] . consult-projectile-find-file)
+  ([remap projectile-find-dir] . consult-projectile-find-dir)
+  ([remap projectile-switch-to-buffer] . consult-projectile-switch-to-buffer)
+  ([remap projectile-recentf] . consult-projectile-recentf))
 
-  (add-to-list 'my-helm-follow-sources 'helm-source-occur)
-  (add-to-list 'my-helm-follow-sources 'helm-source-moccur)
-  (add-to-list 'my-helm-follow-sources 'helm-source-grep-ag)
-  (add-to-list 'my-helm-follow-sources 'helm-source-grep)
 
-  (defun my-helm-set-follow ()
-    """Enable helm-follow-mode for the sources specified in the
-    list variable `my-helm-follow-sources'. This function is
-    meant to be run during `helm-initialize' and should be added
-    to the hook `helm-before-initialize-hook'."""
-    (mapc (lambda (source)
-            (when (memq source my-helm-follow-sources)
-              (helm-attrset 'follow 1 (symbol-value source))))
-          helm-sources))
+;;================================================================================
+;;
+;; Embark
+;;
+;;================================================================================
+(use-package embark
+  :ensure t
+  :after consult
+  :bind
+  (("M-." . embark-act)
+   ("M-," . embark-dwim)
+   :map embark-general-map
+   ("C-s" . consult-line)
+   ("C-c g" . embark-consult-git-grep))
+  :custom
+  (embark-help-key "?")
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  (defun embark-consult-git-grep (target)
+    "Use consult-git-grep on target."
+    (consult-git-grep nil target))
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
 
-  (add-hook 'helm-before-initialize-hook 'my-helm-set-follow)
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :demand t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
-  ;; C-s/C-r like C-n/C-p
-  (progn
-    (define-key helm-map (kbd "C-s") 'helm-next-line)
-    (define-key helm-map (kbd "C-r") 'helm-previous-line))
 
-  ;; Arrow key behavior
-  (customize-set-variable 'helm-ff-lynx-style-map t)
-
-  (helm-mode t))
+;;================================================================================
+;;
+;; Enable richer annotations using the Marginalia package
+;;
+;;================================================================================
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
 
 
 ;;================================================================================
@@ -338,7 +452,26 @@
 (use-package avy
   :ensure t
   :bind
-  ("C-c ," . avy-goto-char))
+  ("M-;" . avy-goto-char-timer)
+  ("M-j" . hydra-avy/body)
+  :config
+  (defhydra hydra-avy (:exit t :hint nil)
+    "
+ Line^^       Region^^        Goto
+----------------------------------------------------------
+ [_y_] yank   [_Y_] yank      [_c_] timed char
+ [_m_] move   [_M_] move      [_w_] word
+ [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
+    ("c" avy-goto-char-timer)
+    ("w" avy-goto-word-1)
+    ("l" avy-goto-line)
+    ("L" avy-goto-end-of-line)
+    ("m" avy-move-line)
+    ("M" avy-move-region)
+    ("k" avy-kill-whole-line)
+    ("K" avy-kill-region)
+    ("y" avy-copy-line)
+    ("Y" avy-copy-region)))
 
 
 ;;================================================================================
@@ -359,11 +492,7 @@
 ;;
 ;;================================================================================
 (use-package wgrep
-  :ensure t
-  :config
-  (use-package wgrep-helm
-  :ensure t
-  :after (helm wgrep)))
+  :ensure t)
 
 
 ;;================================================================================
@@ -458,9 +587,11 @@
   ("\\.geo" . c++-mode)  ;; Gmsh files
   ("\\.cu$" . c++-mode)  ;; CUDA files
   ("\\.C$" . c++-mode)
+  ("\\.H$" . c++-mode)
   :bind
   ("C-M-l" . forloop)
   ("C-M-p" . printf-binding)
+  :after (projectile)
   :config
   (use-package modern-cpp-font-lock
     :ensure t
@@ -475,7 +606,6 @@
                   (arglist-close . 0))))
 
   (defun my-cpp-mode-hook ()
-    (setq-default helm-make-build-dir "build")
     (add-to-list 'projectile-other-file-alist
                  '("C" "H" "hpp" "hxx"))
     (add-to-list 'projectile-other-file-alist
@@ -651,10 +781,8 @@
     (use-package flyspell-correct
       :ensure t
       :bind
-      ("C-c s" . 'flyspell-correct-previous-word-generic)
-      :init
-      (use-package flyspell-correct-helm
-        :ensure t))
+      ;;("C-c s" . 'flyspell-correct-previous-word-generic)
+      )
 
     ;; No spell check for embedded snippets in org-mode
     ;; From http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled/9347#9347
@@ -869,7 +997,7 @@
 ;;
 ;;================================================================================
 (use-package rainbow-delimiters
-  :ensure    rainbow-delimiters
+  :ensure t
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
@@ -1074,27 +1202,38 @@
 (use-package hydra
   :ensure t
   :bind
-  ("C-y" . hydra-yank-pop/yank)
-  ("M-y" . hydra-yank-pop/yank-pop)
-  ("C-n" . hydra-move/next-line)
-  ("C-p" . hydra-move/previous-line)
-  ("C-f" . hydra-move/forward-char)
-  ("C-b" . hydra-move/backward-char)
-  ("C-a" . hydra-move/beginning-of-line)
-  ("C-e" . hydra-move/move-end-of-line)
-  ("C-v" . hydra-move/scroll-up-command)
-  ("M-v" . hydra-move/scroll-down-command)
-  ("C-l" . hydra-move/recenter-top-bottom)
+  (("C-y" . hydra-yank-pop/yank)
+   ("M-y" . hydra-yank-pop/yank-pop)
+   ("C-n" . hydra-move/next-line)
+   ("C-p" . hydra-move/previous-line)
+   ("C-f" . hydra-move/forward-char)
+   ("C-b" . hydra-move/backward-char)
+   ("C-a" . hydra-move/beginning-of-line)
+   ("C-e" . hydra-move/move-end-of-line)
+   ("C-v" . hydra-move/scroll-up-command)
+   ("M-v" . hydra-move/scroll-down-command)
+   ("C-l" . hydra-move/recenter-top-bottom)
+   :map minibuffer-local-map
+   ("C-n" . next-line)
+   ("C-p" . previous-line)
+   ("C-f" . forward-char)
+   ("C-b" . backward-char)
+   ("C-a" . beginning-of-line)
+   ("C-a" . beginning-of-line)
+   ("C-a" . beginning-of-line)
+   ("C-e" . move-end-of-line)
+   ("C-v" . scroll-up-command)
+   ("M-v" . scroll-down-command)
+   ("C-l" . recenter-top-bottom))
   :config
 
-  ;; Core emacs
   (defhydra hydra-yank-pop ()
     "yank"
     ("C-y" yank nil)
     ("M-y" yank-pop nil)
-    ("y" (yank-pop 1) "next")
-    ("Y" (yank-pop -1) "prev")
-    ("l" helm-show-kill-ring "list" :color blue))
+    ("y" (consult-yank-pop 1) "next")
+    ("Y" (consult-yank-pop -1) "prev")
+    ("l" consult-yank-replace "list" :color blue))
 
   (defhydra hydra-move ()
     "move"
@@ -1106,7 +1245,8 @@
     ("e" move-end-of-line)
     ("v" scroll-up-command)
     ("V" scroll-down-command)
-    ("l" recenter-top-bottom)))
+    ("l" recenter-top-bottom)
+    ("." avy-goto-char-timer :color blue)))
 
 
 ;;================================================================================
@@ -1128,7 +1268,6 @@
 ;;
 ;;================================================================================
 (use-package prog-mode
-  :defer t
   :bind
   ("RET" . newline-and-indent))
 
@@ -1173,10 +1312,9 @@
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-M-i") 'indent-region)
     (define-key map (kbd "C-c C-z") 'comment-region)
-    (define-key map (kbd "M-,") 'previous-buffer)
-    (define-key map (kbd "M-.") 'next-buffer)
     (define-key map (kbd "M-R") 'kill-rectangle)
     (define-key map (kbd "M-r") 'yank-rectangle)
+    (define-key map (kbd "M-k") 'kill-whole-line)
     (define-key map (kbd "C-c C-z") 'comment-region)
     (define-key map (kbd "C-c M-z") 'uncomment-region)
     map)
