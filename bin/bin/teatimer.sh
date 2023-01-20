@@ -10,11 +10,7 @@ else
     TIME=$1;
 fi
 
-#================================================================================
-#
 # Notification for Mac platform
-#
-#================================================================================
 if [ "$(uname)" == "Darwin" ]; then
 
     # Wait the specified time (need to brew install coreutils)
@@ -37,11 +33,7 @@ if [ "$(uname)" == "Darwin" ]; then
     osascript -e "set Volume 0"
 
     
-#================================================================================
-#
 # Notification for GNU/Linux platform
-#
-#================================================================================
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
     # Wait the specified time
