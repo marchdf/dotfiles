@@ -1,8 +1,5 @@
-#================================================================================
-#
 # These are my custom functions
-#
-#================================================================================
+
 # print each directory of argument $PATH on its own line
 function prettypath() { echo ${1-$PATH} | sed 's/:/\n/g'; }
 

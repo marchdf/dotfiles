@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-#================================================================================
 # Functions
 
 # Create symlinks of dotfiles using stow
@@ -63,7 +62,6 @@ install_dotfiles_venv(){
 }
 
 
-#================================================================================
 # Main
 
 # Make sure GNU stow is installed

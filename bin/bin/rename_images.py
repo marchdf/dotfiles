@@ -5,12 +5,6 @@ Rename pictures in folder based on Exif data
 Core functions taken from https://code.activestate.com/recipes/576646-exif-date-based-jpeg-files-rename-using-pil/
 """
 
-
-# ========================================================================
-#
-# Imports
-#
-# ========================================================================
 import os
 import sys
 import glob
@@ -21,11 +15,6 @@ import re
 import argparse
 
 
-# ========================================================================
-#
-# Function definitions
-#
-# ========================================================================
 def extract_jpeg_exif_time(fname):
     if not os.path.isfile(fname):
         return None
@@ -73,11 +62,6 @@ def rename_jpeg_file(fname):
     return 1
 
 
-# ========================================================================
-#
-# Main
-#
-# ========================================================================
 if __name__ == '__main__':
 
     # Timer

@@ -23,6 +23,7 @@ bin/bin/irony-server
 */.emacs.d/emms/cache
 */.emacs.d/emms/history
 */.emacs.d/emms/scores
+*/.emacs.d/history
 */.emacs.d/irony/
 */.emacs.d/network-security.data
 */.emacs.d/projectile-bookmarks.eld
@@ -31,6 +32,7 @@ bin/bin/irony-server
 */.emacs.d/srecode-map.el
 */.emacs.d/tramp
 */.emacs.d/transient/
+*/.emacs.d/tree-sitter/
 */.emacs.d/eln-cache/
 */.emacs.d/var
 */.emacs.d/projects
