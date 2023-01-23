@@ -36,7 +36,7 @@
  '(org-agenda-files
    '("~/org/hpacf/followup.org" "~/org/work.org" "~/org/hpacf/hpacf.org" "~/org/hpacf/2c00-admin.org"))
  '(package-selected-packages
-   '(prog-mode dired music-setup smartparens-config ess-site consult-company consult-flycheck consult-flyspell consult-lsp consult-projectile embark embark-consult consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep wgrep-helm dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy helm-make helm-git-grep helm-projectile projectile diminish use-package bind-key))
+   '(flycheck lsp-docker lsp-treemacs nadvice treemacs prog-mode dired music-setup smartparens-config ess-site consult-company consult-flycheck consult-flyspell consult-lsp consult-projectile embark embark-consult consult marginalia selectrum-prescient selectrum doom-modeline god-mode pyvenv pianobar yasnippet wgrep dap-mode gnu-elpa-keyring-update modern-cpp-font-lock ccls lsp-ui company-lsp elfeed company-shell flyspell-correct flyspell-correct-helm intero haskell-mode json-mode hydra cmake-mode emms magit smartparens rainbow-delimiters yaml-mode wc-mode elpy reverse-theme python-environment popup polymode markdown-mode julia-mode jedi-core jedi ess epc deferred ctable concurrent auto-complete auctex matlab-mode clang-format avy projectile diminish use-package bind-key))
  '(user-full-name "Marc Henry de Frahan"))
 (set-face-attribute 'default nil :height 110)
 
@@ -493,67 +493,6 @@
 ;;================================================================================
 (use-package wgrep
   :ensure t)
-
-
-;;================================================================================
-;;
-;; Compile commands inspired from http://www.emacswiki.org/emacs/CompileCommand
-;;
-;;================================================================================
-(setq compilation-last-buffer nil)
-(setq compilation-scroll-output 'first-error)
-
-;; kill the compilation without prompt if recompile taken from
-;; http://user42.tuxfamily.org/compilation-always-kill/index.html I
-;; think this might exist in next versions of emacs already. though it
-;; doesn't seem to exist for v23
-(autoload 'compilation-always-kill-mode "~/.emacs.d/personal/compilation-always-kill" nil t)
-(eval-after-load "compile" '(compilation-always-kill-mode 1))
-
-;; Compile using the last compile command. Blurb: "M-x recompile just
-;; executes the last compile command in the directory of the current
-;; buffer which can be different from the directory of the compile
-;; buffer. So you would have to manually switch to the compile buffer
-;; and do compile there. This is what the above command does."
-(defun compile-again (pfx)
-  """Run the same compile as the last time: if there was no last time, or there is a prefix argument PFX, this acts like M-x compile."""
-  (interactive "p")
-  (if (buffer-modified-p)
-      (if (y-or-n-p (format "Buffer %s modified; Do you want to save? " (buffer-name)))
-          (save-buffer)))
-  (if (and (eq pfx 1)
-           compilation-last-buffer)
-      (progn
-        (set-buffer compilation-last-buffer)
-        (revert-buffer t t))
-    (call-interactively 'compile)))
-
-;; Set the shortcut command
-(global-set-key (kbd "M-p") 'compile-again)
-
-;; Notifications that compile finished and close the compile buffer if
-;; successful.
-(defvar success-message "\n Compilation Successful :-) \n ")
-(defvar fail-message "\n Compilation Fail :-( \n ")
-(defun notify-compilation-result(buffer msg)
-  "Notify that the compilation is finished, close the *compilation* BUFFER if the compilation is successful, and set the focus back to Emacs frame (show MSG)."
-  (if (string-match "^finished" msg)
-      (progn
-        (delete-windows-on buffer)
-        (message success-message)
-        (when (display-graphic-p)
-          (tooltip-show success-message))
-        )
-    (message fail-message)
-    (when (display-graphic-p)
-      (tooltip-show fail-message))
-    (setq compilation-last-buffer nil) ;; resets compile buffer so as not to interfere with 'compile-again
-    )
-  (defvar current-frame (car (car (cdr (current-frame-configuration)))))
-  (select-frame-set-input-focus current-frame))
-
-(add-to-list 'compilation-finish-functions
-             'notify-compilation-result)
 
 
 ;;================================================================================
