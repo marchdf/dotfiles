@@ -2,6 +2,7 @@ README.md
 LICENSE.md
 python-venv
 conda-env
+homebrew
 
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner
