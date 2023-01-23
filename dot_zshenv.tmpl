@@ -73,20 +73,21 @@ if [ -d "${HOME}/.poetry" ]; then
     export PATH="$HOME/.poetry/bin:$PATH"
 fi
 
+{{- if eq .chezmoi.os "darwin" }}
+
 # paths for Mac OSX
-if [ "$(uname)" = "Darwin" ]; then
 
-    # github tokens
-    source "${HOME}/.github_tokens"
+# github tokens
+source "${HOME}/.github_tokens"
 
-    # openmpi fails because tmp dir name is too long
-    # see: https://www.open-mpi.org/faq/?category=osx
-    export TMPDIR=/tmp
+# openmpi fails because tmp dir name is too long
+# see: https://www.open-mpi.org/faq/?category=osx
+export TMPDIR=/tmp
 
-    # Set vlc for terminal
-    alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
+# Set vlc for terminal
+alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
 
-fi
+{{- end }}
 
 
 # paths for NREL HPC
