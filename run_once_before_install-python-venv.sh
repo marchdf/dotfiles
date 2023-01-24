@@ -13,4 +13,24 @@ venv_location="${WORKON_HOME}/${venv_name}"
 python3 -m venv "${venv_location}"
 source ${venv_location}/bin/activate
 python3 -m pip install --upgrade pip
-pip3 install -r requirements.txt
+pip3 install --requirement=/dev/stdin <<EOF
+autopep8
+black
+flake8
+jedi
+matplotlib
+numpy
+pandas
+pycodestyle
+pydocstyle
+pyflakes
+python-lsp-black
+python-lsp-server
+pyls-flake8
+pylint
+scikit-learn
+scipy
+seaborn
+rope
+yapf
+EOF

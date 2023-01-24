@@ -1,8 +1,0 @@
-#{{- if eq .chezmoi.os "darwin" -}}
-#!/usr/bin/env bash
-
-brew bundle --no-lock --file=Brewfile
-brew pin gcc
-brew pin mpich
-
-#{{ end -}}
