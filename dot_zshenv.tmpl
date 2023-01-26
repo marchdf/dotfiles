@@ -9,8 +9,7 @@ if [ -d "/opt/homebrew" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-export PATH="${HOME}/bin:${HOME}/mypython:${HOME}/.local/bin:${PATH}"
-export PYTHONPATH="${HOME}/mypython:${PYTHONPATH}"
+export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 
 # miniconda
 MINICONDA_DIR="${HOME}/miniconda3"
