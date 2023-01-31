@@ -5,4 +5,9 @@ conda-env
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner
 .vscode
+Library/Application Support/tree-sitter/config.json
+{{- end }}
+
+{{- if ne .chezmoi.os "linux" }}
+.tree-sitter
 {{- end }}
