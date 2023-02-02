@@ -101,6 +101,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
     if [ "${NREL_CLUSTER}" = "eagle" ]; then
         source /nopt/nrel/utils/lmod/lmod/init/zsh
         source /nopt/nrel/ecom/hpacf/env.sh
+        module use ${HOME}/modules/linux-centos7-skylake_avx512/gcc-9.3.0
     elif [ "${NREL_CLUSTER}" = "rhodes" ]; then
         source /opt/base/env.sh
     fi

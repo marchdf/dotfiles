@@ -10,7 +10,6 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
             module load binutils
             module load bzip2
             module load cmake
-            module load emacs
             module load ffmpeg/4.2.2
             module load git
             module load gnutls
@@ -24,6 +23,8 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
             module load sqlite
             module load texlive
             module load tmux
+
+            module load emacs/28.2
         } &> /dev/null
     }
 
