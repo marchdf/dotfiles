@@ -25,6 +25,7 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
             module load tmux
 
             module load emacs/28.2
+            module load ccls
         } &> /dev/null
     }
 
