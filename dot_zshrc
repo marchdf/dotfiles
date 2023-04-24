@@ -76,7 +76,7 @@ CORRECT_IGNORE_FILE='.*'
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(battery emacs git screen tmux fzf fasd poetry pyenv)
+plugins=(battery emacs git screen tmux fzf poetry pyenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -143,7 +143,8 @@ bindkey "^P" up-line-or-beginning-search
 # zplug
 if [ -d "${ZPLUG_HOME}" ]; then
     source "${ZPLUG_HOME}/init.zsh"
-    zplug "wookayin/fzf-fasd"
+    zplug "skywind3000/z.lua"
+    zplug "Aloxaf/fzf-tab"
     zplug load
 fi
 
