@@ -146,6 +146,9 @@ if [ -d "${ZPLUG_HOME}" ]; then
     zplug "skywind3000/z.lua"
     zplug "Aloxaf/fzf-tab"
     zplug load
+    if ! zplug check; then
+       zplug install
+    fi
 fi
 
 # Better history
