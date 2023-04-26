@@ -991,13 +991,7 @@
   :ensure t
   :mode
   ("\\.hs\\'" . haskell-mode)
-  ("\\.lhs\\'" . haskell-mode)
-  :config
-
-  (use-package intero
-       :ensure t
-       :config
-       (add-hook 'haskell-mode-hook 'intero-mode)))
+  ("\\.lhs\\'" . haskell-mode))
 
 
 ;;================================================================================

@@ -2,8 +2,6 @@ README.md
 LICENSE.md
 conda-env
 
-.config/iterm2/com.googlecode.iterm2.plist
-
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner
 .config/iterm2
