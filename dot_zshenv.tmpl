@@ -85,7 +85,7 @@ alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
 
 
 # paths for NREL HPC
-if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
+if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ] || [ "${NREL_CLUSTER}" = "ellis" ]; then
 
     # Set scratch
     if [ -d "/scratch/${USER}" ]; then
@@ -99,6 +99,9 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ]; then
         module use ${HOME}/modules/linux-centos7-skylake_avx512/gcc-9.3.0
     elif [ "${NREL_CLUSTER}" = "rhodes" ]; then
         source /opt/base/env.sh
+    elif [ "${NREL_CLUSTER}" = "ellis" ]; then
+        MODULES_DATE=2023-05
+        source /data/ssd1/software/${MODULES_DATE}/env.sh
     fi
 
     # Set the tmp dir to scratch. This is because /tmp was filling up
