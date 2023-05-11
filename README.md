@@ -22,4 +22,3 @@ The following will lead to an improved experience:
 - `zsh`
 - [`oh-my-zsh`](https://github.com/robbyrussell/oh-my-zsh)
 - [`fzf`](https://github.com/junegunn/fzf)
-- [`z.lua`](https://github.com/skywind3000/z.lua)
