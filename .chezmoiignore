@@ -1,0 +1,14 @@
+README.md
+LICENSE.md
+conda-env
+
+{{- if ne .chezmoi.os "darwin" }}
+.config/karabiner
+.config/iterm2
+.vscode
+Library
+{{- end }}
+
+{{- if ne .chezmoi.os "linux" }}
+.tree-sitter
+{{- end }}

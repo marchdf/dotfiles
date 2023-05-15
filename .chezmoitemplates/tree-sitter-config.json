@@ -1,0 +1,54 @@
+{
+  "parser-directories": [
+    "{{ .chezmoi.homeDir }}/tree-sitter-language-src"
+  ],
+  "theme": {
+    "punctuation.bracket": 239,
+    "variable.parameter": {
+      "underline": true
+    },
+    "string": 28,
+    "module": 136,
+    "keyword": 56,
+    "constant": 94,
+    "variable.builtin": {
+      "bold": true
+    },
+    "attribute": {
+      "color": 124,
+      "italic": true
+    },
+    "function": 26,
+    "constructor": 136,
+    "operator": {
+      "bold": true,
+      "color": 239
+    },
+    "string.special": 30,
+    "function.builtin": {
+      "color": 26,
+      "bold": true
+    },
+    "punctuation.delimiter": 239,
+    "tag": 18,
+    "embedded": null,
+    "type.builtin": {
+      "bold": true,
+      "color": 23
+    },
+    "type": 23,
+    "constant.builtin": {
+      "bold": true,
+      "color": 94
+    },
+    "number": {
+      "color": 94,
+      "bold": true
+    },
+    "comment": {
+      "color": 245,
+      "italic": true
+    },
+    "property": 124
+  }
+}
