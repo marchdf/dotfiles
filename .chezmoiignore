@@ -7,6 +7,7 @@ conda-env
 .config/iterm2
 .oh-my-zsh/custom/iterm2_ssh_switch_tab_color.zsh
 .vscode
+bin/keyremap.sh
 Library
 {{- end }}
 
