@@ -1,0 +1,34 @@
+[user]
+        name = Marc Henry de Frahan
+        useConfigOnly = true
+{{- if not (eq .email "") }}
+        email = {{ .email }}
+{{- end }}
+
+[core]
+
+[color]
+        ui = true
+
+[alias]
+
+        # pretty view of history
+        hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+
+        # Show the diff between the latest commit and the current state
+        d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+        # Nice to use when diffing text files
+        wdiff = diff --color --color-words
+
+        # List aliases
+        aliases = config --get-regexp alias
+
+[push]
+        default = simple
+[rerere]
+        enabled = true
+[init]
+        defaultBranch = main
+[submodule]
+        recurse = true
