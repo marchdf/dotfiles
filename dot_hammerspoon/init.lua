@@ -4,48 +4,39 @@ local hk_cut = hs.hotkey.bind({"ctrl"}, "x", nil, function() hs.eventtap.keyStro
 local hk_paste = hs.hotkey.bind({"ctrl"}, "v", nil, function() hs.eventtap.keyStroke({"cmd"}, "v") end)
 local hk_save = hs.hotkey.bind({"ctrl"}, "s", nil, function() hs.eventtap.keyStroke({"cmd"}, "s") end)
 local hk_undo = hs.hotkey.bind({"ctrl"}, "z", nil, function() hs.eventtap.keyStroke({"cmd"}, "z") end)
+local hk_find = hs.hotkey.bind({"ctrl"}, "f", nil, function() hs.eventtap.keyStroke({"cmd"}, "f") end)
+
+local function hk_enable()
+  hk_copy:enable()
+  hk_cut:enable()
+  hk_paste:enable()
+  hk_save:enable()
+  hk_undo:enable()
+  hk_find:enable()
+end
+
+local function hk_disable()
+  hk_copy:disable()
+  hk_cut:disable()
+  hk_paste:disable()
+  hk_save:disable()
+  hk_undo:disable()
+  hk_find:disable()
+end
 
 local wf=hs.window.filter
 wf_terminal = wf.new{'Terminal', 'iTerm2', 'Emacs'}
 wf_iterm2 = wf.new(false):setAppFilter('iTerm2',{allowTitles=0})
 
 wf_terminal
-    :subscribe(hs.window.filter.windowFocused, function()
-        hk_copy:disable()
-        hk_cut:disable()
-        hk_paste:disable()
-        hk_save:disable()
-        hk_undo:disable()
-    end)
-    :subscribe(hs.window.filter.windowUnfocused, function()
-        hk_copy:enable()
-        hk_cut:enable()
-        hk_paste:enable()
-        hk_save:enable()
-        hk_undo:enable()
-    end)
+    :subscribe(hs.window.filter.windowFocused, hk_disable)
+    :subscribe(hs.window.filter.windowUnfocused, hk_enable)
 
 wf_iterm2
-    :subscribe(hs.window.filter.windowFocused, function()
-        hk_copy:disable()
-        hk_cut:disable()
-        hk_paste:disable()
-        hk_save:disable()
-        hk_undo:disable()
-    end)
-    :subscribe(hs.window.filter.windowUnfocused, function()
-        hk_copy:enable()
-        hk_cut:enable()
-        hk_paste:enable()
-        hk_save:enable()
-        hk_undo:enable()
-    end)
+    :subscribe(hs.window.filter.windowFocused, hk_disable)
+    :subscribe(hs.window.filter.windowUnfocused, hk_enable)
 
-hk_copy:enable()
-hk_cut:enable()
-hk_paste:enable()
-hk_save:enable()
-hk_undo:enable()
+hk_enable()
 
 -- Use side buttons on mouse to scroll
 local back    = 3
@@ -63,7 +54,6 @@ end)
 local events = hs.eventtap.event.types
 mouseTracker = hs.eventtap.new({ events.otherMouseDown, events.otherMouseUp }, function (e)
   local pressed = e:getProperty(hs.eventtap.event.properties['mouseEventButtonNumber'])
-  print(pressed)
   if pressed == back then
     if e:getType() == events.otherMouseUp then
       scrollDownTimer:stop()
