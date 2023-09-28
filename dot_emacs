@@ -141,6 +141,7 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]plt.+\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]chk.+\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]Submodules\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]Docs\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]submods\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]build\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]Build\\'")

@@ -27,7 +27,7 @@ end
 
 local wf=hs.window.filter
 wf_terminal = wf.new{'Terminal', 'iTerm2', 'Emacs'}
-wf_iterm2 = wf.new(false):setAppFilter('iTerm2',{allowTitles=0})
+wf_iterm2 = wf.new(false):setAppFilter('iTerm2',{allowTitles=1})
 wf_keepass = wf.new(false):setAppFilter('KeePassXC',{allowTitles=1})
 
 wf_terminal
