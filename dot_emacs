@@ -128,7 +128,7 @@
 (use-package lsp-mode
   :ensure t
   :commands lsp
-  :hook ((c-mode c++-mode objc-mode python-mode) . lsp)
+  :hook ((c-mode c++-mode objc-mode python-mode bash-mode sh-mode) . lsp)
   :bind
   ("C-c i" . lsp-format-region)
   ("C-c u" . lsp-format-buffer)
@@ -240,10 +240,9 @@
 ;;================================================================================
 (use-package flycheck
   :ensure t
-  :hook ((c-mode c++-mode objc-mode) . flycheck-mode)
-  :config
+  :init
   (global-flycheck-mode)
-
+  :config
   (setq flycheck-python-flake8-executable "flake8"))
 
 
