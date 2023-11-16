@@ -1,0 +1,126 @@
+Protocol 2
+# suppress all the banner gibberish with LogLevel:
+LogLevel QUIET
+ServerAliveInterval 30
+ServerAliveCountMax 120
+
+# Note: You can add any of the following to individual host blocks.
+# ForwardX11 yes
+# ForwardAgent yes
+# ForwardX11Trusted yes
+# ForwardX11Timeout 8h30m
+
+host hpacf
+    User mhenryde
+    hostname hpacf01.hpc.nrel.gov
+
+host el1
+    User mhenryde
+    hostname el1.hpc.nrel.gov
+
+host el2
+    User mhenryde
+    hostname el2.hpc.nrel.gov
+
+host el3
+    User mhenryde
+    hostname el3.hpc.nrel.gov
+
+host ed1
+    User mhenryde
+    hostname ed1.hpc.nrel.gov
+
+host dav1
+    User mhenryde
+    hostname dav1.hpc.nrel.gov
+
+host dav2
+    User mhenryde
+    hostname dav2.hpc.nrel.gov
+
+host dav3
+    User mhenryde
+    hostname dav3.hpc.nrel.gov
+
+host merlin
+    User mhenryde
+    hostname merlin.hpc.nrel.gov
+
+host rhodes
+    User mhenryde
+    hostname rhodes.hpc.nrel.gov
+
+host ellis
+    User mhenryde
+    hostname ellis.hpc.nrel.gov
+
+host cori
+    User marchdf
+    hostname cori.nersc.gov
+    IdentityFile ~/.ssh/nersc
+    IdentitiesOnly yes
+    AddKeysToAgent no
+
+host edison
+    User marchdf
+    hostname edison.nersc.gov
+    IdentityFile ~/.ssh/nersc
+    IdentitiesOnly yes
+    AddKeysToAgent no
+
+host theta
+    User marchdf
+    hostname theta.alcf.anl.gov
+
+host vesta
+    User marchdf
+    hostname vesta.alcf.anl.gov
+
+host cooley
+    User marchdf
+    hostname cooley.alcf.anl.gov
+
+host titan
+    User marchdf
+    hostname titan.ccs.ornl.gov
+    ControlMaster no
+
+host olcf
+    User marchdf
+    hostname home.ccs.ornl.gov
+    ControlMaster no
+
+host ascent
+    User mhenryde
+    hostname login1.ascent.olcf.ornl.gov
+    ControlMaster no
+
+host summit
+    User marchdf
+    hostname summit.olcf.ornl.gov
+    ControlMaster no
+
+host andes
+    User marchdf
+    hostname andes.olcf.ornl.gov
+    ControlMaster no
+
+host crusher
+    User marchdf
+    hostname crusher.olcf.ornl.gov
+    ControlMaster no
+
+host betzy
+    hostname betzy.sigma2.no
+    User marchdf
+    IdentityFile ~/.ssh/id_sigma2
+ 
+host fram
+    hostname fram.sigma2.no
+    User marchdf
+    IdentityFile ~/.ssh/id_sigma2
+ 
+host nird
+   hostname login-trd.nird.sigma2.no
+   User marchdf
+   IdentityFile ~/.ssh/id_sigma2
