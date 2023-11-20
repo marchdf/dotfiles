@@ -28,7 +28,7 @@ cmd "spack add emacs@28.2+tls+json%gcc"
 cmd "spack add ccls%gcc"
 
 if [ ! -z $(grep -L "modules:" "${ENV_DIR}/spack.yaml") ]; then
-   echo "NOT FOUND"
+   echo "Adding modules to spack.yaml"
    echo "  modules:
        default:
          roots:
