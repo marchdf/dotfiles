@@ -54,6 +54,14 @@ host ellis
     User mhenryde
     hostname ellis.hpc.nrel.gov
 
+host kl1
+    User mhenryde
+    hostname kl1.hpc.nrel.gov
+
+host kl2
+    User mhenryde
+    hostname kl2.hpc.nrel.gov
+
 host cori
     User marchdf
     hostname cori.nersc.gov
@@ -98,6 +106,16 @@ host ascent
 host summit
     User marchdf
     hostname summit.olcf.ornl.gov
+    ControlMaster no
+
+host frontier
+    User marchdf
+    hostname frontier.olcf.ornl.gov
+    ControlMaster no
+
+host f10
+    User marchdf
+    hostname login10.frontier.olcf.ornl.gov
     ControlMaster no
 
 host andes
