@@ -76,7 +76,6 @@ brew "wget"
 brew "xpdf"
 brew "xz"
 brew "zlib"
-brew "zplug"
 
 cask_args appdir: "~/Applications"
 cask "font-fira-code-nerd-font"
@@ -104,10 +103,5 @@ EOF
 
 brew pin gcc
 brew pin mpich
-
-ZPLUG_HOME="${HOME}/.zplug"
-if [ ! -d "${ZPLUG_HOME}" ]; then
-   ln -s /opt/homebrew/opt/zplug ${ZPLUG_HOME}
-fi
 
 {{ end -}}

@@ -12,6 +12,38 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk
+
+zinit ice lucid depth"1"
+zinit light romkatv/powerlevel10k
+
+zinit ice lucid wait='1'
+zinit light skywind3000/z.lua
+
+
+zinit wait lucid light-mode for id-as'auto' has'fzf' @Aloxaf/fzf-tab
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -61,18 +93,6 @@ bindkey "^[[1;5B" down-line-or-history  # [CTRL] + Cursor down
 # Use ctrl-p/n to go up/down search
 bindkey "^P" up-line-or-beginning-search
 # bindkey "^N" down-line-or-beginning-search
-
-# zplug
-if [ -d "${ZPLUG_HOME}" ]; then
-    source "${ZPLUG_HOME}/init.zsh"
-    zplug "skywind3000/z.lua"
-    zplug "Aloxaf/fzf-tab"
-    zplug "romkatv/powerlevel10k", as:theme, depth:1
-    zplug load
-    if ! zplug check; then
-       zplug install
-    fi
-fi
 
 # Better history
 HISTFILE=~/.zsh_history

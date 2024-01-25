@@ -1,0 +1,8 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+
+if [[ ! -x "$(command -v pyenv)" ]]; then
+   curl https://pyenv.run | bash
+fi
+
+{{ end -}}
