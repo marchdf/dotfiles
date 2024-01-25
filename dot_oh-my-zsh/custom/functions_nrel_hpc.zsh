@@ -29,16 +29,6 @@ if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ] || [ "${N
         } &> /dev/null
     }
 
-    function load_spack_python3 {
-
-        {
-            module load python/3.7.7
-            while read -r line ; do
-                module load $line
-            done < <(module --raw --redirect avail | grep -o 'py-\S*')
-        } &> /dev/null
-    }
-
     function pv59server() {
         source /nopt/nrel/ecom/exawind/exawind/scripts/exawind-env-gcc.sh
         case $# in
