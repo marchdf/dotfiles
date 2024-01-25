@@ -81,7 +81,7 @@ SAVEHIST=$HISTSIZE
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
 
-if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ] || [ "${NREL_CLUSTER}" = "ellis" ]; then
+if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "ellis" ]; then
     umask u=rwx,go=rx,o=rx
 fi
 

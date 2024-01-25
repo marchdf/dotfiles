@@ -46,10 +46,6 @@ host merlin
     User mhenryde
     hostname merlin.hpc.nrel.gov
 
-host rhodes
-    User mhenryde
-    hostname rhodes.hpc.nrel.gov
-
 host ellis
     User mhenryde
     hostname ellis.hpc.nrel.gov

@@ -1,5 +1,5 @@
 # These are my custom aliases for my NREL HPC machines
-if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ] || [ "${NREL_CLUSTER}" = "ellis" ]; then
+if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "ellis" ]; then
 
     function load_custom_modules {
 
