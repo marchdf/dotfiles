@@ -39,6 +39,11 @@ zinit ice lucid depth"1"
 zinit light romkatv/powerlevel10k
 
 
+
+zinit snippet "OMZ::plugins/git/git.plugin.zsh"
+zinit snippet "OMZ::plugins/poetry/poetry.plugin.zsh"
+zinit snippet "OMZ::plugins/pyenv/pyenv.plugin.zsh"
+zinit snippet "OMZ::plugins/tmux/tmux.plugin.zsh"
 zinit snippet "OMZ::plugins/zoxide/zoxide.plugin.zsh"
 
 zinit wait lucid light-mode for id-as'auto' has'fzf' @Aloxaf/fzf-tab
@@ -55,7 +60,7 @@ CORRECT_IGNORE_FILE='.*'
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(emacs git tmux fzf poetry pyenv)
+plugins=(emacs fzf)
 
 source $ZSH/oh-my-zsh.sh
 
