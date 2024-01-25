@@ -38,9 +38,8 @@ zinit light-mode for \
 zinit ice lucid depth"1"
 zinit light romkatv/powerlevel10k
 
-zinit ice lucid wait='1'
-zinit light skywind3000/z.lua
 
+zinit snippet "OMZ::plugins/zoxide/zoxide.plugin.zsh"
 
 zinit wait lucid light-mode for id-as'auto' has'fzf' @Aloxaf/fzf-tab
 

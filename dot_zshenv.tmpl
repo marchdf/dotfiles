@@ -62,6 +62,9 @@ if [ -d "${HOME}/.poetry" ]; then
     export PATH="$HOME/.poetry/bin:$PATH"
 fi
 
+# zoxide
+export _ZO_DATA_DIR=$HOME/.local/share
+
 {{- if eq .chezmoi.os "darwin" }}
 
 # paths for Mac OSX
