@@ -38,15 +38,14 @@ zinit light-mode for \
 zinit ice lucid depth"1"
 zinit light romkatv/powerlevel10k
 
-zinit wait lucid for \
+zinit wait lucid light-mode for \
+       has'fzf' "OMZP::fzf" \
+       has'fzf' @Aloxaf/fzf-tab \
        "OMZP::git" \
        "OMZP::poetry" \
        "OMZP::pyenv" \
        "OMZP::tmux" \
        "OMZP::zoxide"
-
-zinit wait lucid light-mode for has'fzf' "OMZP::fzf"
-zinit wait lucid light-mode for id-as'auto' has'fzf' @Aloxaf/fzf-tab
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
