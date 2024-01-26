@@ -1,0 +1,22 @@
+name: dotfiles-CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [development]
+  pull_request:
+    branches: [development]
+
+concurrency:
+  group: ${{github.ref}}-${{github.head_ref}}-ci
+  cancel-in-progress: true
+
+jobs:
+  OSX:
+    runs-on: macos-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+      - name: Dependencies
+        run: |
+          brew install chezmoi
