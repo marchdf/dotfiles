@@ -22,6 +22,7 @@ jobs:
           brew install chezmoi
       - name: Install
         run: |
+          echo ${GITHUB_REF##*/}
           chezmoi init https://github.com/marchdf/dotfiles.git --branch ${GITHUB_REF##*/} --promptString email="" --promptBool use_zsh_root_dir=false
           chezmoi data
           # chezmoi apply -v
