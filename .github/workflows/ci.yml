@@ -3,9 +3,11 @@ name: dotfiles-CI
 on:
   workflow_dispatch:
   push:
-    branches: [development]
+    branches: [main]
   pull_request:
-    branches: [development]
+    branches: [main]
+  schedule:
+    - cron: "0 5 * * 1"
 
 concurrency:
   group: ${{github.ref}}-${{github.head_ref}}-ci
