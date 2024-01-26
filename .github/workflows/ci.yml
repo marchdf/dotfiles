@@ -17,8 +17,11 @@ jobs:
   OSX:
     runs-on: macos-latest
     steps:
-      - name: Clone
-        uses: actions/checkout@v4
       - name: Dependencies
         run: |
           brew install chezmoi
+      - name: Install
+        run: |
+          chezmoi init git@github.com:marchdf/dotfiles.git
+          chezmoi diff
+          chezmoi apply -v
