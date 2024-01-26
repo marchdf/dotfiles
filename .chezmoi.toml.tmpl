@@ -2,8 +2,12 @@
     command = "emacs"
     args = ["-nw"]
 
-{{- $use_zsh_root_dir := promptBoolOnce . "use_zsh_root_dir" "Use ZSH_ROOT_DIR for tmux shell" }}
-{{ $email := promptString "email" -}}
+{{ $email := "" }}
+{{ $use_zsh_root_dir := false }}
+{{ if stdinIsATTY }}
+{{-  $use_zsh_root_dir = promptBool "Use ZSH_ROOT_DIR for tmux shell" }}
+{{   $email = promptString "email" -}}
+{{ end }}
 
 [data]
     use_zsh_root_dir = {{ $use_zsh_root_dir }}
