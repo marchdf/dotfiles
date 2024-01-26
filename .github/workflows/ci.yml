@@ -22,6 +22,6 @@ jobs:
           brew install chezmoi
       - name: Install
         run: |
-          chezmoi init git@github.com:marchdf/dotfiles.git
+          chezmoi init https://github.com/marchdf/dotfiles.git
           chezmoi diff
           chezmoi apply -v
