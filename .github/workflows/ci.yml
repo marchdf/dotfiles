@@ -23,5 +23,4 @@ jobs:
       - name: Install
         run: |
           chezmoi init https://github.com/marchdf/dotfiles.git --branch zsh-clean
-          chezmoi diff
           chezmoi apply -v
