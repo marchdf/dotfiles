@@ -23,7 +23,7 @@ jobs:
           - os: macos-latest
             install_deps: brew install chezmoi
           - os: ubuntu-latest
-            install_deps: sudo apt-get update && sudo apt-get install chezmoi
+            install_deps: sudo apt-get update && sudo sh -c "$(curl -fsLS get.chezmoi.io)"
     steps:
       - name: Dependencies
         run: |
