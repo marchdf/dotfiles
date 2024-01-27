@@ -1,4 +1,5 @@
-{{- if eq .chezmoi.os "linux" -}}
+{{- if (and (eq .chezmoi.os "linux") (not .test_machine)) -}}
+
 #!/usr/bin/env bash
 
 cmd() {
