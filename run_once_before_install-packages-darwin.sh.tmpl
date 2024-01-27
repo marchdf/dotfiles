@@ -6,6 +6,10 @@ tap "homebrew/bundle"
 tap "jimeh/emacs-builds"
 tap "homebrew/cask-fonts"
 
+brew "fzf"
+brew "pyenv"
+
+{{- if not .test_machine }}
 brew "act"
 brew "age"
 brew "aspell"
@@ -35,7 +39,6 @@ brew "faac"
 brew "fd"
 brew "fdk-aac"
 brew "flac123"
-brew "fzf"
 brew "gcc"
 brew "git"
 brew "global"
@@ -58,7 +61,6 @@ brew "openssl@3"
 brew "pandoc"
 brew "pianobar"
 brew "prettyping"
-brew "pyenv"
 brew "python@3.10"
 brew "ripgrep"
 brew "shellcheck"
@@ -99,6 +101,7 @@ cask "vivaldi"
 cask "vlc"
 cask "zoom"
 cask "zotero"
+{{ end -}}
 EOF
 
 brew pin gcc
