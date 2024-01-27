@@ -3,8 +3,6 @@
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
-tap "jimeh/emacs-builds"
-tap "homebrew/cask-fonts"
 
 brew "fzf"
 brew "pyenv"
@@ -79,6 +77,8 @@ brew "xpdf"
 brew "xz"
 brew "zlib"
 
+tap "jimeh/emacs-builds"
+tap "homebrew/cask-fonts"
 cask_args appdir: "~/Applications"
 cask "font-fira-code-nerd-font"
 cask "font-meslo-lg-nerd-font"
