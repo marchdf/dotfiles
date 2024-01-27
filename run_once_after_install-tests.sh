@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cmds=( "fzf" "poetry" "pyenv" "zoxide" )
+cmds=( "fzf" )
 for cmd in "${cmds[@]}"
 do
     if [[ ! -x "$(command -v $cmd)" ]]; then
