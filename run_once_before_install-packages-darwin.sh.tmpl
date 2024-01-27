@@ -4,6 +4,7 @@
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
 
+brew "gcc"
 brew "fzf"
 brew "pyenv"
 
@@ -37,7 +38,6 @@ brew "faac"
 brew "fd"
 brew "fdk-aac"
 brew "flac123"
-brew "gcc"
 brew "git"
 brew "global"
 brew "gnuplot"
@@ -105,6 +105,9 @@ cask "zotero"
 EOF
 
 brew pin gcc
+
+{{- if not .test_machine }}
 brew pin mpich
+{{ end }}
 
 {{ end -}}
