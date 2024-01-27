@@ -24,6 +24,6 @@ jobs:
         run: |
           export BRANCH=${{ github.head_ref || github.ref_name }}
           echo $BRANCH
-          chezmoi init https://github.com/marchdf/dotfiles.git --branch ${BRANCH} --promptBool test=t,use_zsh_root_dir=f --promptString email=""
+          chezmoi init https://github.com/marchdf/dotfiles.git --branch ${BRANCH} --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           # chezmoi apply -v
