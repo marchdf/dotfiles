@@ -14,16 +14,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  OSX:
-    runs-on: macos-latest
+  Dotfiles:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: macos-latest
+            install_deps: brew install chezmoi
+          - os: ubuntu-latest
+            install_deps: sudo apt-get update && sudo apt-get install chezmoi
     steps:
       - name: Dependencies
         run: |
-          brew install chezmoi
+          ${{matrix.install_deps}}
       - name: Install
         run: |
           export BRANCH=${{ github.head_ref || github.ref_name }}
           echo $BRANCH
           chezmoi init https://github.com/marchdf/dotfiles.git --branch ${BRANCH} --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
-          chezmoi apply -v
+          chezmoi apply
