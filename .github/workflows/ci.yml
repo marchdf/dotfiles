@@ -35,3 +35,6 @@ jobs:
           chezmoi init https://github.com/marchdf/dotfiles.git --branch ${BRANCH} --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
+      - name: Text zsh
+        run: |
+          time zsh -i -c exit
