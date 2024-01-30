@@ -30,8 +30,8 @@ jobs:
           ${{matrix.install_deps}}
       - name: Install
         run: |
-          export BRANCH=${{ github.head_ref || github.ref_name }}
-          chezmoi init https://github.com/marchdf/dotfiles.git --branch ${BRANCH} --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
+          export CHEZMOI_BRANCH=${{ github.head_ref || github.ref_name }}
+          chezmoi init https://github.com/marchdf/dotfiles.git --branch ${CHEZMOI_BRANCH} --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
       - name: Text zsh
