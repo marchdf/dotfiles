@@ -1,4 +1,4 @@
-{{- if (and (eq .chezmoi.os "linux") (not .test_machine)) -}}
+{{- if (and (eq .chezmoi.os "linux") (.spack_packages)) -}}
 
 #!/usr/bin/env bash
 
