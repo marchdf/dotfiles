@@ -5,6 +5,7 @@ alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
+alias ge="$EMACS_PLUGIN_LAUNCHER --no-wait"
 alias e="$EMACS_PLUGIN_LAUNCHER -nw"
 alias ek='emacsclient -e "(kill-emacs)"'
 alias rmeps="rm *.eps"
