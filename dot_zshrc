@@ -35,6 +35,9 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
+# towards the beginning to make sure some software is loaded
+zinit lucid light-mode for "hpc"
+
 zinit ice lucid depth"1"
 zinit light romkatv/powerlevel10k
 
@@ -54,6 +57,7 @@ zinit wait lucid light-mode for \
        "OMZP::tmux" \
        "OMZP::zoxide"
 
+# towards the end because it assumes some things are set in other plugins
 zinit wait lucid light-mode for "personal"
 
 # Path to your oh-my-zsh installation.
@@ -112,10 +116,6 @@ HISTSIZE=1000000
 SAVEHIST=$HISTSIZE
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
-
-if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "ellis" ]; then
-    umask u=rwx,go=rx,o=rx
-fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
