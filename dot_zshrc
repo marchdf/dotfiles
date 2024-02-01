@@ -54,6 +54,8 @@ zinit wait lucid light-mode for \
        "OMZP::tmux" \
        "OMZP::zoxide"
 
+zinit wait lucid light-mode for "personal"
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 

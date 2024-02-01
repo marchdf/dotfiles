@@ -6,8 +6,20 @@
 {{ $email := promptStringOnce . "email" "email" -}}
 {{ $test_machine := promptBoolOnce . "test_machine" "test_machine" }}
 
+{{ $nrel_hpc := false -}}
+{{- if or (eq (env "NREL_CLUSTER") "eagle") (eq (env "NREL_CLUSTER") "ellis") -}}
+{{ $nrel_hpc = true -}}
+{{- end -}}
+
+{{ $ornl_hpc := false -}}
+{{- if eq (env "LMOD_SYSTEM_NAME") "frontier" -}}
+{{ $ornl_hpc = true -}}
+{{- end -}}
+
 [data]
     use_zsh_root_dir = {{ $use_zsh_root_dir }}
     email = {{ $email | quote }}
     test_machine = {{ $test_machine }}
     spack_packages = false
+    nrel_hpc = {{ $nrel_hpc }}
+    ornl_hpc = {{ $ornl_hpc }}

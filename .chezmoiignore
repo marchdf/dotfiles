@@ -7,7 +7,6 @@ terminal-app
 .config/karabiner
 .config/iterm2
 .hammerspoon
-.oh-my-zsh/custom/iterm2_ssh_switch_tab_color.zsh
 .vscode
 bin/keyremap.sh
 Library
