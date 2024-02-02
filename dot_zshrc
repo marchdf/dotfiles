@@ -34,10 +34,9 @@ zinit lucid light-mode for "hpc"
 zinit ice lucid depth"1"
 zinit light romkatv/powerlevel10k
 
-# you can wait this if you use zinit with my aliases because they need emacs_plugin_blah variable
-# otherwise you can't wait this
-zinit lucid light-mode \
-       atclone'wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/emacs/emacsclient.sh; chmod +x emacsclient.sh' \
+zinit wait lucid light-mode \
+       dl'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/emacs/emacsclient.sh' \
+       atclone'chmod +x emacsclient.sh' \
        atpull'%atclone' \
        for "OMZP::emacs"
 
