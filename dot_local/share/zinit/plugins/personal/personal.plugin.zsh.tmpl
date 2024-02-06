@@ -155,13 +155,13 @@ tab-reset() {
 color-ssh() {
     if [[ -n "$ITERM_SESSION_ID" ]]; then
         trap "tab-reset" INT EXIT
-        if [[ "$*" =~ "navier|other_*_machine" ]]; then
+        if [[ "$*" =~ "el1|el2|el3|ed1|dav1|dav2|dav3" ]]; then
             tab-color 24 90 169
-        elif [[ "$*" =~ "cori|edison" ]]; then
+        elif [[ "$*" =~ "kl1|kl2" ]]; then
             tab-color 244 125 35
-        elif [[ "$*" =~ "machine1a|machine1b" ]]; then
+        elif [[ "$*" =~ "f10|frontier|andes|summit|crusher|ascent|olcf" ]]; then
             tab-color 102 44 155
-        elif [[ "$*" =~ "machine2a|machine2b" ]]; then
+        elif [[ "$*" =~ "ellis" ]]; then
             tab-color 162 29 33
         elif [[ "$*" =~ "machine3a|machine3b" ]]; then
             tab-color 180 56 148
