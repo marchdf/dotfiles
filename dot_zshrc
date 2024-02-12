@@ -41,7 +41,7 @@ zinit wait lucid light-mode \
        for "OMZP::emacs"
 
 zinit wait lucid light-mode for \
-       has'fzf' "OMZP::fzf" \
+       "OMZP::fzf" \
        has'fzf' @Aloxaf/fzf-tab \
        "OMZP::git" \
        "OMZP::poetry" \
