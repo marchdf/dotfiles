@@ -54,8 +54,8 @@ zinit ice lucid from"gh-r" as"command" \
   atload'export LS_COLORS="$(vivid generate one-dark)"; zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"'
 zinit light sharkdp/vivid
 
-# towards the end because it assumes some things are set in other plugins, dont wait this
-zinit lucid light-mode for "personal"
+# towards the end because it assumes some things are set in other plugins
+zinit wait lucid light-mode for "personal"
 
 # from OMZL: completion, correction, directories, git(?), history, key bindings, termsupport, themeandappearance(? maybe this overrides trapdoor) vcs_info (?)
 zstyle ':omz:lib:theme-and-appearance' gnu-ls yes
@@ -109,6 +109,28 @@ bindkey "^[[1;5B" down-line-or-history  # [CTRL] + Cursor down
 # Use ctrl-p/n to go up/down search
 bindkey "^P" up-line-or-beginning-search
 # bindkey "^N" down-line-or-beginning-search
+
+# History
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=$HISTSIZE
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+
+# zsh history backups
+export HIST_BACKUP_DIR="${HOME}/.zsh_history_backups"
+if [ ! -d "${HIST_BACKUP_DIR}" ]; then
+   mkdir "${HIST_BACKUP_DIR}"
+fi
+
+function backup_zsh_history () {
+    if [ -d "${HIST_BACKUP_DIR}" ]; then
+        local PFX=${${(M)OSTYPE:#*darwin*}:+g}
+        cp "${HISTFILE}" "${HIST_BACKUP_DIR}/zsh_history_$(${PFX}date +\%Y_\%m_\%d_\%H_\%S_\%N).bak"
+    fi
+}
+
+backup_zsh_history
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

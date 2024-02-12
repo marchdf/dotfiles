@@ -136,28 +136,6 @@ multitb() (
     return "${exit_code}"
 )
 
-# History
-HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=$HISTSIZE
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_FIND_NO_DUPS
-
-# zsh history backups
-export HIST_BACKUP_DIR="${HOME}/.zsh_history_backups"
-if [ ! -d "${HIST_BACKUP_DIR}" ]; then
-   mkdir "${HIST_BACKUP_DIR}"
-fi
-
-function backup_zsh_history () {
-    if [ -d "${HIST_BACKUP_DIR}" ]; then
-        local PFX=${${(M)OSTYPE:#*darwin*}:+g}
-        cp "${HISTFILE}" "${HIST_BACKUP_DIR}/zsh_history_$(${PFX}date +\%Y_\%m_\%d_\%H_\%S_\%N).bak"
-    fi
-}
-
-backup_zsh_history
-
 {{- if eq .chezmoi.os "darwin" }}
 # iTerm2 window/tab color commands
 #   Requires iTerm2 >= Build 1.0.0.20110804
