@@ -110,12 +110,5 @@ bindkey "^[[1;5B" down-line-or-history  # [CTRL] + Cursor down
 bindkey "^P" up-line-or-beginning-search
 # bindkey "^N" down-line-or-beginning-search
 
-# Better history
-HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=$HISTSIZE
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_FIND_NO_DUPS
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
