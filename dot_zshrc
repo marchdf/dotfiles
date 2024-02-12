@@ -54,8 +54,8 @@ zinit ice lucid from"gh-r" as"command" \
   atload'export LS_COLORS="$(vivid generate one-dark)"; zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"'
 zinit light sharkdp/vivid
 
-# towards the end because it assumes some things are set in other plugins
-zinit wait lucid light-mode for "personal"
+# towards the end because it assumes some things are set in other plugins, dont wait this
+zinit lucid light-mode for "personal"
 
 # from OMZL: completion, correction, directories, git(?), history, key bindings, termsupport, themeandappearance(? maybe this overrides trapdoor) vcs_info (?)
 zstyle ':omz:lib:theme-and-appearance' gnu-ls yes
