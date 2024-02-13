@@ -126,7 +126,10 @@ fi
 function backup_zsh_history () {
     if [ -d "${HIST_BACKUP_DIR}" ]; then
         local PFX=${${(M)OSTYPE:#*darwin*}:+g}
-        cp "${HISTFILE}" "${HIST_BACKUP_DIR}/zsh_history_$(${PFX}date +\%Y_\%m_\%d_\%H_\%S_\%N).bak"
+        HISTFILE_BAK="${HIST_BACKUP_DIR}/zsh_history_$(${PFX}date +\%Y_\%m_\%d).bak"
+        if [ ! -f "${HISTFILE_BAK}" ]; then
+            cp "${HISTFILE}" "${HISTFILE_BAK}"
+        fi
     fi
 }
 
