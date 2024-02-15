@@ -36,6 +36,10 @@ export TMPDIR=${SCRATCH}/.tmp
 MODULES_DATE=2023-05-11
 source /data/ssd1/software/${MODULES_DATE}/env.sh
 export TMPDIR=/data/ssd1/home/${USER}/.tmp
+{{- else if eq .nrel_cluster "kestrel" }}
+source /opt/cray/pe/lmod/lmod/init/zsh
+source /nopt/nrel/apps/env.sh
+export TMPDIR=${SCRATCH}/.tmp
 {{- end }}
 
 umask u=rwx,go=rx,o=rx
