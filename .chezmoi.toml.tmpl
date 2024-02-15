@@ -7,7 +7,8 @@
 {{ $test_machine := promptBoolOnce . "test_machine" "test_machine" }}
 
 {{ $nrel_hpc := false -}}
-{{- if or (eq (env "NREL_CLUSTER") "eagle") (eq (env "NREL_CLUSTER") "ellis") -}}
+{{ $nrel_cluster := env "NREL_CLUSTER" | quote -}}
+{{- if or (eq (env "NREL_CLUSTER") "eagle") (eq (env "NREL_CLUSTER") "ellis") (eq (env "NREL_CLUSTER") "kestrel") -}}
 {{ $nrel_hpc = true -}}
 {{- end -}}
 
@@ -22,4 +23,5 @@
     test_machine = {{ $test_machine }}
     spack_packages = false
     nrel_hpc = {{ $nrel_hpc }}
+    nrel_cluster = {{ $nrel_cluster }}
     ornl_hpc = {{ $ornl_hpc }}
