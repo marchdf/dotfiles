@@ -18,6 +18,8 @@ module load sqlite
 export LDFLAGS="-L${OPENSSL_ROOT_DIR}/lib -L${LIBFFI_ROOT_DIR}/lib64 -L${BZIP2_ROOT_DIR}/lib -L${SQLITE_ROOT_DIR}/lib"
 export CPPFLAGS="-I${OPENSSL_ROOT_DIR}/include -I${LIBFFI_ROOT_DIR}/include -I${BZIP2_ROOT_DIR}/include -I${SQLITE_ROOT_DIR}/include"
 {{- else if eq .nrel_cluster "ellis" }}
+MODULES_DATE=2023-05-11
+source /data/ssd1/software/${MODULES_DATE}/env.sh
 module load gcc
 module load binutils
 module load git
