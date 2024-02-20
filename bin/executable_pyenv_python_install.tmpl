@@ -6,6 +6,8 @@ if [[ ! -x "$(command -v pyenv)" ]]; then
 fi
 
 {{- if eq .nrel_cluster "eagle" }}
+source /nopt/nrel/ecom/hpacf/env.sh
+module use ${HOME}/modules/linux-centos7-skylake_avx512
 module load gcc
 module load binutils
 module load git
