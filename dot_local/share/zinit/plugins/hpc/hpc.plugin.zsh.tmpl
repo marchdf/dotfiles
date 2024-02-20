@@ -88,35 +88,6 @@ function pvtunnel() {
     ssh -L 11111:$1:11111 mhenryde@$1
 }
 
-function pyenv_python_install() {
-    {{- if eq .nrel_cluster "eagle" }}
-    module load gcc
-    module load binutils
-    module load git
-    module load gnutls
-    module load libtool
-    module load bzip2
-    module load libffi
-    module load openssl
-    module load sqlite
-    export LDFLAGS="-L${OPENSSL_ROOT_DIR}/lib -L${LIBFFI_ROOT_DIR}/lib64 -L${BZIP2_ROOT_DIR}/lib -L${SQLITE_ROOT_DIR}/lib"
-    export CPPFLAGS="-I${OPENSSL_ROOT_DIR}/include -I${LIBFFI_ROOT_DIR}/include -I${BZIP2_ROOT_DIR}/include -I${SQLITE_ROOT_DIR}/include"
-    {{- else if eq .nrel_cluster "ellis" }}
-    module load gcc
-    module load binutils
-    module load git
-    module load gnutls
-    module load libtool
-    module load bzip2
-    module load libffi
-    module load sqlite
-    export LDFLAGS="-L${LIBFFI_ROOT_DIR}/lib64 -L${BZIP2_ROOT_DIR}/lib -L${SQLITE_ROOT_DIR}/lib"
-    export CPPFLAGS="-I${LIBFFI_ROOT_DIR}/include -I${BZIP2_ROOT_DIR}/include -I${SQLITE_ROOT_DIR}/include"
-    {{- end }}
-    export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
-    export PYTHON_CFLAGS="-mtune=native"
-    pyenv install
-}
 {{ end }}
 
 {{- if .ornl_hpc }}
