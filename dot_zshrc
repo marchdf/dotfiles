@@ -57,13 +57,11 @@ zinit light sharkdp/vivid
 # towards the end because it assumes some things are set in other plugins
 zinit wait lucid light-mode for "personal"
 
-# from OMZL: completion, correction, directories, git(?), history, key bindings, termsupport, themeandappearance(? maybe this overrides trapdoor) vcs_info (?)
-zstyle ':omz:lib:theme-and-appearance' gnu-ls yes
-
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Uncomment the following line to enable command auto-correction.
+# OMZL options
+zstyle ':omz:lib:theme-and-appearance' gnu-ls yes
 ENABLE_CORRECTION="true"
 CORRECT_IGNORE_FILE='.*'
 
