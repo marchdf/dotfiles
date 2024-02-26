@@ -59,14 +59,16 @@ function load_custom_modules {
         module load image-magick
         module load libffi
         module load libtool
-        module load python/3.7.7
         module load py-setuptools-scm
         module load sqlite
         module load tmux
         {{- if eq .nrel_cluster "eagle" }}
+        module load python/3.7.7
         module load mpt
         module load openssl
         module load texlive
+        {{- else if eq .nrel_cluster "ellis" }}
+        module load python/3.10.10
         {{- end }}
 
         module load emacs/28.2
