@@ -44,10 +44,10 @@ fi
 export COMBUSTION_DIR="${HOME}/combustion"
 export MASA_HOME="${COMBUSTION_DIR}/install/MASA"
 
-# spack-manager
-if [ -d "${HOME}/exawind/spack-manager" ]; then
-    export SPACK_MANAGER=${HOME}/exawind/spack-manager
-    source ${SPACK_MANAGER}/start.sh
+# exawind-manager
+if [ -d "${HOME}/exawind/exawind-manager" ]; then
+    export EXAWIND_MANAGER=${HOME}/exawind/exawind-manager
+    source ${EXAWIND_MANAGER}/start.sh
 fi
 
 # pyenv
