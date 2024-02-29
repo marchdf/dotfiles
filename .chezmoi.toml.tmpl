@@ -2,9 +2,26 @@
     command = "emacs"
     args = ["-nw"]
 
-{{- $use_zsh_root_dir := promptBoolOnce . "use_zsh_root_dir" "Use ZSH_ROOT_DIR for tmux shell" }}
-{{ $email := promptString "email" -}}
+{{ $use_zsh_root_dir := promptBoolOnce . "use_zsh_root_dir" "Use ZSH_ROOT_DIR for tmux shell" }}
+{{ $email := promptStringOnce . "email" "email" -}}
+{{ $test_machine := promptBoolOnce . "test_machine" "test_machine" }}
+
+{{ $nrel_hpc := false -}}
+{{ $nrel_cluster := env "NREL_CLUSTER" | quote -}}
+{{- if or (eq (env "NREL_CLUSTER") "eagle") (eq (env "NREL_CLUSTER") "ellis") (eq (env "NREL_CLUSTER") "kestrel") -}}
+{{ $nrel_hpc = true -}}
+{{- end -}}
+
+{{ $ornl_hpc := false -}}
+{{- if eq (env "LMOD_SYSTEM_NAME") "frontier" -}}
+{{ $ornl_hpc = true -}}
+{{- end -}}
 
 [data]
     use_zsh_root_dir = {{ $use_zsh_root_dir }}
     email = {{ $email | quote }}
+    test_machine = {{ $test_machine }}
+    spack_packages = false
+    nrel_hpc = {{ $nrel_hpc }}
+    nrel_cluster = {{ $nrel_cluster }}
+    ornl_hpc = {{ $ornl_hpc }}

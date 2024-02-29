@@ -1,0 +1,42 @@
+name: dotfiles-CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 5 * * 1"
+
+concurrency:
+  group: ${{github.ref}}-${{github.head_ref}}-ci
+  cancel-in-progress: true
+
+jobs:
+  Dotfiles:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: macos-latest
+            install_deps: brew install chezmoi
+          - os: ubuntu-latest
+            install_deps: sudo apt-get update && sudo apt install zsh -y && sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin && export PATH="${HOME}/.local/bin:$PATH"
+    steps:
+      - name: Dependencies
+        run: |
+          ${{matrix.install_deps}}
+      - name: Install
+        run: |
+          export CHEZMOI_BRANCH=${{ github.head_ref || github.ref_name }}
+          chezmoi init https://github.com/marchdf/dotfiles.git --branch ${CHEZMOI_BRANCH} --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
+          chezmoi data
+          chezmoi apply
+      - name: Cold start zsh
+        run: |
+          time zsh -i -c exit
+      - name: Warm start zsh
+        run: |
+          time zsh -i -c exit

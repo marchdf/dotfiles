@@ -44,15 +44,10 @@ fi
 export COMBUSTION_DIR="${HOME}/combustion"
 export MASA_HOME="${COMBUSTION_DIR}/install/MASA"
 
-# Zplug
-if [ -d "${HOME}/.zplug" ]; then
-    export ZPLUG_HOME="${HOME}/.zplug"
-fi
-
-# spack-manager
-if [ -d "${HOME}/exawind/spack-manager" ]; then
-    export SPACK_MANAGER=${HOME}/exawind/spack-manager
-    source ${SPACK_MANAGER}/start.sh
+# exawind-manager
+if [ -d "${HOME}/exawind/exawind-manager" ]; then
+    export EXAWIND_MANAGER=${HOME}/exawind/exawind-manager
+    source ${EXAWIND_MANAGER}/start.sh
 fi
 
 # pyenv
@@ -66,6 +61,9 @@ fi
 if [ -d "${HOME}/.poetry" ]; then
     export PATH="$HOME/.poetry/bin:$PATH"
 fi
+
+# zoxide
+export _ZO_DATA_DIR=$HOME/.local/share
 
 {{- if eq .chezmoi.os "darwin" }}
 
@@ -82,36 +80,3 @@ export TMPDIR=/tmp
 alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
 
 {{- end }}
-
-
-# paths for NREL HPC
-if [ "${NREL_CLUSTER}" = "eagle" ] || [ "${NREL_CLUSTER}" = "rhodes" ] || [ "${NREL_CLUSTER}" = "ellis" ]; then
-
-    # Set scratch
-    if [ -d "/scratch/${USER}" ]; then
-        export SCRATCH="/scratch/${USER}"
-    fi
-
-    # Set the modules
-    if [ "${NREL_CLUSTER}" = "eagle" ]; then
-        source /nopt/nrel/utils/lmod/lmod/init/zsh
-        source /nopt/nrel/ecom/hpacf/env.sh
-        module use ${HOME}/modules/linux-centos7-skylake_avx512/gcc-9.3.0
-        export TMPDIR=${SCRATCH}/.tmp
-    elif [ "${NREL_CLUSTER}" = "rhodes" ]; then
-        source /opt/base/env.sh
-    elif [ "${NREL_CLUSTER}" = "ellis" ]; then
-        MODULES_DATE=2023-05-11
-        source /data/ssd1/software/${MODULES_DATE}/env.sh
-        export TMPDIR=/data/ssd1/home/${USER}/.tmp
-    fi
-
-    # Load some custom modules
-    . ${HOME}/.oh-my-zsh/custom/functions_nrel_hpc.zsh
-    load_custom_modules
-
-    # Nek5000
-    export PATH="${HOME}/Nek5000/bin:${PATH}"
-
-
-fi
