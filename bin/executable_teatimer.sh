@@ -18,15 +18,19 @@ if [ "$(uname)" == "Darwin" ]; then
 
     # Make sure sound is enabled
     osascript -e "set Volume 2"
-    
+
+    # Doesn't work with ventura
     # Make sure you installed terminal-notifier with homebrew
     # Also increase the notification banner time by doing:
     # defaults write com.apple.notificationcenterui bannerTime 15
     # taken from: https://9to5mac.com/2014/01/30/how-to-change-os-x-banner-notification-duration-using-terminal/
-    terminal-notifier -title "Your tea is ready!" -message "" -sound default -contentImage "$HOME/bin/tea.jpg";
+    # terminal-notifier -title "Your tea is ready!" -message "" -sound default -contentImage "$HOME/bin/tea.jpg";
+
+    # Display notification
+    osascript -e 'display notification "--" with title "Your tea is ready"'
 
     # Make my own sound aiff with the old system beep? and play it like this
-    #afplay /System/Library/Sounds/Funk.aiff
+    afplay /System/Library/Sounds/Funk.aiff
     
     # Make sure sound is disabled (but wait for previous command to end)
     gsleep 1s;

@@ -1,4 +1,5 @@
-{{- if eq .chezmoi.os "linux" -}}
+{{- if (and (eq .chezmoi.os "linux") (.spack_packages)) -}}
+
 #!/usr/bin/env bash
 
 cmd() {
@@ -6,52 +7,59 @@ cmd() {
   eval "$@"
 }
 
-echo "Setting up packages with spack-manager"
+echo "Setting up packages with spack"
 
 cmd "cd ${HOME}"
-if [ ! -d "${HOME}/spack-manager" ]; then
-   cmd "git clone --recursive git@github.com:sandialabs/spack-manager.git"
+if [ ! -d "${HOME}/spack" ]; then
+   cmd "git clone -c feature.manyFiles=true https://github.com/spack/spack.git"
 fi
-cmd "export SPACK_MANAGER=${HOME}/spack-manager"
-cmd "source ${SPACK_MANAGER}/start.sh"
+cmd "export SPACK_DIR=${HOME}/spack"
+cmd "source ${SPACK_DIR}/share/spack/setup-env.sh"
 
 ENV_NAME="prog-utils"
-ENV_DIR="${SPACK_MANAGER}/environments/${ENV_NAME}"
-MODULE_DIR="${HOME}/modules"
+ENV_DIR="${SPACK_DIR}/var/spack/environments/${ENV_NAME}"
+cmd "spack env activate --create ${ENV_NAME}"
 
-cmd "mkdir -p ${MODULE_DIR}"
-cmd "quick-create -n ${ENV_NAME}"
-cmd "quick-activate ${ENV_DIR}"
 
-# cmd "spack add emacs@29.0+tls+native+treesitter+json"
-cmd "spack add emacs@28.2+tls+json%gcc"
-cmd "spack add ccls%gcc"
-
-if [ ! -z $(grep -L "modules:" "${ENV_DIR}/spack.yaml") ]; then
-   echo "Adding modules to spack.yaml"
-   echo "  modules:
-       default:
-         roots:
-           tcl: ${MODULE_DIR}
-         tcl:
-           projections:
-             all: '{compiler.name}-{compiler.version}/{name}/{version}/{hash:4}'
-           hash_length: 0
-           all:
-             conflict:
-             - '{name}'
-             environment:
-               set:
-                 '{name}_ROOT_DIR': '{prefix}'
-           include: [emacs, ccls]
-           exclude: ['%gcc']" >> "${ENV_DIR}/spack.yaml"
-fi
+cmd "spack add emacs@29.2+tls+native+treesitter+json%gcc"
+# cmd "spack add emacs@28.2+tls+json%gcc"
+# cmd "spack add ccls%gcc"
 
 cmd "spack concretize -f"
-cmd "spack install"
-cmd "spack module tcl refresh -y"
+cmd "spack env deactivate"
 
-cmd "touch ${MODULE_DIR}/linux-centos7-skylake_avx512/gcc-9.3.0/ccls/.version"
-cmd "rm -rf ~/.lmod.d/.cache"
+# MODULE_DIR="${HOME}/modules"
+
+# cmd "mkdir -p ${MODULE_DIR}"
+# cmd "quick-create -n ${ENV_NAME}"
+# cmd "quick-activate ${ENV_DIR}"
+
+
+# if [ ! -z $(grep -L "modules:" "${ENV_DIR}/spack.yaml") ]; then
+#    echo "Adding modules to spack.yaml"
+#    echo "  modules:
+#        default:
+#          roots:
+#            tcl: ${MODULE_DIR}
+#          tcl:
+#            projections:
+#              all: '{compiler.name}-{compiler.version}/{name}/{version}/{hash:4}'
+#            hash_length: 0
+#            all:
+#              conflict:
+#              - '{name}'
+#              environment:
+#                set:
+#                  '{name}_ROOT_DIR': '{prefix}'
+#            include: [emacs, ccls]
+#            exclude: ['%gcc']" >> "${ENV_DIR}/spack.yaml"
+# fi
+
+# cmd "spack concretize -f"
+# cmd "spack install"
+# cmd "spack module tcl refresh -y"
+
+# cmd "touch ${MODULE_DIR}/linux-centos7-skylake_avx512/gcc-9.3.0/ccls/.version"
+# cmd "rm -rf ~/.lmod.d/.cache"
 
 {{ end -}}

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+if [[ ! -x "$(command -v pyenv)" ]]; then
+    echo "Please install pyenv"
+    exit 1
+fi
+
+{{- if eq .nrel_cluster "eagle" }}
+source /nopt/nrel/ecom/hpacf/env.sh
+module use ${HOME}/modules/linux-centos7-skylake_avx512
+module load gcc
+module load binutils
+module load git
+module load gnutls
+module load libtool
+module load bzip2
+module load libffi
+module load openssl
+module load sqlite
+export LDFLAGS="-L${OPENSSL_ROOT_DIR}/lib -L${LIBFFI_ROOT_DIR}/lib64 -L${BZIP2_ROOT_DIR}/lib -L${SQLITE_ROOT_DIR}/lib"
+export CPPFLAGS="-I${OPENSSL_ROOT_DIR}/include -I${LIBFFI_ROOT_DIR}/include -I${BZIP2_ROOT_DIR}/include -I${SQLITE_ROOT_DIR}/include"
+{{- else if eq .nrel_cluster "ellis" }}
+MODULES_DATE=2023-05-11
+source /data/ssd1/software/${MODULES_DATE}/env.sh
+module load gcc
+module load binutils
+module load git
+module load gnutls
+module load libtool
+module load bzip2
+module load libffi
+module load sqlite
+export LDFLAGS="-L${LIBFFI_ROOT_DIR}/lib64 -L${BZIP2_ROOT_DIR}/lib -L${SQLITE_ROOT_DIR}/lib"
+export CPPFLAGS="-I${LIBFFI_ROOT_DIR}/include -I${BZIP2_ROOT_DIR}/include -I${SQLITE_ROOT_DIR}/include"
+{{- end }}
+export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
+export PYTHON_CFLAGS="-mtune=native"
+
+
+PYTHON_VERSION="${1}"
+if [ ! -z "$python_version" ]
+then
+    pyenv install
+else
+    pyenv install -s ${PYTHON_VERSION}
+fi

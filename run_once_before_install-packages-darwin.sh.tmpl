@@ -3,9 +3,12 @@
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
-tap "jimeh/emacs-builds"
-tap "homebrew/cask-fonts"
 
+brew "gcc"
+brew "fzf"
+brew "pyenv"
+
+{{- if not .test_machine }}
 brew "act"
 brew "age"
 brew "aspell"
@@ -35,8 +38,6 @@ brew "faac"
 brew "fd"
 brew "fdk-aac"
 brew "flac123"
-brew "fzf"
-brew "gcc"
 brew "git"
 brew "global"
 brew "gnuplot"
@@ -58,7 +59,6 @@ brew "openssl@3"
 brew "pandoc"
 brew "pianobar"
 brew "prettyping"
-brew "pyenv"
 brew "python@3.10"
 brew "ripgrep"
 brew "shellcheck"
@@ -69,6 +69,7 @@ brew "taglib"
 brew "terminal-notifier"
 brew "tldr"
 brew "tmux"
+brew "tree"
 brew "tree-sitter"
 brew "vorbis-tools"
 brew "wdiff"
@@ -76,8 +77,9 @@ brew "wget"
 brew "xpdf"
 brew "xz"
 brew "zlib"
-brew "zplug"
 
+tap "jimeh/emacs-builds"
+tap "homebrew/cask-fonts"
 cask_args appdir: "~/Applications"
 cask "font-fira-code-nerd-font"
 cask "font-meslo-lg-nerd-font"
@@ -100,14 +102,13 @@ cask "vivaldi"
 cask "vlc"
 cask "zoom"
 cask "zotero"
+{{ end }}
 EOF
 
 brew pin gcc
-brew pin mpich
 
-ZPLUG_HOME="${HOME}/.zplug"
-if [ ! -d "${ZPLUG_HOME}" ]; then
-   ln -s /opt/homebrew/opt/zplug ${ZPLUG_HOME}
-fi
+{{- if not .test_machine }}
+brew pin mpich
+{{ end }}
 
 {{ end -}}
