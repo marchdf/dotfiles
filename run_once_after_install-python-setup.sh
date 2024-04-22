@@ -24,6 +24,7 @@ fi
 
 PYTHON_VERSION="3.11.1"
 ${HOME}/bin/pyenv_python_install ${PYTHON_VERSION}
+pyenv global ${PYTHON_VERSION}
 
 # Install poetry with the pyenv python
 if [[ ! -x "$(command -v poetry)" ]]; then
