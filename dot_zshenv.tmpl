@@ -44,12 +44,6 @@ fi
 export COMBUSTION_DIR="${HOME}/combustion"
 export MASA_HOME="${COMBUSTION_DIR}/install/MASA"
 
-# exawind-manager
-if [ -d "${HOME}/exawind/exawind-manager" ]; then
-    export EXAWIND_MANAGER=${HOME}/exawind/exawind-manager
-    source ${EXAWIND_MANAGER}/start.sh
-fi
-
 # pyenv
 export PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
@@ -60,6 +54,12 @@ fi
 # poetry
 if [ -d "${HOME}/.poetry" ]; then
     export PATH="$HOME/.poetry/bin:$PATH"
+fi
+
+# exawind-manager
+if [ -d "${HOME}/exawind/exawind-manager" ]; then
+    export EXAWIND_MANAGER=${HOME}/exawind/exawind-manager
+    source ${EXAWIND_MANAGER}/start.sh
 fi
 
 # zoxide
