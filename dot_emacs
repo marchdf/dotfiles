@@ -717,6 +717,9 @@
   :config
   (cond
    ((executable-find "hunspell")
+    (setenv
+     "DICPATH"
+     (concat (getenv "HOME") "/.local/share/hunspell/dicts"))
     (setq ispell-program-name "hunspell")
     (setq ispell-extra-args   '("-d en_US")))
     (executable-find "aspell")

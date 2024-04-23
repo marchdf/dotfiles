@@ -65,6 +65,12 @@ fi
 # zoxide
 export _ZO_DATA_DIR=$HOME/.local/share
 
+# hunspell dicts
+if [ -d "${HOME}/.local/share/hunspell/dicts" ]; then
+   export DICPATH="${HOME}/.local/share/hunspell/dicts"
+fi
+
+
 {{- if eq .chezmoi.os "darwin" }}
 
 # paths for Mac OSX
