@@ -151,7 +151,7 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]tmp_build_dir\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]spack-build-.+\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\].spack-env\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]exawind-manager/.cache\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\].cache\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]exawind-manager/.tmp\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]exawind-manager/configs\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]exawind-manager/docs\\'")

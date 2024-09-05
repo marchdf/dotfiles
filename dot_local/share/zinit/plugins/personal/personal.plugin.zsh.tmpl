@@ -155,7 +155,7 @@ tab-reset() {
 color-ssh() {
     if [[ -n "$ITERM_SESSION_ID" ]]; then
         trap "tab-reset" INT EXIT
-        if [[ "$*" =~ "el1|el2|el3|ed1|dav1|dav2|dav3" ]]; then
+        if [[ "$*" =~ "dav1|dav2|dav3" ]]; then
             tab-color 24 90 169
         elif [[ "$*" =~ "kl1|kl2" ]]; then
             tab-color 244 125 35

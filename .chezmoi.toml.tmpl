@@ -8,7 +8,7 @@
 
 {{ $nrel_hpc := false -}}
 {{ $nrel_cluster := env "NREL_CLUSTER" | quote -}}
-{{- if or (eq (env "NREL_CLUSTER") "eagle") (eq (env "NREL_CLUSTER") "ellis") (eq (env "NREL_CLUSTER") "kestrel") -}}
+{{- if or (eq (env "NREL_CLUSTER") "ellis") (eq (env "NREL_CLUSTER") "kestrel") -}}
 {{ $nrel_hpc = true -}}
 {{- end -}}
 

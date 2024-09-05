@@ -14,22 +14,6 @@ host hpacf
     User mhenryde
     hostname hpacf01.hpc.nrel.gov
 
-host el1
-    User mhenryde
-    hostname el1.hpc.nrel.gov
-
-host el2
-    User mhenryde
-    hostname el2.hpc.nrel.gov
-
-host el3
-    User mhenryde
-    hostname el3.hpc.nrel.gov
-
-host ed1
-    User mhenryde
-    hostname ed1.hpc.nrel.gov
-
 host dav1
     User mhenryde
     hostname dav1.hpc.nrel.gov
@@ -53,6 +37,10 @@ host kl1
 host kl2
     User mhenryde
     hostname kl2.hpc.nrel.gov
+
+host kl5
+    User mhenryde
+    hostname kl5.hpc.nrel.gov
 
 host cori
     User marchdf
@@ -104,11 +92,23 @@ host frontier
     User marchdf
     hostname frontier.olcf.ornl.gov
     ControlMaster no
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    ControlMaster auto
+    ControlPersist 12h
+    ControlPath ~/.ssh/%r@%h:%p
 
 host f10
     User marchdf
     hostname login10.frontier.olcf.ornl.gov
     ControlMaster no
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    ControlMaster auto
+    ControlPersist 12h
+    ControlPath ~/.ssh/%r@%h:%p
 
 host andes
     User marchdf

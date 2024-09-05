@@ -27,12 +27,7 @@ if [ -d "/scratch/${USER}" ]; then
 fi
 
 # Set the modules
-{{- if eq .nrel_cluster "eagle" }}
-source /nopt/nrel/utils/lmod/lmod/init/zsh
-source /nopt/nrel/ecom/hpacf/env.sh
-module use ${HOME}/modules/linux-centos7-skylake_avx512/gcc-9.3.0
-export TMPDIR=${SCRATCH}/.tmp
-{{- else if eq .nrel_cluster "ellis" }}
+{{- if eq .nrel_cluster "ellis" }}
 MODULES_DATE=2023-05-11
 source /data/ssd1/software/${MODULES_DATE}/env.sh
 export TMPDIR=/data/ssd1/home/${USER}/.tmp
@@ -62,12 +57,7 @@ function load_custom_modules {
         module load py-setuptools-scm
         module load sqlite
         module load tmux
-        {{- if eq .nrel_cluster "eagle" }}
-        module load python/3.7.7
-        module load mpt
-        module load openssl
-        module load texlive
-        {{- else if eq .nrel_cluster "ellis" }}
+        {{- if eq .nrel_cluster "ellis" }}
         module load python/3.10.10
         {{- end }}
 
