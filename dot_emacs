@@ -1114,6 +1114,10 @@
       "\\.flac$" "flac123")
     (add-to-list 'emms-player-list emms-player-flac123)
 
+    ;; use GNU find on OSX (brew install findutils)
+    (if (eq system-type 'darwin)
+        (setq emms-source-file-gnu-find "gfind"))
+
     ;; Use libtag exclusively for tagging
     ;; Requires building emms-print-metadata and it being in your path
     (require 'emms-info-libtag)
