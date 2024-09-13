@@ -28,6 +28,9 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
+# Setup up some paths and environment variables
+export WORKON_HOME=${HOME}/.virtualenvs
+
 # towards the beginning to make sure some software is loaded
 zinit lucid light-mode for "hpc"
 
