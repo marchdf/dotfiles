@@ -124,7 +124,7 @@ fi
 function backup_zsh_history () {
     if [ -d "${HIST_BACKUP_DIR}" ]; then
         HISTFILE_BAK="${HIST_BACKUP_DIR}/zsh_history_$(date +\%Y_\%m_\%d).bak"
-        if [ ! -f "${HISTFILE_BAK}" ]; then
+        if [ ! -f "${HISTFILE_BAK}" ] && [ -f "${HISTFILE}" ]; then
             cp "${HISTFILE}" "${HISTFILE_BAK}"
         fi
     fi
