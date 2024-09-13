@@ -29,7 +29,84 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 # Setup up some paths and environment variables
+
+# homebrew
+if [ -d "/opt/homebrew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
+
+# miniconda
+MINICONDA_DIR="${HOME}/miniconda3"
+if [ -d "${MINICONDA_DIR}" ]; then
+    # >>> conda initialize >>>
+    __conda_setup="$('${MINICONDA_DIR}/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "${MINICONDA_DIR}/etc/profile.d/conda.sh" ]; then
+            . "${MINICONDA_DIR}/etc/profile.d/conda.sh"
+        else
+            export PATH="${MINICONDA_DIR}/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+    # <<< conda initialize <<<
+fi
+
+# Spack home directory
+if [ -d "${HOME}/spack" ]; then
+    export SPACK_DIR="${HOME}/spack"
+fi
+
+# combustion directory
+export COMBUSTION_DIR="${HOME}/combustion"
+export MASA_HOME="${COMBUSTION_DIR}/install/MASA"
+
+# pyenv
+export PYENV_ROOT="${HOME}/.pyenv"
+if [ -d "${PYENV_ROOT}" ]; then
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+fi
+
+# poetry
+if [ -d "${HOME}/.poetry" ]; then
+    export PATH="$HOME/.poetry/bin:$PATH"
+fi
+
+# exawind-manager
+if [ -d "${HOME}/exawind/exawind-manager" ]; then
+    export EXAWIND_MANAGER=${HOME}/exawind/exawind-manager
+    source ${EXAWIND_MANAGER}/start.sh
+fi
+
+# zoxide
+export _ZO_DATA_DIR=$HOME/.local/share
+
+# hunspell dicts
+if [ -d "${HOME}/.local/share/hunspell/dicts" ]; then
+   export DICPATH="${HOME}/.local/share/hunspell/dicts"
+fi
+
 export WORKON_HOME=${HOME}/.virtualenvs
+
+{{- if eq .chezmoi.os "darwin" }}
+
+# paths for Mac OSX
+
+# github tokens
+source "${HOME}/.github_tokens"
+
+# openmpi fails because tmp dir name is too long
+# see: https://www.open-mpi.org/faq/?category=osx
+export TMPDIR=/tmp
+
+# Set vlc for terminal
+alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
+
+{{- end }}
 
 # towards the beginning to make sure some software is loaded
 zinit lucid light-mode for "hpc"
