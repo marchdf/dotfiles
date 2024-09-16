@@ -39,6 +39,23 @@ export TMPDIR=${SCRATCH}/.tmp
 
 umask u=rwx,go=rx,o=rx
 
+function pv510server() {
+    module load paraview/5.10.1-server
+    srun -n $1 -c 1 --cpu_bind=cores pvserver
+}
+
+function pv510gui() {
+    module load paraview/5.10.1-gui
+    vglrun paraview
+}
+
+function pvtunnel() {
+    ssh -L 11111:$1:11111 mhenryde@$1
+}
+
+{{ end }}
+
+{{- if or (.nrel_hpc) (.ornl_hpc) }}
 function load_custom_modules {
 
     {
@@ -91,23 +108,6 @@ function load_custom_modules {
     } &> /dev/null
 }
 
-function pv510server() {
-    module load paraview/5.10.1-server
-    srun -n $1 -c 1 --cpu_bind=cores pvserver
-}
-
-function pv510gui() {
-    module load paraview/5.10.1-gui
-    vglrun paraview
-}
-
-function pvtunnel() {
-    ssh -L 11111:$1:11111 mhenryde@$1
-}
-
-{{ end }}
-
-{{- if or (.nrel_hpc) (.ornl_hpc) }}
 load_custom_modules
 {{ end }}
 
