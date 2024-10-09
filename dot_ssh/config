@@ -42,6 +42,10 @@ host kl5
     User mhenryde
     hostname kl5.hpc.nrel.gov
 
+host kl6
+    User mhenryde
+    hostname kl6.hpc.nrel.gov
+
 host cori
     User marchdf
     hostname cori.nersc.gov
