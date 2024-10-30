@@ -23,4 +23,3 @@ dependencies:
   - snakeviz
   - sphinx
   - yt
-prefix: /home/mhenryde/miniconda3/envs/main

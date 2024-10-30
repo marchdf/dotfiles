@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+pkg_dirs:
+  - $HOME/.conda/pkgs
+envs_dirs:
+  - $HOME/.conda/envs
