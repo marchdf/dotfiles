@@ -37,29 +37,6 @@ fi
 
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 
-# miniconda
-MINICONDA_DIR="${HOME}/miniconda3"
-if [ -d "${MINICONDA_DIR}" ]; then
-    # >>> conda initialize >>>
-    __conda_setup="$('${MINICONDA_DIR}/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "${MINICONDA_DIR}/etc/profile.d/conda.sh" ]; then
-            . "${MINICONDA_DIR}/etc/profile.d/conda.sh"
-        else
-            export PATH="${MINICONDA_DIR}/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-    # <<< conda initialize <<<
-fi
-
-# Spack home directory
-if [ -d "${HOME}/spack" ]; then
-    export SPACK_DIR="${HOME}/spack"
-fi
-
 # combustion directory
 export COMBUSTION_DIR="${HOME}/combustion"
 export MASA_HOME="${COMBUSTION_DIR}/install/MASA"

@@ -85,19 +85,10 @@ function recd() { cd `pwd`; }
 # From: https://defunitive.wordpress.com/2011/07/23/invoking-emacs-ediff-from-the-command-line/
 function ediff() {
     if [ "X${2}" = "X" ]; then
-	echo "USAGE: ediff <FILE 1> <FILE 2>"
+        echo "USAGE: ediff <FILE 1> <FILE 2>"
     else
-	# The --eval flag takes lisp code and evaluates it with emacs
-	"$EMACS_PLUGIN_LAUNCHER" -nw --eval "(ediff-files \"$1\" \"$2\")"
-    fi
-}
-
-# Load spack environment if you want it. I do this instead of loading
-# it by default because it would slow down terminal startup time
-function load_spack(){
-    if [ -d "$SPACK_DIR" ]; then
-	export SPACK_ROOT=${SPACK_DIR}
-	. ${SPACK_ROOT}/share/spack/setup-env.sh
+        # The --eval flag takes lisp code and evaluates it with emacs
+        "$EMACS_PLUGIN_LAUNCHER" -nw --eval "(ediff-files \"$1\" \"$2\")"
     fi
 }
 
@@ -135,6 +126,37 @@ multitb() (
     rmdir "${tmpdir}"
     return "${exit_code}"
 )
+
+function conda-start(){
+    CONDA_EXEC=""
+    CONDA_DIR=""
+    if [[ -x "$(command -v conda)" ]]; then
+        CONDA_DIR="$(conda info --base)"
+        CONDA_EXEC="conda"
+    elif [ -d "${HOME}/miniconda3" ]; then
+        CONDA_DIR="${HOME}/miniconda3"
+        CONDA_EXEC="${CONDA_DIR}/conda"
+    fi
+
+    if [ -d "${CONDA_DIR}" ]; then
+        # >>> conda initialize >>>
+        __conda_setup="$('${CONDA_EXEC}' 'shell.zsh' 'hook' 2> /dev/null)"
+        if [ $? -eq 0 ]; then
+            eval "$__conda_setup"
+        else
+            if [ -f "${CONDA_DIR}/etc/profile.d/conda.sh" ]; then
+                . "${CONDA_DIR}/etc/profile.d/conda.sh"
+            else
+                export PATH="${CONDA_DIR}/bin:$PATH"
+            fi
+        fi
+        unset __conda_setup
+        # <<< conda initialize <<<
+    fi
+
+    unset CONDA_DIR
+    unset CONDA_EXEC
+}
 
 {{- if eq .chezmoi.os "darwin" }}
 # iTerm2 window/tab color commands
