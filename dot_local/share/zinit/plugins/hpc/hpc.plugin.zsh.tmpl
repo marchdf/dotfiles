@@ -69,6 +69,7 @@ function load_custom_modules {
           module load imagemagick
           module load tmux
           module load cray-python
+          module load miniforge3
         {{- else if (.nrel_hpc) }}
           {{- if eq .nrel_cluster "ellis" }}
           module purge
