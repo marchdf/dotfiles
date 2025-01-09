@@ -201,6 +201,8 @@ function backup_zoxide_database () {
         if [ ! -f "${ZO_DATA_BAK}" ] && [ -f "${ZO_DATA}" ]; then
             cp "$ZO_DATA" "$ZO_DATA_BAK"
         fi
+        unset ZO_DATA
+        unset ZO_DATA_BAK
     fi
 }
 
