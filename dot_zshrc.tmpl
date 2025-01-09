@@ -194,5 +194,17 @@ function backup_zsh_history () {
 
 backup_zsh_history
 
+function backup_zoxide_database () {
+    if [ -d "$_ZO_DATA_DIR" ]; then
+        ZO_DATA="${_ZO_DATA_DIR}/db.zo"
+        ZO_DATA_BAK="${_ZO_DATA_DIR}/db_$(date +\%Y_\%m_\%d)-bak.zo"
+        if [ ! -f "${ZO_DATA_BAK}" ] && [ -f "${ZO_DATA}" ]; then
+            cp "$ZO_DATA" "$ZO_DATA_BAK"
+        fi
+    fi
+}
+
+backup_zoxide_database
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
