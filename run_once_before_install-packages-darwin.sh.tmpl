@@ -1,6 +1,11 @@
 {{- if eq .chezmoi.os "darwin" -}}
 #!/usr/bin/env bash
 
+if [ ! -d "${HOME}/.nrel-certs" ]; then
+   git clone https://github.nrel.gov/TADA/nrel-certs.git ${HOME}/.nrel-certs
+   source ${HOME}/.nrel-certs/setup
+fi
+
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
 
