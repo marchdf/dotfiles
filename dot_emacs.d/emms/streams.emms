@@ -1,7 +1,7 @@
 ;;; This is an EMMS playlist file
 
 (
-(*track* (type . streamlist) (name . "https://kunc.streamguys1.com/kjac.m3u"))
+(*track* (type . streamlist) (name . "https://ais-sa1.streamon.fm/7891_96k.aac/playlist.m3u8"))
 (*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/lapremiere/m3u/lapremiere-mp3.m3u"))
 (*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/purefm/m3u/pure-mp3.m3u"))
 (*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/classic21/m3u/classic21-mp3.m3u"))
