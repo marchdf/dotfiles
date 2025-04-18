@@ -67,6 +67,9 @@ if [ -d "${HOME}/.local/share/hunspell/dicts" ]; then
    export DICPATH="${HOME}/.local/share/hunspell/dicts"
 fi
 
+# ollama
+export OLLAMA_NOHISTORY=true
+
 export WORKON_HOME=${HOME}/.virtualenvs
 
 {{- if eq .chezmoi.os "darwin" }}
