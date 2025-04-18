@@ -91,6 +91,16 @@ function ediff() {
     fi
 }
 
+# diff with diff-so-fancy if available.
+function diff() {
+    if [[ -x "$(command -v diff-so-fancy)" ]]; then
+        /usr/bin/diff -u "$@" | diff-so-fancy
+        (exit "${PIPESTATUS[0]}") # Exit with $? from diff
+    else
+        /usr/bin/diff --color "$@"
+    fi
+}
+
 # Grep through all python scrips in home directory
 function grep_python() {
     grep -r --include=\*.py --exclude-dir=.virtualenvs --exclude-dir=.emacs.d --exclude-dir=spack --exclude-dir=.oh-my-zsh "${1}" ${HOME}

@@ -6,6 +6,7 @@
 {{- end }}
 
 [core]
+	pager = diff-so-fancy | less --tabs=4 -RF
 
 [color]
         ui = true
@@ -32,3 +33,5 @@
         defaultBranch = main
 [submodule]
         recurse = true
+[interactive]
+	diffFilter = diff-so-fancy --patch
