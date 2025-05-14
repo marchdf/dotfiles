@@ -30,15 +30,15 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 # Install pyenv and a sane python
-if [[ ! -x "$(command -v pyenv)" ]]; then
-   curl https://pyenv.run | bash
-fi
-
 if [[ ${CLEAN} && -x "$(command -v pyenv)" ]]; then
     if [[ -n "$(pyenv root)" && -d "$(pyenv root)" ]]; then
         echo "Cleaning pyenv: removing $(pyenv root)"
         rm -r "$(pyenv root)"
     fi
+fi
+
+if [[ ! -x "$(command -v pyenv)" ]]; then
+   curl https://pyenv.run | bash
 fi
 
 export PYENV_ROOT="${HOME}/.pyenv"
