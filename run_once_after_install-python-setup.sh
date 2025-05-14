@@ -1,9 +1,27 @@
 #!/usr/bin/env bash
 
-# start clean
-# rm -rf $(pyenv root)
-# curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.7.0 POETRY_HOME=${HOME}/.poetry python3 - --uninstall
+CLEAN='false'
 
+while getopts :c flag
+do
+    case "${flag}" in
+        c)
+            CLEAN='true'
+            ;;
+        '?')
+            echo "INVALID OPTION -- ${OPTARG}" >&2
+            exit 1
+            ;;
+        ':')
+            echo "MISSING ARGUMENT for option -- ${OPTARG}" >&2
+            exit 1
+            ;;
+        *)
+            echo "UNIMPLEMENTED OPTION -- ${flag}" >&2
+            exit 1
+            ;;
+    esac
+done
 
 # Make sure python3 installation worked
 if ! command -v python3 >/dev/null 2>&1; then
@@ -16,31 +34,46 @@ if [[ ! -x "$(command -v pyenv)" ]]; then
    curl https://pyenv.run | bash
 fi
 
+if [[ ${CLEAN} && -x "$(command -v pyenv)" ]]; then
+    if [[ -n "$(pyenv root)" && -d "$(pyenv root)" ]]; then
+        echo "Cleaning pyenv: removing $(pyenv root)"
+        rm -r "$(pyenv root)"
+    fi
+fi
+
 export PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
 fi
 
-PYTHON_VERSION="3.11.1"
+PYTHON_VERSION="3.12.9"
 ${HOME}/bin/pyenv_python_install ${PYTHON_VERSION}
 pyenv global ${PYTHON_VERSION}
 
 # Install poetry with the pyenv python
+if [[ ${CLEAN} && -x "$(command -v poetry)" ]]; then
+    curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 - --uninstall
+fi
 if [[ ! -x "$(command -v poetry)" ]]; then
-    curl -sSL https://install.python-poetry.org | PYENV_VERSION=${PYTHON_VERSION} POETRY_VERSION=1.7.0 POETRY_HOME=${HOME}/.poetry python3 -
+    curl -sSL https://install.python-poetry.org | PYENV_VERSION=${PYTHON_VERSION} POETRY_HOME=${HOME}/.poetry python3 -
 fi
 
 # Create a sane dotfiles venv
 export PYENV_VERSION=${PYTHON_VERSION}
 export WORKON_HOME=${HOME}/.virtualenvs
-venv_name="dotfiles"
-venv_location="${WORKON_HOME}/${venv_name}"
+VENV_NAME="dotfiles"
+VENV_LOCATION="${WORKON_HOME}/${VENV_NAME}"
 
-echo "Installing dotfiles venv at ${venv_location} with $(python --version)"
+echo "Installing dotfiles venv at ${VENV_LOCATION} with $(python --version)"
 
-python -m venv "${venv_location}"
-source ${venv_location}/bin/activate
+if [[ ${CLEAN} && -n "${VENV_LOCATION}" && -d "${VENV_LOCATION}" ]]; then
+    echo "Cleaning python venv by removing ${VENV_LOCATION}"
+    rm -rf "${VENV_LOCATION}"
+fi
+
+python -m venv "${VENV_LOCATION}"
+source ${VENV_LOCATION}/bin/activate
 python -m pip install --upgrade pip
 pip install --requirement=/dev/stdin <<EOF
 autopep8
