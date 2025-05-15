@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CLEAN="true"
+CLEAN="false"
 
 while getopts :c flag
 do
