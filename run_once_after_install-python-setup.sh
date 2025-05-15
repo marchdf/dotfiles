@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-CLEAN='false'
+CLEAN="true"
 
 while getopts :c flag
 do
     case "${flag}" in
         c)
-            CLEAN='true'
+            CLEAN="true"
             ;;
         '?')
             echo "INVALID OPTION -- ${OPTARG}" >&2
@@ -30,10 +30,12 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 # Install pyenv and a sane python
-if [[ ${CLEAN} && -x "$(command -v pyenv)" ]]; then
-    if [[ -n "$(pyenv root)" && -d "$(pyenv root)" ]]; then
-        echo "Cleaning pyenv: removing $(pyenv root)"
-        rm -r "$(pyenv root)"
+export PYENV_ROOT="${HOME}/.pyenv"
+echo "clean: ${CLEAN}"
+if [[ ${CLEAN} == "true" ]]; then
+    if [[ -n "${PYENV_ROOT}" && -d "${PYENV_ROOT}" ]]; then
+        echo "Cleaning pyenv: removing ${PYENV_ROOT}"
+        rm -rf "${PYENV_ROOT}"
     fi
 fi
 
@@ -41,18 +43,18 @@ if [[ ! -x "$(command -v pyenv)" ]]; then
    curl https://pyenv.run | bash
 fi
 
-export PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
 fi
 
 PYTHON_VERSION="3.12.9"
+
 ${HOME}/bin/pyenv_python_install ${PYTHON_VERSION}
 pyenv global ${PYTHON_VERSION}
-
+exit 1
 # Install poetry with the pyenv python
-if [[ ${CLEAN} && -x "$(command -v poetry)" ]]; then
+if [[ ${CLEAN} == "true" && -x "$(command -v poetry)" ]]; then
     curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 - --uninstall
 fi
 if [[ ! -x "$(command -v poetry)" ]]; then
@@ -67,7 +69,7 @@ VENV_LOCATION="${WORKON_HOME}/${VENV_NAME}"
 
 echo "Installing dotfiles venv at ${VENV_LOCATION} with $(python --version)"
 
-if [[ ${CLEAN} && -n "${VENV_LOCATION}" && -d "${VENV_LOCATION}" ]]; then
+if [[ ${CLEAN} == "true" && -n "${VENV_LOCATION}" && -d "${VENV_LOCATION}" ]]; then
     echo "Cleaning python venv by removing ${VENV_LOCATION}"
     rm -rf "${VENV_LOCATION}"
 fi
