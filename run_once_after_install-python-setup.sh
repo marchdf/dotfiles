@@ -31,7 +31,6 @@ fi
 
 # Install pyenv and a sane python
 export PYENV_ROOT="${HOME}/.pyenv"
-echo "clean: ${CLEAN}"
 if [[ ${CLEAN} == "true" ]]; then
     if [[ -n "${PYENV_ROOT}" && -d "${PYENV_ROOT}" ]]; then
         echo "Cleaning pyenv: removing ${PYENV_ROOT}"
@@ -52,7 +51,7 @@ PYTHON_VERSION="3.12.9"
 
 ${HOME}/bin/pyenv_python_install ${PYTHON_VERSION}
 pyenv global ${PYTHON_VERSION}
-exit 1
+
 # Install poetry with the pyenv python
 if [[ ${CLEAN} == "true" && -x "$(command -v poetry)" ]]; then
     curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 - --uninstall
