@@ -119,6 +119,9 @@ zinit ice lucid from"gh-r" as"command" \
   atload'export LS_COLORS="$(vivid generate one-dark)"; zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"'
 zinit light sharkdp/vivid
 
+zinit ice from="gh-r" as="program" mv="bat* -> bat" pick="bat/bat" atload="alias cat=bat"
+zinit light sharkdp/bat
+
 zinit ice lucid as"program" pick"bin/git-dsf"
 zinit load so-fancy/diff-so-fancy
 

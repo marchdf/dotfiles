@@ -6,7 +6,7 @@ if [ ! -d "${HOME}/.nrel-certs" ]; then
    source ${HOME}/.nrel-certs/setup
 fi
 
-brew bundle --no-lock --file=/dev/stdin <<EOF
+brew bundle --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
 
 brew "gcc"
@@ -20,7 +20,6 @@ brew "aspell"
 brew "autoconf"
 brew "automake"
 brew "bash"
-brew "bat"
 brew "pkg-config"
 brew "ccache"
 brew "cloc"
