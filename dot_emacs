@@ -267,7 +267,8 @@
 ;;
 ;;================================================================================
 (use-package treesit
-  :if (treesit-available-p)
+  :if (and (treesit-available-p)
+           (fboundp 'treesit-language-available-p))
   :config
   (setq major-mode-remap-alist
          '((bash-mode . bash-ts-mode)
@@ -277,13 +278,13 @@
           (cmake-mode . cmake-ts-mode)
           (python-mode . python-ts-mode)
           (conf-toml-mode . toml-ts-mode)
-          (yaml-mode . yaml-ts-mode))))
+          (yaml-mode . yaml-ts-mode)))
+  (use-package treesit-auto
+    :ensure t
+    :config
+    (setq treesit-auto-install 'prompt)
+    (global-treesit-auto-mode)))
 
-(use-package treesit-auto
-  :ensure t
-  :config
-  (setq treesit-auto-install 'prompt)
-  (global-treesit-auto-mode))
 
 ;;================================================================================
 ;;
