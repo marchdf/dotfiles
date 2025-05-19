@@ -1,4 +1,4 @@
-;;; package -- Summary
+;;; .emacs --- Personal Emacs configuration -*- lexical-binding: t; -*-
 ;;;
 ;;; Commentary:
 ;;;
@@ -97,6 +97,18 @@
 (use-package recentf
   :config
   (recentf-mode 1))
+
+
+;;================================================================================
+;;
+;; exec-path-from-shell
+;;
+;;================================================================================
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :ensure t
+  :config
+  (exec-path-from-shell-copy-envs '("PATH" "DICPATH")))
 
 
 ;;================================================================================
@@ -724,10 +736,11 @@
      (concat (getenv "HOME") "/.local/share/hunspell/dicts"))
     (setq ispell-program-name "hunspell")
     (setq ispell-extra-args   '("-d en_US")))
-    (executable-find "aspell")
+   ((executable-find "aspell")
     (setq ispell-program-name "aspell")
     (setq ispell-extra-args   '("--sug-mode=ultra"
-                                "--lang=en_US")))
+                                "--lang=en_US"))))
+  (message "Using spell checker: %s" ispell-program-name)
 
   ;; Switch dictionaries
   (defun fd-switch-dictionary()
