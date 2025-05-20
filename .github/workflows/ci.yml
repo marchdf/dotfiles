@@ -31,10 +31,12 @@ jobs:
       - name: Dependencies
         run: |
           ${{matrix.install_deps}}
-      - name: Apply dotfiles via local clone
+      - name: Install
         run: |
-          export CHEZMOI_SOURCE_DIR="$GITHUB_WORKSPACE/dotfiles"
-          chezmoi init --source "$CHEZMOI_SOURCE_DIR"  --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
+          export CHEZMOI_SOURCE_DIR="${GITHUB_WORKSPACE}/dotfiles"
+          echo ${CHEZMOI_SOURCE_DIR}
+          ls ${CHEZMOI_SOURCE_DIR}
+          chezmoi init --source "${CHEZMOI_SOURCE_DIR}"  --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
       - name: Cold start zsh
