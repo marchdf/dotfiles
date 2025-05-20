@@ -69,6 +69,10 @@ jobs:
           chezmoi init --source="$HOME/.local/share/chezmoi" --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
+      - name: Fix insecure zsh directory permissions
+        if: runner.os == 'Linux'
+        run: |
+          sudo compaudit | xargs sudo chmod g-w,o-w
       - name: Cold start zsh
         env:
           TERM: xterm-256color
