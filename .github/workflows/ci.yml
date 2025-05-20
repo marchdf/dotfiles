@@ -56,3 +56,13 @@ jobs:
           TERM: xterm-256color
         run: |
           time zsh -i -c exit
+      - name: Verify tools
+        run: |
+          for TOOL in fzf python pyenv poetry zoxide bat; do
+            if ! command -v "${TOOL}" >/dev/null; then
+              echo "${TOOL} not found!"
+              exit 1
+            else
+              echo "${TOOL} found: $(${TOOL} --version 2>&1 | head -n1)"
+            fi
+          done
