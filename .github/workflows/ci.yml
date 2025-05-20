@@ -86,10 +86,9 @@ jobs:
         shell: zsh {0}
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then
-            export FZF_BASE="/home/runner/.fzf/bin"
+            export FZF_BASE="/home/runner/.fzf/bin/fzf"
           fi
           echo ${FZF_BASE}
-          ls ${FZF_BASE}
           source ~/.zshrc
           for TOOL in python pyenv poetry zoxide fzf bat; do
             if ! command -v "${TOOL}" >/dev/null; then
