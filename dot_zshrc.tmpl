@@ -77,7 +77,9 @@ export WORKON_HOME=${HOME}/.virtualenvs
 # paths for Mac OSX
 
 # github tokens
-source "${HOME}/.github_tokens"
+if [ -f "${HOME}/.github_tokens" ]; then
+   source "${HOME}/.github_tokens"
+fi
 
 # openmpi fails because tmp dir name is too long
 # see: https://www.open-mpi.org/faq/?category=osx

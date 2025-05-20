@@ -43,10 +43,6 @@ jobs:
           git clone --depth 1 --branch "${{ github.head_ref || github.ref_name }}" https://github.com/marchdf/dotfiles.git "$HOME/.local/share/chezmoi"
       - name: Install
         run: |
-          # export CHEZMOI_SOURCE_DIR="${GITHUB_WORKSPACE}/dotfiles"
-          # echo ${CHEZMOI_SOURCE_DIR}
-          # ls ${CHEZMOI_SOURCE_DIR}
-          # chezmoi init --source "${CHEZMOI_SOURCE_DIR}"  --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi init --source="$HOME/.local/share/chezmoi" --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
