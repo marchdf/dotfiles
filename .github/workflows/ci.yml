@@ -23,13 +23,18 @@ jobs:
           - os: ubuntu-latest
             install_deps: sudo apt-get update && sudo apt install zsh -y && sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin && export PATH="${HOME}/.local/bin:$PATH"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: marchdf/dotfiles
+          path: dotfiles
       - name: Dependencies
         run: |
           ${{matrix.install_deps}}
-      - name: Install
+      - name: Apply dotfiles via local clone
         run: |
-          export CHEZMOI_BRANCH=${{ github.head_ref || github.ref_name }}
-          chezmoi init https://github.com/marchdf/dotfiles.git --branch ${CHEZMOI_BRANCH} --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
+          export CHEZMOI_SOURCE_DIR="$GITHUB_WORKSPACE/dotfiles"
+          chezmoi init --source "$CHEZMOI_SOURCE_DIR"  --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
       - name: Cold start zsh
