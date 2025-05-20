@@ -82,9 +82,11 @@ jobs:
       - name: Verify tools
         env:
           TERM: xterm-256color
+          DISABLE_AUTO_TITLE: true
         shell: zsh {0}
         run: |
           source ~/.zshrc
+          ls ~/.fzf
           for TOOL in python pyenv poetry zoxide fzf bat; do
             if ! command -v "${TOOL}" >/dev/null; then
               echo "${TOOL} not found!"
