@@ -51,8 +51,12 @@ jobs:
           chezmoi data
           chezmoi apply
       - name: Cold start zsh
+        env:
+          TERM: xterm-256color
         run: |
           time zsh -i -c exit
       - name: Warm start zsh
+        env:
+          TERM: xterm-256color
         run: |
           time zsh -i -c exit
