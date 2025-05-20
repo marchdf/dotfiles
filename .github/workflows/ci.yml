@@ -33,7 +33,6 @@ jobs:
                 make \
                 wget \
                 llvm \
-                fzf \
                 build-essential \
                 libbz2-dev \
                 libreadline-dev \
