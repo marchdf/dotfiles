@@ -69,6 +69,7 @@ jobs:
           chezmoi init --source="$HOME/.local/share/chezmoi" --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
+          cat /home/runner/.fzf.zsh
       - name: Cold start zsh
         env:
           TERM: xterm-256color
@@ -86,6 +87,7 @@ jobs:
           FZF_BASE : ~/.fzf
         shell: zsh {0}
         run: |
+          echo ${FZF_BASE}
           ls ${FZF_BASE}
           source ~/.zshrc
           for TOOL in python pyenv poetry zoxide fzf bat; do
