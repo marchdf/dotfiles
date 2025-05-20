@@ -30,6 +30,9 @@ jobs:
                 curl \
                 zoxide \
                 python3-poetry \
+                make \
+                wget \
+                llvm \
                 build-essential \
                 libbz2-dev \
                 libreadline-dev \
@@ -39,6 +42,8 @@ jobs:
                 zlib1g-dev \
                 libncurses5-dev \
                 libncursesw5-dev \
+                libgdbm-dev \
+                libnss3-dev \
                 xz-utils \
                 tk-dev \
                 libffi-dev \
@@ -68,12 +73,12 @@ jobs:
         env:
           TERM: xterm-256color
         run: |
-          time zsh -i -c exit
+          script -q -c "time zsh -i -c exit"
       - name: Warm start zsh
         env:
           TERM: xterm-256color
         run: |
-          time zsh -i -c exit
+          script -q -c "time zsh -i -c exit"
       - name: Verify tools
         shell: zsh -il {0}
         run: |
