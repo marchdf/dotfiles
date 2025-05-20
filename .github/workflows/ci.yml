@@ -57,6 +57,7 @@ jobs:
         run: |
           time zsh -i -c exit
       - name: Verify tools
+        shell: zsh {0}
         run: |
           for TOOL in fzf python pyenv poetry zoxide bat; do
             if ! command -v "${TOOL}" >/dev/null; then
