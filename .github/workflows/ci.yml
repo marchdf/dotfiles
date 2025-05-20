@@ -20,7 +20,7 @@ jobs:
         include:
           - os: macos-latest
             install_deps: |
-              brew install git zsh chezmoi zoxide poetry
+              brew install zsh chezmoi zoxide poetry
           - os: ubuntu-latest
             install_deps: |
               sudo apt-get update
