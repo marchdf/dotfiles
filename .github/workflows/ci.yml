@@ -86,7 +86,7 @@ jobs:
         shell: zsh {0}
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then
-            export FZF_BASE="/home/runner/.fzf"
+            export FZF_BASE="/home/runner/.fzf/bin"
           fi
           echo ${FZF_BASE}
           ls ${FZF_BASE}
