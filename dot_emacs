@@ -283,7 +283,9 @@
     :ensure t
     :config
     (setq treesit-auto-install 'prompt)
-    (global-treesit-auto-mode)))
+    (global-treesit-auto-mode))
+  (use-package treesit-fold
+    :ensure t))
 
 
 ;;================================================================================
@@ -812,7 +814,12 @@
 ;;================================================================================
 (use-package all-the-icons
   :ensure t
-  :if (display-graphic-p))
+  :if (display-graphic-p)
+  :config
+  (let ((font-marker-file (expand-file-name ".all-the-icons-installed" user-emacs-directory)))
+    (unless (file-exists-p font-marker-file)
+      (all-the-icons-install-fonts t)
+      (with-temp-buffer (write-file font-marker-file)))))
 
 (use-package all-the-icons-completion
   :ensure t
