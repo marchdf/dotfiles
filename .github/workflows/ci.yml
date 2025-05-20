@@ -83,10 +83,11 @@ jobs:
         env:
           TERM: xterm-256color
           DISABLE_AUTO_TITLE: true
+          FZF_BASE : ~/.fzf
         shell: zsh {0}
         run: |
+          ls ${FZF_BASE}
           source ~/.zshrc
-          ls ~/.fzf
           for TOOL in python pyenv poetry zoxide fzf bat; do
             if ! command -v "${TOOL}" >/dev/null; then
               echo "${TOOL} not found!"
