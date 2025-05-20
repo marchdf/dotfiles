@@ -72,20 +72,17 @@ jobs:
       - name: Cold start zsh
         env:
           TERM: xterm-256color
-          ZSH_DISABLE_COMPFIX: true
         run: |
-          time zsh -i -c exit
+          time zsh -l -c exit
       - name: Warm start zsh
         env:
           TERM: xterm-256color
-          ZSH_DISABLE_COMPFIX: true
         run: |
-          time zsh -i -c exit
+          time zsh -l -c exit
       - name: Verify tools
         env:
           TERM: xterm-256color
-          ZSH_DISABLE_COMPFIX: true
-        shell: zsh -il {0}
+        shell: zsh -l {0}
         run: |
           for TOOL in fzf python pyenv poetry zoxide bat; do
             if ! command -v "${TOOL}" >/dev/null; then
