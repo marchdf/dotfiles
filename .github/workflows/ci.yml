@@ -24,7 +24,25 @@ jobs:
           - os: ubuntu-latest
             install_deps: |
               sudo apt-get update
-              sudo apt install git zsh curl zoxide python3-poetry -y
+              sudo apt install -y \
+                git \
+                zsh \
+                curl \
+                zoxide \
+                python3-poetry
+                build-essential \
+                libbz2-dev \
+                libreadline-dev \
+                liblzma-dev \
+                libsqlite3-dev \
+                libssl-dev \
+                zlib1g-dev \
+                libncurses5-dev \
+                libncursesw5-dev \
+                xz-utils \
+                tk-dev \
+                libffi-dev \
+                uuid-dev
               sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
               export PATH="${HOME}/.local/bin:$PATH"
     steps:
@@ -57,7 +75,7 @@ jobs:
         run: |
           time zsh -i -c exit
       - name: Verify tools
-        shell: zsh {0}
+        shell: zsh -il {0}
         run: |
           for TOOL in fzf python pyenv poetry zoxide bat; do
             if ! command -v "${TOOL}" >/dev/null; then
