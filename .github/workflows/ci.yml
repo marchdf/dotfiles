@@ -85,7 +85,7 @@ jobs:
         shell: zsh {0}
         run: |
           source ~/.zshrc
-          for TOOL in fzf python pyenv poetry zoxide bat; do
+          for TOOL in python pyenv poetry zoxide fzf bat; do
             if ! command -v "${TOOL}" >/dev/null; then
               echo "${TOOL} not found!"
               exit 1

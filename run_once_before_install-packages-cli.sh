@@ -4,11 +4,6 @@ if [ ! -d "${HOME}/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 fi
 
-if [[ ! -x "$(command -v fzf)" ]]; then
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install
-fi
-
 if [[ ! -x "$(command -v poetry)" ]]; then
     curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 -
 fi
