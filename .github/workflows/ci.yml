@@ -20,7 +20,7 @@ jobs:
         include:
           - os: macos-latest
             install_deps: |
-              brew install git zsh chezmoi zoxide poetry
+              brew install git zsh chezmoi zoxide poetry util-linux
           - os: ubuntu-latest
             install_deps: |
               sudo apt-get update
@@ -73,12 +73,12 @@ jobs:
         env:
           TERM: xterm-256color
         run: |
-          script -q -c "time zsh -i -c exit"
+          $( [[ "$(uname)" == "Darwin" ]] && echo gscript || echo script ) -q -c "time zsh -i -c exit"
       - name: Warm start zsh
         env:
           TERM: xterm-256color
         run: |
-          script -q -c "time zsh -i -c exit"
+          $( [[ "$(uname)" == "Darwin" ]] && echo gscript || echo script ) -q -c "time zsh -i -c exit"
       - name: Verify tools
         shell: zsh -il {0}
         run: |
