@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         include:
           - os: macos-latest
             install_deps: |
@@ -69,9 +69,6 @@ jobs:
           chezmoi init --source="$HOME/.local/share/chezmoi" --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
-          if [ ! -f "/home/runner/.fzf.zsh" ]; then
-             cat /home/runner/.fzf.zsh
-          fi
       - name: Cold start zsh
         env:
           TERM: xterm-256color
@@ -91,6 +88,7 @@ jobs:
         run: |
           echo ${FZF_BASE}
           ls ${FZF_BASE}
+          ls /home/runner/.fzf
           source ~/.zshrc
           for TOOL in python pyenv poetry zoxide fzf bat; do
             if ! command -v "${TOOL}" >/dev/null; then
