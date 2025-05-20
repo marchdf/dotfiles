@@ -82,7 +82,7 @@ jobs:
       - name: Verify tools
         env:
           TERM: xterm-256color
-        shell: zsh -il {0}
+        shell: zsh -i {0}
         run: |
           for TOOL in fzf python pyenv poetry zoxide bat; do
             if ! command -v "${TOOL}" >/dev/null; then
