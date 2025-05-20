@@ -29,7 +29,7 @@ jobs:
                 zsh \
                 curl \
                 zoxide \
-                python3-poetry
+                python3-poetry \
                 build-essential \
                 libbz2-dev \
                 libreadline-dev \
