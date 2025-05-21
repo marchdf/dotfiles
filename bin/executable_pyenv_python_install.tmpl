@@ -22,9 +22,11 @@ export CPPFLAGS="-I${LIBFFI_ROOT_DIR}/include -I${BZIP2_ROOT_DIR}/include -I${SQ
 module purge
 module load PrgEnv-gnu/8.5.0
 {{- end }}
+
+{{- if not .test_machine }}
 export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
 export PYTHON_CFLAGS="-mtune=native"
-
+{{- end }}
 
 PYTHON_VERSION="${1}"
 if [ ! -z "$python_version" ]
