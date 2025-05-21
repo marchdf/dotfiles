@@ -30,7 +30,7 @@
 (setq inhibit-startup-screen t)
 (setq kill-ring-max 200)
 (setq user-full-name "Marc Henry de Frahan")
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 110 :font "MesloLGL Nerd Font Mono-14")
 
 ;; never tabs
 (setq-default indent-tabs-mode nil)
