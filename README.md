@@ -12,13 +12,13 @@ dotfiles
 
   [![chezmoi][chezmoi-badge]][chezmoi-web]
   [![license][license-badge]][license-file]
+  [![Build Status](https://github.com/marchdf/dotfiles/workflows/dotfiles-CI/badge.svg)](https://github.com/marchdf/dotfiles/actions/workflows/ci.yml)
 
   [chezmoi-web]:   https://github.com/twpayne/chezmoi
   [chezmoi-badge]: https://img.shields.io/badge/Powered%20by-chezmoi-blue.svg
   [license-badge]: https://img.shields.io/github/license/marchdf/dotfiles
   [license-file]:  https://github.com/marchdf/dotfiles/blob/main/LICENSE
 
-  [![Build Status](https://github.com/marchdf/dotfiles/workflows/dotfiles-CI/badge.svg)](https://github.com/marchdf/dotfiles/actions/workflows/ci.yml)
 </div>
 
 This repository includes all of my custom dotfiles.
