@@ -12,13 +12,11 @@ dotfiles
 
   [![chezmoi][chezmoi-badge]][chezmoi-web]
   [![license][license-badge]][license-file]
-  [![commit activity](https://img.shields.io/github/commit-activity/m/MasahiroSakoda/dotfiles)](https://github.com/MasahiroSakoda/dotfiles/graphs/commit-activity)
-  <img src="https://img.shields.io/github/repo-size/MasahiroSakoda/dotfiles?style=flat-square&label=Repo" alt="Repo size">
 
   [chezmoi-web]:   https://github.com/twpayne/chezmoi
   [chezmoi-badge]: https://img.shields.io/badge/Powered%20by-chezmoi-blue.svg
-  [license-badge]: https://img.shields.io/github/license/MasahiroSakoda/dotfiles
-  [license-file]:  https://github.com/MasahiroSakoda/dotfiles/blob/main/LICENSE
+  [license-badge]: https://img.shields.io/github/license/marchdf/dotfiles
+  [license-file]:  https://github.com/marchdf/dotfiles/blob/main/LICENSE
 
   [![linter](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/linter.yml/badge.svg)](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/linter.yml)
   [![ci](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/ci.yml/badge.svg?event=pull_request)](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/ci.yml)
