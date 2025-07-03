@@ -6,7 +6,7 @@ dotfiles
 
   <h2></h2>
   <img src="https://img.shields.io/badge/macOS-%23.svg?style=flat-square&logo=apple&color=000000&logoColor=white" alt="macOS-badge" />
-  <img src="https://img.shields.io/badge/Linux%20-yellow.svg?style=flat-square&logo=linux&logoColor=black" alt="Linux-badge" />
+  <img src="https://img.shields.io/badge/Linux-black?style=flat-square&logo=linux&logoColor=yellow&labelColor=000000" alt="Linux-badge" />
 
   [![chezmoi][chezmoi-badge]][chezmoi-web]
   [![license][license-badge]][license-file]
