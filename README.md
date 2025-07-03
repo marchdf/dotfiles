@@ -4,6 +4,7 @@ dotfiles
   <p>&nbsp;</p>
   <img src="https://raw.githubusercontent.com/jglovier/dotfiles-logo/main/dotfiles-logo.png" height="100px" alt="dotfiles" />
 
+  <h2></h2>
   <img src="https://img.shields.io/badge/macOS-%23.svg?style=flat-square&logo=apple&color=000000&logoColor=white" alt="macOS-badge" />
   <img src="https://img.shields.io/badge/Linux%20-yellow.svg?style=flat-square&logo=linux&logoColor=black" alt="Linux-badge" />
 
