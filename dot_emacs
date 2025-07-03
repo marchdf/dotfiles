@@ -142,7 +142,12 @@
 (use-package lsp-mode
   :ensure t
   :commands lsp
-  :hook ((c-mode c++-mode objc-mode python-mode bash-mode sh-mode) . lsp)
+  :hook ((c-mode c-ts-mode
+          c++-mode c++-ts-mode
+          objc-mode
+          python-mode python-ts-mode
+          sh-mode
+          bash-mode bash-ts-mode) . lsp-deferred)
   :bind
   ("C-c i" . lsp-format-region)
   ("C-c u" . lsp-format-buffer)
@@ -311,6 +316,8 @@
                 '("build" "__pycache__" "Build"))
         projectile-enable-caching t
         projectile-completion-system 'default)
+  (add-to-list 'projectile-other-file-alist '("C" "H" "hpp" "hxx"))
+  (add-to-list 'projectile-other-file-alist '("H" "cpp" "cc" "cxx"))
 
   (projectile-mode))
 
@@ -545,53 +552,14 @@
 ;; C/C++
 ;;
 ;;================================================================================
-(use-package cc-mode
-  :mode
-  ("\\.geo" . c++-mode)  ;; Gmsh files
-  ("\\.cu$" . c++-mode)  ;; CUDA files
-  ("\\.C$" . c++-mode)
-  ("\\.H$" . c++-mode)
-  :bind
-  ("C-M-l" . forloop)
-  ("C-M-p" . printf-binding)
-  :after (projectile)
-  :config
-  (use-package modern-cpp-font-lock
+(add-to-list 'auto-mode-alist '("\\.H\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.C\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.geo\\'" . c++-mode))
+
+(use-package modern-cpp-font-lock
     :ensure t
     :hook (c++-mode . modern-c++-font-lock-mode))
-
-  (c-add-style "my-cpp-style"
-               '("stroustrup"
-                 (c-offsets-alist
-                  (innamespace . 0)
-                  (inline-open . 0)
-                  (arglist-close . 0))))
-
-  (defun my-cpp-mode-hook ()
-    (add-to-list 'projectile-other-file-alist
-                 '("C" "H" "hpp" "hxx"))
-    (add-to-list 'projectile-other-file-alist
-                 '("H" "cpp"))
-    (c-set-style "my-cpp-style")
-    (setq c-basic-offset 2))
-
-  (add-hook 'c++-mode-hook 'my-cpp-mode-hook)
-
-  (defun printf-binding (out vars)
-    "Binding for printf to make things easier.  OUT is the output string and VARS is the variables to printf."
-    (interactive "MOutput:\nMVariables:")
-    (let ((beg (point)))
-      (insert "printf(\"" out "\\n\"," vars ");")
-      (indent-region beg (point))))
-
-  (defun forloop (i imax)
-    "Build a C/C++ for loop given I and IMAX."
-    (interactive "Miterator:\nMmax:")
-    (let ((beg (point)))
-      (insert "for(int " i "=0; " i "<" imax "; " i "++){\n\n}")
-      (indent-region beg (point))
-      (forward-line -1)
-      (c-indent-command))))
 
 
 ;;================================================================================
@@ -618,22 +586,13 @@
 
 ;;================================================================================
 ;;
-;; Matlab
-;;
-;;================================================================================
-(use-package matlab
-  :ensure matlab-mode)
-
-
-;;================================================================================
-;;
 ;; Latex
 ;;
 ;;================================================================================
-(use-package latex
-  :ensure auctex
+(use-package auctex
+  :ensure t
   :mode
-  ("\\.tex\\'" . latex-mode)
+  ("\\.tex\\'" . LaTeX-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :bind
   ("C-c %" . replace-newlines-with-percent-in-region)
@@ -706,7 +665,7 @@
 
 (use-package bibtex
   :ensure t
-  :mode ("\\.bib" . bibtex-mode))
+  :mode ("\\.bib\\'" . bibtex-mode))
 
 
 ;;================================================================================
@@ -846,8 +805,8 @@
 ;;================================================================================
 (use-package sh-script
   :mode
-  ("\\.zsh" . sh-mode)
-  ("\\.pbs" . sh-mode))
+  ("\\.zsh\\'" . sh-mode)
+  ("\\.pbs\\'" . sh-mode))
 
 
 ;;================================================================================
@@ -879,42 +838,6 @@
 
 ;;================================================================================
 ;;
-;; ESS
-;;
-;;================================================================================
-(use-package ess-site
-  :ensure ess
-  :mode
-  ("\\.R\\'" . R-mode)
-  ("\\.Rprofile" . R-mode)
-  :commands R
-  :config
-  ;; inspiration for the following:
-  ;; http://stats.blogoverflow.com/2011/08/using-emacs-to-work-with-r/
-  ;; save more commands
-  (setq comint-input-ring-size 1000)
-
-  ;; "This recalls the R statement from your R statement history, but it
-  ;; tries to match it with the one which is already on your line."
-  (add-hook 'inferior-ess-mode-hook
-            (lambda nil
-              (define-key inferior-ess-mode-map [\C-up]
-                'comint-previous-matching-input-from-input)
-              (define-key inferior-ess-mode-map [\C-down]
-                'comint-next-matching-input-from-input)
-              (define-key inferior-ess-mode-map [\C-x \t]
-                'comint-dynamic-complete-filename)))
-
-  ;; To assign ":" to "<-" and to stop the assignment of underscore
-  ;; (underbar) "_" to "<-"
-  (setq ess-smart-S-assign-key ":")
-  (ess-toggle-S-assign nil)
-  (ess-toggle-S-assign nil)
-  (ess-toggle-underscore nil))
-
-
-;;================================================================================
-;;
 ;; Markdown and polymode
 ;;
 ;;================================================================================
@@ -928,9 +851,9 @@
 (use-package polymode
   :ensure t
   :mode
-  ("\\.Snw" . poly-noweb+r-mode)
-  ("\\.Rnw" . poly-noweb+r-mode)
-  ("\\.Rmd" . poly-markdown+r-mode))
+  ("\\.Snw\\'" . poly-noweb+r-mode)
+  ("\\.Rnw\\'" . poly-noweb+r-mode)
+  ("\\.Rmd\\'" . poly-markdown+r-mode))
 
 
 ;;================================================================================
@@ -941,8 +864,8 @@
 (use-package rst
   :ensure t
   :mode
-  ("\\.rst$" . rst-mode)
-  ("\\.rest$" . rst-mode))
+  ("\\.rst\\'" . rst-mode)
+  ("\\.rest\\'" . rst-mode))
 
 
 ;;================================================================================
@@ -994,8 +917,8 @@
 (use-package yaml-mode
   :ensure t
   :mode
-  ("\\.yml$" . yaml-mode)
-  ("\\.clang-format$" . yaml-mode))
+  ("\\.yml\\'" . yaml-mode)
+  ("\\.clang-format\\'" . yaml-mode))
 
 
 ;;================================================================================
@@ -1101,7 +1024,7 @@
 
     (emms-default-players)
     (define-emms-simple-player flac123 '(file)
-      "\\.flac$" "flac123")
+      "\\.flac\\'" "flac123")
     (add-to-list 'emms-player-list emms-player-flac123)
 
     ;; use GNU find on OSX (brew install findutils)
@@ -1196,7 +1119,7 @@
 ;;================================================================================
 (use-package json-mode
   :ensure t
-  :mode ("\\.json?$" . json-mode))
+  :mode ("\\.json\\'" . json-mode))
 
 
 ;;================================================================================
