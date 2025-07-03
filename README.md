@@ -18,8 +18,7 @@ dotfiles
   [license-badge]: https://img.shields.io/github/license/marchdf/dotfiles
   [license-file]:  https://github.com/marchdf/dotfiles/blob/main/LICENSE
 
-  [![linter](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/linter.yml/badge.svg)](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/linter.yml)
-  [![ci](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/ci.yml/badge.svg?event=pull_request)](https://github.com/MasahiroSakoda/dotfiles/actions/workflows/ci.yml)
+  [![Build Status](https://github.com/marchdf/dotfiles/workflows/dotfiles-CI/badge.svg)](https://github.com/marchdf/dotfiles/actions/workflows/ci.yml)
 </div>
 
 This repository includes all of my custom dotfiles.
