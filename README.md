@@ -21,8 +21,6 @@ dotfiles
 
 </div>
 
-This repository includes all of my custom dotfiles.
-
 Installation
 ------------
 
