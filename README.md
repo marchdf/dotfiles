@@ -8,8 +8,6 @@ dotfiles
   <img src="https://img.shields.io/badge/macOS-%23.svg?style=flat-square&logo=apple&color=000000&logoColor=white" alt="macOS-badge" />
   <img src="https://img.shields.io/badge/Linux%20-yellow.svg?style=flat-square&logo=linux&logoColor=black" alt="Linux-badge" />
 
-  <p>multi-platform dotfiles powered by chezmoi</p>
-
   [![chezmoi][chezmoi-badge]][chezmoi-web]
   [![license][license-badge]][license-file]
   [![Build Status](https://github.com/marchdf/dotfiles/workflows/dotfiles-CI/badge.svg)](https://github.com/marchdf/dotfiles/actions/workflows/ci.yml)
