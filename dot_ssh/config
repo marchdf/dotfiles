@@ -30,6 +30,10 @@ host ellis
     User mhenryde
     hostname ellis.hpc.nrel.gov
 
+host mi250
+    User mhenryde
+    hostname mi250-test.hpc.nrel.gov
+
 host kl1
     User mhenryde
     hostname kl1.hpc.nrel.gov
