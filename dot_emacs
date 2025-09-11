@@ -317,7 +317,8 @@
         projectile-enable-caching t
         projectile-completion-system 'default)
   (add-to-list 'projectile-other-file-alist '("C" "H" "hpp" "hxx"))
-  (add-to-list 'projectile-other-file-alist '("H" "cpp" "cc" "cxx"))
+  (add-to-list 'projectile-other-file-alist '("H" "cpp" "cc" "cxx" "tpp"))
+  (add-to-list 'projectile-other-file-alist '("tpp" "H" "hpp" "hxx"))
 
   (projectile-mode))
 
@@ -554,6 +555,7 @@
 ;;================================================================================
 (add-to-list 'auto-mode-alist '("\\.H\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.C\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.geo\\'" . c++-mode))
 
