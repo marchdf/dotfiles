@@ -118,6 +118,17 @@ host f10
     ControlPersist 12h
     ControlPath ~/.ssh/%r@%h:%p
 
+host dtn
+    User marchdf
+    hostname dtn.olcf.ornl.gov
+    ControlMaster no
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    ControlMaster auto
+    ControlPersist 12h
+    ControlPath ~/.ssh/%r@%h:%p
+
 host andes
     User marchdf
     hostname andes.olcf.ornl.gov
