@@ -1186,15 +1186,21 @@
 ;;================================================================================
 (use-package gptel
   :ensure t
-  :bind
-  ("C-c C-c" . gptel-send)
-  ("C-c C-g" . gptel-menu)
   :config
-  (setq gptel-backend (gptel-make-ollama "Ollama"
-                        :host "localhost:11434"
-                        :stream t
-                        :models '(deepseek-r1:14b llama3.2 mistral-small:latest))
-        gptel-model 'deepseek-r1))
+  (setq gptel-backend (gptel-make-gh-copilot "Copilot")
+        gptel-model 'claude-sonnet-4
+        gptel-default-mode 'org-mode)
+  (gptel-make-ollama "Ollama"
+    :host "localhost:11434"
+    :stream t
+    :models '(deepseek-r1:14b llama3.2 mistral-small:latest))
+  (define-prefix-command 'gptel-prefix-map)
+  (global-set-key (kbd "C-c l") 'gptel-prefix-map)
+
+  (define-key gptel-prefix-map (kbd "c") #'gptel)
+  (define-key gptel-prefix-map (kbd "s") #'gptel-send)
+  (define-key gptel-prefix-map (kbd "r") #'gptel-rewrite)
+  (define-key gptel-prefix-map (kbd "g") #'gptel-menu))
 
 
 ;;================================================================================
