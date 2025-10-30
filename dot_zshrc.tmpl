@@ -85,6 +85,9 @@ fi
 # see: https://www.open-mpi.org/faq/?category=osx
 export TMPDIR=/tmp
 
+# mpi sometimes hangs
+export FI_PROVIDER=tcp
+
 # Set vlc for terminal
 alias vlc="{HOME}/Applications/VLC.app/Contents/MacOS/VLC"
 
