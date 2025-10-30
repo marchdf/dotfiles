@@ -10,4 +10,8 @@ if [[ ! -x "$(command -v fzf)" ]]; then
    ~/.fzf/install --all
 fi
 
+if [[ ! -x "$(command -v uv)" ]]; then
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
 {{ end -}}
