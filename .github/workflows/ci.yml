@@ -58,7 +58,7 @@ jobs:
           path: dotfiles
       - name: Dependencies
         run: |
-          ${{matrix.install_deps}}
+          bash ./dotfiles/bin/install_bootstrap_dependencies.sh
       - name: Clone dotfiles
         run: |
           mkdir -p "$HOME/.local/share/chezmoi"
