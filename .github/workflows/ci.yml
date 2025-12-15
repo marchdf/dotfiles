@@ -25,7 +25,7 @@ jobs:
           path: dotfiles
       - name: Dependencies
         run: |
-          bash ./dotfiles/bin/install_bootstrap_dependencies.sh
+          bash ./dotfiles/bin/executable_install_bootstrap_dependencies.sh
       - name: Clone dotfiles
         run: |
           mkdir -p "$HOME/.local/share/chezmoi"
