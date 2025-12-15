@@ -32,6 +32,8 @@ elif [[ "$OS" == "Linux" ]]; then
 		 xz-utils \
 		 tk-dev \
 		 libffi-dev \
+                 npm \
+                 tmux \
 		 uuid-dev
         else
             echo "Linux (Not Ubuntu: $NAME)"
