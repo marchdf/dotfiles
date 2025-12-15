@@ -29,11 +29,21 @@ elif [[ "$OS" == "Linux" ]]; then
 		 libncursesw5-dev \
 		 libgdbm-dev \
 		 libnss3-dev \
+                 libtag1-dev \
 		 xz-utils \
 		 tk-dev \
 		 libffi-dev \
                  npm \
                  tmux \
+                 ccls \
+                 mp3info \
+                 mpv \
+                 pianobar \
+                 shellcheck \
+                 vlc \
+                 vorbis-tools \
+                 hunspell \
+                 faac \
 		 uuid-dev
         else
             echo "Linux (Not Ubuntu: $NAME)"
