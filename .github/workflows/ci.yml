@@ -17,39 +17,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        include:
-          - os: macos-latest
-            install_deps: |
-              brew install zsh chezmoi zoxide poetry
-          - os: ubuntu-latest
-            install_deps: |
-              sudo apt-get update
-              sudo apt install -y \
-                git \
-                zsh \
-                curl \
-                zoxide \
-                python3-poetry \
-                make \
-                wget \
-                llvm \
-                build-essential \
-                libbz2-dev \
-                libreadline-dev \
-                liblzma-dev \
-                libsqlite3-dev \
-                libssl-dev \
-                zlib1g-dev \
-                libncurses5-dev \
-                libncursesw5-dev \
-                libgdbm-dev \
-                libnss3-dev \
-                xz-utils \
-                tk-dev \
-                libffi-dev \
-                uuid-dev
-              sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
-              export PATH="${HOME}/.local/bin:$PATH"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -58,7 +25,7 @@ jobs:
           path: dotfiles
       - name: Dependencies
         run: |
-          ${{matrix.install_deps}}
+          bash ./dotfiles/bin/install_bootstrap_dependencies.sh
       - name: Clone dotfiles
         run: |
           mkdir -p "$HOME/.local/share/chezmoi"
