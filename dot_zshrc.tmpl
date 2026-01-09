@@ -222,5 +222,7 @@ function backup_zoxide_database () {
 
 backup_zoxide_database
 
+[ -f "${HOME}/.shell-secrets" ] && source "${HOME}/.shell-secrets"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

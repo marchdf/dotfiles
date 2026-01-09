@@ -835,7 +835,7 @@
   (setq org-startup-truncated nil)
   (setq org-log-done 'note)
   (setq org-lowest-priority ?E)
-  (setq org-agenda-files '("~/org/work.org" "~/org/di.org")))
+  (setq org-agenda-files '("~/org/work.org")))
 
 
 ;;================================================================================
