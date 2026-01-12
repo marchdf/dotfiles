@@ -1,0 +1,20 @@
+# Git
+.git
+.github
+
+# Docker
+docker/
+
+# Documentation
+README.md
+LICENSE.md
+
+# IDE
+.vscode
+.idea
+
+# Temporary files
+*.log
+*.tmp
+*.swp
+*~

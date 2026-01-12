@@ -1,0 +1,22 @@
+services:
+  ubuntu-marchdf:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        USERNAME: marchdf
+        USER_UID: ${UID:-1001}
+        USER_GID: ${GID:-1001}
+    image: ubuntu-marchdf:latest
+    container_name: ubuntu-marchdf-dev
+    hostname: ubuntu-docker
+    stdin_open: true
+    tty: true
+    volumes:
+      - ubuntu-marchdf-home:/home/marchdf
+      - ${HOME}:/host-home
+    environment:
+      - TERM=xterm-256color
+
+volumes:
+  ubuntu-marchdf-home:

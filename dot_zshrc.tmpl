@@ -5,6 +5,19 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Docker shares safe state from host home (cli history, zoxide, ssh)
+if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
+    if [[ -f "/host-home/.zsh_history" ]] && [[ ! -L "$HOME/.zsh_history" ]]; then
+        [[ -f "$HOME/.zsh_history" ]] && rm "$HOME/.zsh_history"
+        ln -sf /host-home/.zsh_history "$HOME/.zsh_history"
+    fi
+
+    if [[ -d "/host-home/.ssh" ]] && [[ ! -L "$HOME/.ssh" ]]; then
+        [[ -d "$HOME/.ssh" ]] && rm -rf "$HOME/.ssh"
+        ln -sf /host-home/.ssh "$HOME/.ssh"
+    fi
+fi
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -99,7 +112,7 @@ fi
 {{- end }}
 
 # towards the beginning to make sure some software is loaded
-zinit lucid light-mode for "hpc"
+zinit lucid atload'unalias zi' light-mode for "hpc"
 
 zinit ice lucid depth"1"
 zinit light romkatv/powerlevel10k
@@ -222,7 +235,12 @@ function backup_zoxide_database () {
 
 backup_zoxide_database
 
-[ -f "${HOME}/.shell-secrets" ] && source "${HOME}/.shell-secrets"
+# Source shell secrets (prefer host secrets when in Docker)
+if [[ -n "$IN_DOCKER" ]] && [[ -f "/host-home/.shell-secrets" ]]; then
+    source "/host-home/.shell-secrets"
+elif [[ -f "${HOME}/.shell-secrets" ]]; then
+    source "${HOME}/.shell-secrets"
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

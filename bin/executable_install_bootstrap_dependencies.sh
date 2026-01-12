@@ -18,6 +18,12 @@ elif [[ "$OS" == "Linux" ]]; then
 		 make \
 		 wget \
 		 llvm \
+                 clang \
+                 clangd \
+                 clang-format \
+                 clang-tidy \
+                 cmake \
+                 emacs \
 		 build-essential \
 		 libbz2-dev \
 		 libreadline-dev \
@@ -44,6 +50,10 @@ elif [[ "$OS" == "Linux" ]]; then
                  vorbis-tools \
                  hunspell \
                  faac \
+                 grep \
+                 bc \
+                 gawk \
+                 coreutils \
 		 uuid-dev
         else
             echo "Linux (Not Ubuntu: $NAME)"
