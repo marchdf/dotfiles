@@ -295,6 +295,31 @@
 
 ;;================================================================================
 ;;
+;; vterm terminal
+;;
+;;================================================================================
+(use-package vterm
+  :ensure t
+  :bind
+  ("C-c t" . vterm)
+  ("C-c T" . vterm-other-window)
+  (:map vterm-mode-map
+        ("C-c C-k" . vterm-copy-mode)
+        ("C-c C-l" . vterm-clear)
+        ;; Send C-g to the program running in vterm
+        ("C-g" . my/vterm-send-C-g)
+        ;; Keep a way to do “real” Emacs quit:
+        ("C-c C-g" . keyboard-quit))
+  :commands (vterm vterm-other-window)
+  :config
+  (defun my/vterm-send-C-g ()
+    "Send C-g to the program in vterm instead of quitting Emacs."
+    (interactive)
+    (vterm-send-key "g" nil nil t)))
+
+
+;;================================================================================
+;;
 ;; Projectile
 ;;
 ;;================================================================================
@@ -1187,13 +1212,20 @@
 (use-package gptel
   :ensure t
   :config
-  (setq gptel-backend (gptel-make-gh-copilot "Copilot")
-        gptel-model 'claude-sonnet-4
-        gptel-default-mode 'org-mode)
+  (gptel-make-openai
+      "NVIDIA Inference"
+    :host "inference-api.nvidia.com"
+    :endpoint "/v1/chat/completions"
+    :key (lambda () (getenv "INFERENCE_API_KEY"))
+    :models '(aws/anthropic/claude-opus-4-5))
   (gptel-make-ollama "Ollama"
     :host "localhost:11434"
     :stream t
     :models '(deepseek-r1:14b llama3.2 mistral-small:latest))
+  (gptel-make-gh-copilot "Copilot")
+  (setq gptel-backend (gptel-get-backend "NVIDIA Inference")
+        gptel-model   'aws/anthropic/claude-opus-4-5
+        gptel-default-mode 'org-mode)
   (define-prefix-command 'gptel-prefix-map)
   (global-set-key (kbd "C-c l") 'gptel-prefix-map)
 
