@@ -16,3 +16,6 @@ if [[ ! -x "$(command -v agent)" ]]; then
     curl -fsS https://cursor.com/install | bash
 fi
 
+if [[ ! -x "$(command -v claude)" ]]; then
+    curl -fsSL https://claude.ai/install.sh | bash
+fi
