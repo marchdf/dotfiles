@@ -1924,9 +1924,34 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "Mouse thumb buttons to scroll up/down",
+                        "manipulators": [
+                            {
+                                "from": { "pointing_button": "button4" },
+                                "to": [{ "mouse_key": { "vertical_wheel": 32 } }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": { "pointing_button": "button5" },
+                                "to": [{ "mouse_key": { "vertical_wheel": -32 } }],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_pointing_device": true,
+                        "product_id": 64515,
+                        "vendor_id": 13652
+                    },
+                    "ignore": false
+                }
+            ],
             "fn_function_keys": [
                 {
                     "from": { "key_code": "f3" },
