@@ -272,7 +272,8 @@
 ;;
 ;;================================================================================
 (use-package treesit
-  :if (and (treesit-available-p)
+  :if (and (>= emacs-major-version 30)
+           (treesit-available-p)
            (fboundp 'treesit-language-available-p))
   :config
   (setq major-mode-remap-alist
