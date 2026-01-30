@@ -148,6 +148,11 @@
           python-mode python-ts-mode
           sh-mode
           bash-mode bash-ts-mode) . lsp-deferred)
+  :init
+  ;; Disable server install prompts if npm isn't available
+  (unless (executable-find "npm")
+    (setq lsp-auto-install-server nil)
+    (setq lsp-enable-suggest-server-download nil))
   :bind
   ("C-c i" . lsp-format-region)
   ("C-c u" . lsp-format-buffer)
@@ -704,51 +709,58 @@
 (use-package ispell
   :ensure t
   :config
-  (cond
-   ((executable-find "hunspell")
-    (setenv
-     "DICPATH"
-     (concat (getenv "HOME") "/.local/share/hunspell/dicts"))
-    (setq ispell-program-name "hunspell")
-    (setq ispell-extra-args   '("-d en_US")))
-   ((executable-find "aspell")
-    (setq ispell-program-name "aspell")
-    (setq ispell-extra-args   '("--sug-mode=ultra"
-                                "--lang=en_US"))))
-  (message "Using spell checker: %s" ispell-program-name)
+  (let ((spell-checker-found nil))
+    (cond
+     ((executable-find "hunspell")
+      (setenv
+       "DICPATH"
+       (concat (getenv "HOME") "/.local/share/hunspell/dicts"))
+      (setq ispell-program-name "hunspell")
+      (setq ispell-extra-args   '("-d en_US"))
+      (setq spell-checker-found t))
+     ((executable-find "aspell")
+      (setq ispell-program-name "aspell")
+      (setq ispell-extra-args   '("--sug-mode=ultra"
+                                  "--lang=en_US"))
+      (setq spell-checker-found t)))
 
-  ;; Switch dictionaries
-  (defun fd-switch-dictionary()
-    "Binding to switch between dictionaries."
-    (interactive)
-    (let* ((dic ispell-current-dictionary)
-           (change (if (string= dic "francais") "en_US" "francais")))
-      (ispell-change-dictionary change)
-      (message "Dictionary switched from %s to %s" dic change)
-      ))
+    (if spell-checker-found
+        (message "Using spell checker: %s" ispell-program-name)
+      (message "No spell checker found (hunspell/aspell), disabling flyspell"))
 
-  (use-package flyspell
-    :ensure t
-    :config
-    (use-package flyspell-correct
-      :ensure t
-      :bind
-      ;;("C-c s" . 'flyspell-correct-previous-word-generic)
-      )
+    ;; Switch dictionaries
+    (defun fd-switch-dictionary()
+      "Binding to switch between dictionaries."
+      (interactive)
+      (let* ((dic ispell-current-dictionary)
+             (change (if (string= dic "francais") "en_US" "francais")))
+        (ispell-change-dictionary change)
+        (message "Dictionary switched from %s to %s" dic change)))
 
-    ;; No spell check for code snippets in Markdown
-    (defun flyspell-generic-textmode-verify ()
-      "Used for `flyspell-generic-check-word-predicate' in text modes."
-      ;; (point) is next char after the word. Must check one char before.
-      (let ((f (get-text-property (- (point) 1) 'face)))
-        (not (memq f '(markdown-pre-face)))))
-    (setq flyspell-generic-check-word-predicate 'flyspell-generic-textmode-verify)
+    ;; Only enable flyspell if a spell checker is available
+    (when spell-checker-found
+      (use-package flyspell
+        :ensure t
+        :config
+        (use-package flyspell-correct
+          :ensure t
+          :bind
+          ;;("C-c s" . 'flyspell-correct-previous-word-generic)
+          )
 
-    (add-hook 'text-mode-hook #'flyspell-mode)
-    (add-hook 'org-mode-hook #'flyspell-mode)
-    (add-hook 'latex-mode-hook #'flyspell-mode)
-    (add-hook 'tex-mode-hook #'flyspell-mode)
-    (add-hook 'prog-mode-hook #'flyspell-prog-mode)))
+        ;; No spell check for code snippets in Markdown
+        (defun flyspell-generic-textmode-verify ()
+          "Used for `flyspell-generic-check-word-predicate' in text modes."
+          ;; (point) is next char after the word. Must check one char before.
+          (let ((f (get-text-property (- (point) 1) 'face)))
+            (not (memq f '(markdown-pre-face)))))
+        (setq flyspell-generic-check-word-predicate 'flyspell-generic-textmode-verify)
+
+        (add-hook 'text-mode-hook #'flyspell-mode)
+        (add-hook 'org-mode-hook #'flyspell-mode)
+        (add-hook 'latex-mode-hook #'flyspell-mode)
+        (add-hook 'tex-mode-hook #'flyspell-mode)
+        (add-hook 'prog-mode-hook #'flyspell-prog-mode)))))
 
 
 ;;================================================================================
@@ -1241,11 +1253,13 @@
 ;; claude-code-ide
 ;;
 ;;================================================================================
-(use-package claude-code-ide
-  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
-  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
-  :config
-  (claude-code-ide-emacs-tools-setup))
+;; :vc keyword requires Emacs 30+, use eval to prevent parsing on older versions
+(when (>= emacs-major-version 30)
+  (eval '(use-package claude-code-ide
+           :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+           :bind ("C-c C-'" . claude-code-ide-menu)
+           :config
+           (claude-code-ide-emacs-tools-setup))))
 
 
 ;;================================================================================
