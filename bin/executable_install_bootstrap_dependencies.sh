@@ -41,6 +41,7 @@ elif [[ "$OS" == "Linux" ]]; then
 		 libffi-dev \
                  npm \
                  tmux \
+                 ripgrep \
                  ccls \
                  mp3info \
                  mpv \
