@@ -16,6 +16,22 @@ if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
         [[ -d "$HOME/.ssh" ]] && rm -rf "$HOME/.ssh"
         ln -sf /host-home/.ssh "$HOME/.ssh"
     fi
+
+    if [[ -d "/host-home/.cursor" ]] && [[ ! -L "$HOME/.cursor" ]]; then
+        [[ -d "$HOME/.cursor" ]] && rm -rf "$HOME/.cursor"
+        ln -sf /host-home/.cursor "$HOME/.cursor"
+    fi
+
+    if [[ -d "/host-home/.config/cursor" ]] && [[ ! -L "$HOME/.config/cursor" ]]; then
+        mkdir -p "$HOME/.config"
+        [[ -d "$HOME/.config/cursor" ]] && rm -rf "$HOME/.config/cursor"
+        ln -sf /host-home/.config/cursor "$HOME/.config/cursor"
+    fi
+
+    if [[ -d "/host-home/.claude" ]] && [[ ! -L "$HOME/.claude" ]]; then
+        [[ -d "$HOME/.claude" ]] && rm -rf "$HOME/.claude"
+        ln -sf /host-home/.claude "$HOME/.claude"
+    fi
 fi
 
 ### Added by Zinit's installer
