@@ -160,6 +160,7 @@
   ("C-c f r" . lsp-find-references)
   ("C-c f p" . xref-pop-marker-stack)
   :config
+  (setq lsp-lens-enable nil)
   (setq lsp-pyls-plugins-autopep8-enabled nil)
   (setq lsp-pyls-plugins-yapf-enabled nil)
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]plt.+\\'")
