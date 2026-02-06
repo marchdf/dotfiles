@@ -9,9 +9,11 @@ declare -a fonts=(
 version='3.4.0'
 fonts_dir="${HOME}/.local/share/fonts"
 
-if [[ ! -d "$fonts_dir" ]]; then
-    mkdir -p "$fonts_dir"
+if [[ -f "$fonts_dir/FiraCodeNerdFont-Regular.ttf" ]]; then
+    exit 0
 fi
+
+mkdir -p "$fonts_dir"
 
 for font in "${fonts[@]}"; do
     zip_file="${font}.zip"

@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 # Install vscode extension for LLDB
-if ! command -v npm >/dev/null 2>&1; then
+if [[ ! -x "$(command -v npm)" ]]; then
     echo "Please install npm"
     exit 1
 fi

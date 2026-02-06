@@ -3,6 +3,11 @@
 if [[ -x "$(command -v hunspell)" ]]; then
 
     HUNSPELL_DICT_LOCATION="${HOME}/.local/share/hunspell/dicts"
+
+    if [[ -f "${HUNSPELL_DICT_LOCATION}/en_US.dic" ]]; then
+        exit 0
+    fi
+
     HUNSPELL_EN_US_BASE_URL="https://sourceforge.net/projects/wordlist/files/speller/2020.12.07/"
     HUNSPELL_EN_US_NAME="hunspell-en_US-2020.12.07.zip"
 

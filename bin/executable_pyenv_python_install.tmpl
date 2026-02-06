@@ -5,33 +5,42 @@ if [[ ! -x "$(command -v pyenv)" ]]; then
     exit 1
 fi
 
-{{- if eq .nrel_cluster "ellis" }}
-MODULES_DATE=2025-09-25
-source /data/ssd1/software/${MODULES_DATE}/env.sh
-module load gcc
-module load binutils
-module load git
-module load gnutls
-module load libtool
-module load bzip2
-module load libffi
-module load sqlite
-export LDFLAGS="-L${LIBFFI_ROOT_DIR}/lib64 -L${BZIP2_ROOT_DIR}/lib -L${SQLITE_ROOT_DIR}/lib"
-export CPPFLAGS="-I${LIBFFI_ROOT_DIR}/include -I${BZIP2_ROOT_DIR}/include -I${SQLITE_ROOT_DIR}/include"
-{{- else if eq .nrel_cluster "kestrel" }}
-module purge
-module load PrgEnv-gnu/8.5.0
-{{- end }}
+usage() {
+    echo "Usage: pyenv_python_install [-o] <version>"
+    echo "  -o    Enable optimizations (--enable-optimizations --with-lto -mtune=native)"
+    exit 1
+}
 
-{{- if not .test_machine }}
-export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
-export PYTHON_CFLAGS="-mtune=native"
-{{- end }}
+OPTIMIZE=false
+
+while getopts ":o" opt; do
+    case ${opt} in
+        o)
+            OPTIMIZE=true
+            ;;
+        \?)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND -1))
 
 PYTHON_VERSION="${1}"
-if [ ! -z "$python_version" ]
-then
-    pyenv install
-else
-    pyenv install -s ${PYTHON_VERSION}
+if [ -z "$PYTHON_VERSION" ]; then
+    usage
 fi
+
+# Skip if already installed
+if [[ -n "$(pyenv versions --bare | grep "^${PYTHON_VERSION}$")" ]]; then
+    exit 0
+fi
+
+if [ "$OPTIMIZE" = true ]; then
+    echo "Installing Python ${PYTHON_VERSION} with optimizations..."
+    export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
+    export PYTHON_CFLAGS="-mtune=native"
+else
+    echo "Installing Python ${PYTHON_VERSION}..."
+fi
+
+pyenv install -s "${PYTHON_VERSION}"

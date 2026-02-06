@@ -18,5 +18,31 @@ services:
     environment:
       - TERM=xterm-256color
 
+  # Test service for iterating on local chezmoi changes
+  ubuntu-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.test
+      args:
+        USERNAME: marchdf
+        USER_UID: ${UID:-1001}
+        USER_GID: ${GID:-1001}
+    image: ubuntu-test:latest
+    container_name: ubuntu-test-dev
+    hostname: ubuntu-test
+    stdin_open: true
+    tty: true
+    volumes:
+      # Mount local chezmoi source (read-only)
+      - ..:/dotfiles-source:ro
+      # Persistent home for testing
+      - ubuntu-test-home:/home/marchdf
+      # Host home for shared data (history, ssh, etc.)
+      - ${HOME}:/host-home
+    environment:
+      - TERM=xterm-256color
+      - CHEZMOI_SOURCE=/dotfiles-source
+
 volumes:
   ubuntu-marchdf-home:
+  ubuntu-test-home:

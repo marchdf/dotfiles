@@ -1,15 +1,34 @@
 # Docker setup for chezmoi dotfiles
 
-This Dockerfile creates an Ubuntu-based development environment with all my dotfiles and CLI utilities configured via chezmoi.
+This directory contains Dockerfiles for Ubuntu-based development environments with dotfiles configured via chezmoi.
 
-## Quick start
+## Production container (ubuntu-marchdf)
 
-From the `docker` directory:
+Full environment with dotfiles baked in at build time.
 
 ```bash
 cd docker
-UID=$(id -u) GID=$(id -g) docker compose build
+UID=$(id -u) GID=$(id -g) docker compose build ubuntu-marchdf
 docker compose run --rm ubuntu-marchdf
+```
+
+## Test container (ubuntu-test)
+
+Minimal container for iterating on local chezmoi changes. Mounts local source as read-only.
+
+```bash
+cd docker
+docker compose build ubuntu-test
+docker compose run --rm ubuntu-test
+
+# Inside container - first time setup:
+chezmoi init --source /dotfiles-source \
+    --promptBool test_machine=f,"Use ZSH_ROOT_DIR for tmux shell"=f \
+    --promptString email="test@docker.com"
+chezmoi apply
+
+# Iterating on changes (edit files on host, then in container):
+chezmoi apply
 ```
 
 ## Pushing
@@ -29,11 +48,10 @@ docker pull ${REGISTRY}/${IMAGE_PATH}:${TAG}
 
 ```bash
 cd $HOME/.local/share/chezmoi/docker
-docker compose up -d ubuntu-marchdf
-docker compose exec ubuntu-marchdf zsh
+docker compose up -rm ubuntu-marchdf
 ```
 
-# Stopping
+## Stopping
 
 ```bash
 docker compose down

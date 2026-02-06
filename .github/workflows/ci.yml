@@ -19,13 +19,17 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: marchdf/dotfiles
           path: dotfiles
       - name: Dependencies
         run: |
           bash ./dotfiles/bin/executable_install_bootstrap_dependencies.sh
+      - name: Add arch-specific bin to PATH
+        run: |
+          ARCH=$(uname -m)
+          echo "$HOME/.local/${ARCH}/bin" >> $GITHUB_PATH
       - name: Clone dotfiles
         run: |
           mkdir -p "$HOME/.local/share/chezmoi"
@@ -52,12 +56,9 @@ jobs:
           DISABLE_AUTO_TITLE: true
         shell: zsh {0}
         run: |
-          if [[ "$RUNNER_OS" == "Linux" ]]; then
-            export PATH="/home/runner/.fzf/bin:$PATH"
-          fi
           source ~/.zshrc
-          for TOOL in python pyenv poetry zoxide fzf bat; do
-            if ! command -v "${TOOL}" >/dev/null; then
+          for TOOL in python pyenv uv poetry zoxide fzf bat; do
+            if [[ ! -x "$(command -v ${TOOL})" ]]; then
               echo "${TOOL} not found!"
               exit 1
             else

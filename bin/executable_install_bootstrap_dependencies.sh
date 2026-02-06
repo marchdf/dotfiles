@@ -3,7 +3,7 @@
 OS="$(uname -s)"
 
 if [[ "$OS" == "Darwin" ]]; then
-    brew install zsh chezmoi zoxide poetry
+    brew install zsh chezmoi zoxide
 elif [[ "$OS" == "Linux" ]]; then
     if [[ -f /etc/os-release ]]; then
         . /etc/os-release
@@ -14,9 +14,9 @@ elif [[ "$OS" == "Linux" ]]; then
 		 zsh \
 		 curl \
 		 zoxide \
-		 python3-poetry \
 		 make \
 		 wget \
+		 unzip \
 		 llvm \
                  clang \
                  clangd \
@@ -36,11 +36,13 @@ elif [[ "$OS" == "Linux" ]]; then
 		 libgdbm-dev \
 		 libnss3-dev \
                  libtag1-dev \
+                 libtagc0-dev \
 		 xz-utils \
 		 tk-dev \
 		 libffi-dev \
                  npm \
                  tmux \
+                 file \
                  ripgrep \
                  ccls \
                  mp3info \
@@ -62,8 +64,11 @@ elif [[ "$OS" == "Linux" ]]; then
     else
         echo "Linux (Unknown distro)"
     fi
-    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
-    export PATH="${HOME}/.local/bin:$PATH"
+    ARCH=$(uname -m)
+    ARCH_BIN="${HOME}/.local/${ARCH}/bin"
+    mkdir -p "${ARCH_BIN}"
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${ARCH_BIN}"
+    export PATH="${ARCH_BIN}:${HOME}/.local/bin:$PATH"
 else
     echo "Unknown OS: $OS"
 fi
