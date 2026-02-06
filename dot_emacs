@@ -49,6 +49,12 @@
 ;; dotfiles thing)
 (setq vc-follow-symlinks nil)
 
+;; Auto-refresh files when they change on disk (e.g., from external tools)
+(global-auto-revert-mode 1)
+(setq auto-revert-interval 1)           ; Check every 1 second
+(setq auto-revert-check-vc-info t)      ; Also refresh VC (git) info
+(setq global-auto-revert-non-file-buffers t) ; Also revert dired, etc.
+
 ;; Backup. A lot.
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq delete-old-versions -1)
@@ -589,6 +595,7 @@
 (add-to-list 'auto-mode-alist '("\\.C\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cuh\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.geo\\'" . c++-mode))
 
 (use-package modern-cpp-font-lock
@@ -921,7 +928,10 @@
 (use-package pyvenv
   :ensure t
   :config
-  (pyvenv-workon "dotfiles"))
+  (pyvenv-workon "dotfiles")
+  (pyvenv-tracking-mode 1)
+  (add-hook 'pyvenv-post-activate-hooks
+            (lambda () (when (bound-and-true-p lsp-mode) (lsp-restart-workspace)))))
 
 (use-package jedi
   :ensure t)

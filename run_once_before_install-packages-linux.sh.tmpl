@@ -1,17 +1,28 @@
 {{- if eq .chezmoi.os "linux" -}}
 #!/usr/bin/env bash
 
-if [[ ! -x "$(command -v pyenv)" ]] && [[ ! -d "$HOME/.pyenv" ]]; then
+ARCH=$(uname -m)
+ARCH_BIN="${HOME}/.local/${ARCH}/bin"
+mkdir -p "${ARCH_BIN}"
+
+export PYENV_ROOT="${HOME}/.local/${ARCH}/pyenv"
+if [[ ! -x "$(command -v pyenv)" ]] && [[ ! -d "${PYENV_ROOT}" ]]; then
    curl https://pyenv.run | bash
 fi
 
-if [[ ! -x "$(command -v fzf)" ]]; then
-   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-   ~/.fzf/install --all
+if [[ ! -x "${ARCH_BIN}/fzf" ]]; then
+   if [[ ! -d "$HOME/.fzf" ]]; then
+       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+   fi
+   ~/.fzf/install --all --bin
+   [[ -f ~/.fzf/bin/fzf ]] && mv ~/.fzf/bin/fzf "${ARCH_BIN}/"
+   [[ -f ~/.fzf/bin/fzf-tmux ]] && mv ~/.fzf/bin/fzf-tmux "${ARCH_BIN}/"
 fi
 
-if [[ ! -x "$(command -v uv)" ]]; then
+if [[ ! -x "${ARCH_BIN}/uv" ]]; then
    curl -LsSf https://astral.sh/uv/install.sh | sh
+   [[ -f "${HOME}/.local/bin/uv" ]] && mv "${HOME}/.local/bin/uv" "${ARCH_BIN}/"
+   [[ -f "${HOME}/.local/bin/uvx" ]] && mv "${HOME}/.local/bin/uvx" "${ARCH_BIN}/"
 fi
 
 {{ end -}}

@@ -34,16 +34,25 @@ if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
     fi
 fi
 
+# Architecture variable (set early, used by zinit and others)
+ARCH=$(uname -m)
+
 ### Added by Zinit's installer
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+ZINIT_HOME="${HOME}/.local/share/zinit-${ARCH}"
+# Tell zinit to use arch-specific directory for all its data
+declare -A ZINIT
+ZINIT[HOME_DIR]="${ZINIT_HOME}"
+ZINIT[BIN_DIR]="${ZINIT_HOME}/zinit.git"
+
+if [[ ! -f ${ZINIT[BIN_DIR]}/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
-        print -P "%F{33} %F{34}Installation successful.%f%b" || \
-        print -P "%F{160} The clone has failed.%f%b"
+    command mkdir -p "${ZINIT_HOME}" && command chmod g-rwX "${ZINIT_HOME}"
+    command git clone https://github.com/zdharma-continuum/zinit "${ZINIT[BIN_DIR]}" && \
+    print -P "%F{33} %F{34}Installation successful.%f%b" || \
+    print -P "%F{160} The clone has failed.%f%b"
 fi
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+source "${ZINIT[BIN_DIR]}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -59,27 +68,23 @@ zinit light-mode for \
 
 # Setup up some paths and environment variables
 
+# Architecture-specific paths
+export PATH="${HOME}/.local/${ARCH}/bin:${HOME}/bin:${HOME}/.local/bin:${PATH}"
+
 # homebrew
 if [ -d "/opt/homebrew" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-
-export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 
 # combustion directory
 export COMBUSTION_DIR="${HOME}/combustion"
 export MASA_HOME="${COMBUSTION_DIR}/install/MASA"
 
 # pyenv
-export PYENV_ROOT="${HOME}/.pyenv"
+export PYENV_ROOT="${HOME}/.local/${ARCH}/pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
-fi
-
-# poetry
-if [ -d "${HOME}/.poetry" ]; then
-    export PATH="$HOME/.poetry/bin:$PATH"
 fi
 
 # exawind-manager
@@ -104,7 +109,7 @@ if [[ -x "$(command -v claude)" ]]; then
     export CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS=50000
 fi
 
-export WORKON_HOME=${HOME}/.virtualenvs
+export WORKON_HOME="${HOME}/.local/${ARCH}/virtualenvs"
 
 {{- if eq .chezmoi.os "darwin" }}
 
@@ -133,7 +138,7 @@ fi
 {{- end }}
 
 # towards the beginning to make sure some software is loaded
-zinit lucid atload'unalias zi' light-mode for "hpc"
+zinit lucid atload'unalias zi' light-mode for "${HOME}/.local/share/zinit/plugins/hpc"
 
 zinit ice lucid depth"1"
 zinit light romkatv/powerlevel10k
@@ -165,7 +170,7 @@ zinit ice lucid as"program" pick"bin/git-dsf"
 zinit load so-fancy/diff-so-fancy
 
 # towards the end because it assumes some things are set in other plugins
-zinit wait lucid light-mode for "personal"
+zinit wait lucid light-mode for "${HOME}/.local/share/zinit/plugins/personal"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh

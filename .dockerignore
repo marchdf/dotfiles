@@ -2,8 +2,12 @@
 .git
 .github
 
-# Docker
-docker/
+# Docker (ignore most, but keep what's needed for build)
+docker/README.md
+docker/docker-compose.yml
+!docker/Dockerfile
+!docker/Dockerfile.test
+!docker/entrypoint-test.sh
 
 # Documentation
 README.md

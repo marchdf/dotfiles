@@ -1,99 +1,64 @@
 #!/usr/bin/env bash
 
-CLEAN="false"
+set -e
 
-while getopts :c flag
-do
-    case "${flag}" in
-        c)
-            CLEAN="true"
-            ;;
-        '?')
-            echo "INVALID OPTION -- ${OPTARG}" >&2
-            exit 1
-            ;;
-        ':')
-            echo "MISSING ARGUMENT for option -- ${OPTARG}" >&2
-            exit 1
-            ;;
-        *)
-            echo "UNIMPLEMENTED OPTION -- ${flag}" >&2
-            exit 1
-            ;;
-    esac
-done
+PYTHON_VERSION="3.12.9"
 
-# Make sure python3 installation worked
-if ! command -v python3 >/dev/null 2>&1; then
-    echo "Please install python3"
-    exit 1
+ARCH=$(uname -m)
+export PYENV_ROOT="${HOME}/.local/${ARCH}/pyenv"
+export WORKON_HOME="${HOME}/.local/${ARCH}/virtualenvs"
+
+# Install pyenv if not present
+if [[ ! -x "$(command -v pyenv)" ]] && [[ ! -d "${PYENV_ROOT}" ]]; then
+    export PYENV_ROOT="${PYENV_ROOT}"
+    curl https://pyenv.run | bash
 fi
 
-# Install pyenv and a sane python
-export PYENV_ROOT="${HOME}/.pyenv"
-if [[ ${CLEAN} == "true" ]]; then
-    if [[ -n "${PYENV_ROOT}" && -d "${PYENV_ROOT}" ]]; then
-        echo "Cleaning pyenv: removing ${PYENV_ROOT}"
-        rm -rf "${PYENV_ROOT}"
-    fi
-fi
-
-if [[ ! -x "$(command -v pyenv)" ]]; then
-   curl https://pyenv.run | bash
-fi
-
+# Initialize pyenv
 if [ -d "${PYENV_ROOT}" ]; then
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
 fi
 
-PYTHON_VERSION="3.12.9"
-
+# Install Python version and set as global
 ${HOME}/bin/pyenv_python_install ${PYTHON_VERSION}
 pyenv global ${PYTHON_VERSION}
 
-# Install poetry with the pyenv python
-if [[ ${CLEAN} == "true" && -x "$(command -v poetry)" ]]; then
-    curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 - --uninstall
-fi
-if [[ ! -x "$(command -v poetry)" ]]; then
-    curl -sSL https://install.python-poetry.org | PYENV_VERSION=${PYTHON_VERSION} POETRY_HOME=${HOME}/.poetry python3 -
+# Install uv if not present
+if [[ ! -x "$(command -v uv)" ]]; then
+    curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-# Create a sane dotfiles venv
-export PYENV_VERSION=${PYTHON_VERSION}
-export WORKON_HOME=${HOME}/.virtualenvs
+# Ensure uv is in PATH
+export PATH="${HOME}/.local/${ARCH}/bin:${HOME}/.local/bin:${PATH}"
+
+# Install poetry via uv tool
+uv tool install poetry
+
+# Create a dotfiles venv with common tools using uv
 VENV_NAME="dotfiles"
 VENV_LOCATION="${WORKON_HOME}/${VENV_NAME}"
 
-echo "Installing dotfiles venv at ${VENV_LOCATION} with $(python --version)"
+echo "Creating dotfiles venv at ${VENV_LOCATION}"
+mkdir -p "${WORKON_HOME}"
+uv venv "${VENV_LOCATION}" --python "${PYTHON_VERSION}"
 
-if [[ ${CLEAN} == "true" && -n "${VENV_LOCATION}" && -d "${VENV_LOCATION}" ]]; then
-    echo "Cleaning python venv by removing ${VENV_LOCATION}"
-    rm -rf "${VENV_LOCATION}"
-fi
-
-python -m venv "${VENV_LOCATION}"
-source ${VENV_LOCATION}/bin/activate
-python -m pip install --upgrade pip
-pip install --requirement=/dev/stdin <<EOF
-autopep8
-black
-flake8
-jedi
-matplotlib
-numpy
-pandas
-pycodestyle
-pydocstyle
-pyflakes
-python-lsp-black
-python-lsp-server
-pyls-flake8
-pylint
-scikit-learn
-scipy
-seaborn
-rope
-yapf
-EOF
+# Install common Python tools and data science packages in the dotfiles venv
+uv pip install --python "${VENV_LOCATION}/bin/python" \
+    black \
+    flake8 \
+    jedi \
+    matplotlib \
+    numpy \
+    pandas \
+    pycodestyle \
+    pydocstyle \
+    pyflakes \
+    pylint \
+    python-lsp-black \
+    python-lsp-server \
+    pyls-flake8 \
+    rope \
+    scikit-learn \
+    scipy \
+    seaborn

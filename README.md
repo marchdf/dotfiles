@@ -22,13 +22,40 @@ dotfiles
 Installation
 ------------
 
-Prerequisites for installation are [`chezmoi`](https://www.chezmoi.io).
+### macOS
 
-Then you can do the following:
-``` bash
+Install chezmoi via Homebrew, then apply dotfiles:
+
+```bash
+brew install chezmoi
 chezmoi init git@github.com:marchdf/dotfiles.git
 chezmoi diff
 chezmoi apply -v
+```
+
+### Linux
+
+Install chezmoi to arch-specific bin:
+
+```bash
+ARCH=$(uname -m)
+mkdir -p ~/.local/${ARCH}/bin
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/${ARCH}/bin
+export PATH="$HOME/.local/${ARCH}/bin:$PATH"
+```
+
+Then apply dotfiles:
+
+```bash
+chezmoi init git@github.com:marchdf/dotfiles.git
+chezmoi diff
+chezmoi apply -v
+```
+
+For a full environment with all dependencies, run the bootstrap script first:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/marchdf/dotfiles/main/bin/executable_install_bootstrap_dependencies.sh | bash
 ```
 
 Improved experience
