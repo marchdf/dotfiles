@@ -50,12 +50,12 @@ YRES=`echo $CHK | sed -ne '/pHYs/s/.*x\([0-9]*\) pixels\/meter.*/\1/p;'`
 # we ignore it (like pdfTeX does)
 
 # set the command-line arguments for pnmtotiff which specify the resolution
-if [ "$RES" ] ; then
+if [[ "$RES" ]]; then
   echo "png2eps: Image with square pixels ($RES dpi)" 1>&2
   RES='-xres '$RES' -yres '$RES
 fi
-if [ -z "$RES" ] ; then
-  if [ "$XRES" ] ; then
+if [[ -z "$RES" ]]; then
+  if [[ "$XRES" ]]; then
     echo "png2eps: Image with non-square pixels" \
       "($XRES""x$YRES pixels/meter)" 1>&2
 # we still have to convert pixels/meter -> dpi

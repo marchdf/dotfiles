@@ -22,8 +22,8 @@ Plugins[PERSONAL_DIR]="${0:h}"
 # Custom for NREL HPC machines
 
 # Set scratch
-if [ -d "/scratch/${USER}" ]; then
-    export SCRATCH="/scratch/${USER}"
+if [ -d "{{ .scratch_root }}" ]; then
+    export SCRATCH="{{ .scratch_root }}"
 fi
 
 # Set the modules

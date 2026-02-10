@@ -6,22 +6,38 @@
 set -e
 
 DRY_RUN=false
+INSTALL_DIR=""
 
 usage() {
-    echo "Usage: cleanup_installs.sh [--dry-run]"
-    echo "  --dry-run    Show what would be deleted without actually deleting"
+    echo "Usage: cleanup_installs.sh [--dry-run] [--install-dir PATH]"
+    echo "  --dry-run         Show what would be deleted without actually deleting"
+    echo "  --install-dir     Also clean large install directory"
     echo ""
     echo "This removes manually installed tools (pyenv, zinit, fzf, etc.)"
     exit 0
 }
 
-if [[ "$1" == "--dry-run" ]]; then
-    DRY_RUN=true
-    echo "=== DRY RUN MODE - No files will be deleted ==="
-    echo ""
-elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
-    usage
-fi
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --dry-run)
+            DRY_RUN=true
+            echo "=== DRY RUN MODE - No files will be deleted ==="
+            echo ""
+            shift
+            ;;
+        --install-dir)
+            INSTALL_DIR="$2"
+            shift 2
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            echo "Unknown option: $1"
+            usage
+            ;;
+    esac
+done
 
 remove_path() {
     local path="$1"
@@ -64,8 +80,12 @@ echo "--- Python environment ---"
 remove_path "$HOME/.pyenv" "pyenv (legacy)"
 remove_path "$HOME/.virtualenvs" "virtualenvs (legacy)"
 remove_path "$HOME/.poetry" "poetry (old standalone install)"
-remove_path "$HOME/.local/${ARCH}/pyenv" "pyenv (arch-specific)"
-remove_path "$HOME/.local/${ARCH}/virtualenvs" "virtualenvs (arch-specific)"
+remove_path "$HOME/.local/${ARCH}/pyenv" "pyenv (arch-specific in home)"
+remove_path "$HOME/.local/${ARCH}/virtualenvs" "virtualenvs (arch-specific in home)"
+if [[ -n "$INSTALL_DIR" ]]; then
+    remove_path "${INSTALL_DIR}/.local/${ARCH}/pyenv" "pyenv (in install-dir)"
+    remove_path "${INSTALL_DIR}/.local/${ARCH}/virtualenvs" "virtualenvs (in install-dir)"
+fi
 
 # --- uv ---
 echo ""

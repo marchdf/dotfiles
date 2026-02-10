@@ -3,15 +3,14 @@
 # Make a tea timer display a notification
 # Input the time, defaults to 3 minutes
 
-if [ -z "$1" ];
-then
+if [[ -z "$1" ]]; then
     TIME="3m";
 else
     TIME=$1;
 fi
 
 # Notification for Mac platform
-if [ "$(uname)" == "Darwin" ]; then
+if [[ "$(uname)" == "Darwin" ]]; then
 
     # Wait the specified time (need to brew install coreutils)
     gsleep "$TIME";
@@ -38,7 +37,7 @@ if [ "$(uname)" == "Darwin" ]; then
 
     
 # Notification for GNU/Linux platform
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+elif [[ "$(uname -s)" == "Linux" ]]; then
 
     # Wait the specified time
     sleep "$TIME";

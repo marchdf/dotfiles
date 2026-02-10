@@ -10,7 +10,7 @@ cmd() {
 echo "Setting up packages with spack"
 
 cmd "cd ${HOME}"
-if [ ! -d "${HOME}/spack" ]; then
+if [[ ! -d "${HOME}/spack" ]]; then
    cmd "git clone -c feature.manyFiles=true https://github.com/spack/spack.git"
 fi
 cmd "export SPACK_DIR=${HOME}/spack"

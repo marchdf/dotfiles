@@ -50,7 +50,7 @@ ENV PATH="/home/$USERNAME/.local/bin:${PATH}"
 
 # Initialize chezmoi with dotfiles from GitHub
 RUN chezmoi init https://github.com/marchdf/dotfiles.git \
-    --promptBool test_machine=f,"Use ZSH_ROOT_DIR for tmux shell"=f \
+    --promptBool test_machine=f,"Use ZSH_ROOT_DIR for tmux shell"=f,use_large_install_dir=f \
     --promptString email="marchdf@docker-container.com" \
     && chezmoi apply
 

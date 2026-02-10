@@ -4,7 +4,7 @@ ARCH=$(uname -m)
 ARCH_BIN="${HOME}/.local/${ARCH}/bin"
 mkdir -p "${ARCH_BIN}"
 
-if [ ! -d "${HOME}/.oh-my-zsh" ]; then
+if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 fi
 

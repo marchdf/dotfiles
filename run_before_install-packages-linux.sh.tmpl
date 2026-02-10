@@ -5,7 +5,16 @@ ARCH=$(uname -m)
 ARCH_BIN="${HOME}/.local/${ARCH}/bin"
 mkdir -p "${ARCH_BIN}"
 
-export PYENV_ROOT="${HOME}/.local/${ARCH}/pyenv"
+# Ensure large install directory is writable
+if [[ ! -d "{{ .large_install_dir }}/.local/${ARCH}" ]]; then
+    if ! mkdir -p "{{ .large_install_dir }}/.local/${ARCH}" 2>/dev/null; then
+        echo "ERROR: Cannot create {{ .large_install_dir }}/.local/${ARCH}"
+        echo "Check that the install directory is accessible"
+        exit 1
+    fi
+fi
+
+export PYENV_ROOT="{{ .large_install_dir }}/.local/${ARCH}/pyenv"
 if [[ ! -x "$(command -v pyenv)" ]] && [[ ! -d "${PYENV_ROOT}" ]]; then
    curl https://pyenv.run | bash
 fi
