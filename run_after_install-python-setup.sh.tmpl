@@ -32,7 +32,6 @@ fi
 
 # Install Python version and set as global
 ${HOME}/bin/pyenv_python_install ${PYTHON_VERSION}
-pyenv global ${PYTHON_VERSION}
 
 # Install uv if not present
 if [[ ! -x "$(command -v uv)" ]]; then
@@ -54,7 +53,7 @@ VENV_LOCATION="${WORKON_HOME}/${VENV_NAME}"
 if [[ ! -d "${VENV_LOCATION}" ]]; then
     echo "Creating dotfiles venv at ${VENV_LOCATION}"
     mkdir -p "${WORKON_HOME}"
-    uv venv "${VENV_LOCATION}" --python "${PYTHON_VERSION}"
+    uv venv "${VENV_LOCATION}" --python "$(pyenv which python3)"
 
     # Install common Python tools and data science packages in the dotfiles venv
     uv pip install --python "${VENV_LOCATION}/bin/python" \

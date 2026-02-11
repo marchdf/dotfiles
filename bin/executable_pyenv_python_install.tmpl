@@ -11,6 +11,36 @@ usage() {
     exit 1
 }
 
+# Check for Python build dependencies (Linux only)
+check_build_deps() {
+    [[ "$(uname)" == "Darwin" ]] && return 0
+
+    local missing=()
+    for header in bzlib.h ffi.h sqlite3.h lzma.h; do
+        if ! find /usr/include -name "$header" 2>/dev/null | grep -q .; then
+            missing+=("$header")
+        fi
+    done
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        echo "WARNING: Missing Python build dependencies: ${missing[*]}"
+        echo "Building Python would result in missing modules (ctypes, sqlite3, bz2, lzma)."
+        echo ""
+        # Check if system Python 3 is usable (bypass pyenv shims)
+        SYSTEM_PYTHON=$(PATH="/usr/bin:/bin:/usr/local/bin" command -v python3)
+        if [[ -n "$SYSTEM_PYTHON" ]] && "$SYSTEM_PYTHON" -c "import sys; assert sys.version_info >= (3, 9); import ctypes, sqlite3, bz2" 2>/dev/null; then
+            echo "System Python found and working. Using system Python instead."
+            pyenv global system
+            exit 0
+        else
+            echo "No working system Python found. Install dependencies:"
+            echo "  sudo apt-get install libbz2-dev libffi-dev libsqlite3-dev liblzma-dev"
+            exit 1
+        fi
+    fi
+    return 0
+}
+
 OPTIMIZE=false
 
 while getopts ":o" opt; do
@@ -26,7 +56,7 @@ done
 shift $((OPTIND -1))
 
 PYTHON_VERSION="${1}"
-if [ -z "$PYTHON_VERSION" ]; then
+if [[ -z "$PYTHON_VERSION" ]]; then
     usage
 fi
 
@@ -35,7 +65,10 @@ if [[ -n "$(pyenv versions --bare | grep "^${PYTHON_VERSION}$")" ]]; then
     exit 0
 fi
 
-if [ "$OPTIMIZE" = true ]; then
+# Check dependencies before building
+check_build_deps
+
+if [[ "$OPTIMIZE" == true ]]; then
     echo "Installing Python ${PYTHON_VERSION} with optimizations..."
     export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
     export PYTHON_CFLAGS="-mtune=native"
@@ -44,3 +77,4 @@ else
 fi
 
 pyenv install -s "${PYTHON_VERSION}"
+pyenv global "${PYTHON_VERSION}"
