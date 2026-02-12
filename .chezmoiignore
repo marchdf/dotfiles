@@ -6,6 +6,7 @@ requirements.txt
 .shell-secrets
 docker
 .dockerignore
+.chezmoi-source
 
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner

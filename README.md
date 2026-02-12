@@ -35,28 +35,26 @@ chezmoi apply -v
 
 ### Linux
 
-Install chezmoi to arch-specific bin:
-
-```bash
-ARCH=$(uname -m)
-mkdir -p ~/.local/${ARCH}/bin
-sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/${ARCH}/bin
-export PATH="$HOME/.local/${ARCH}/bin:$PATH"
-```
-
-Then apply dotfiles:
-
-```bash
-chezmoi init git@github.com:marchdf/dotfiles.git
-chezmoi diff
-chezmoi apply -v
-```
-
-For a full environment with all dependencies, run the bootstrap script first:
+For a full environment with all dependencies (recommended), run the bootstrap script:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/marchdf/dotfiles/main/bin/executable_install_bootstrap_dependencies.sh | bash
+chezmoi init git@github.com:marchdf/dotfiles.git
+chezmoi apply -v
 ```
+
+Or install manually:
+
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin
+export PATH="$HOME/.local/bin:$PATH"
+chezmoi init git@github.com:marchdf/dotfiles.git
+chezmoi apply -v
+```
+
+**Note:** Multi-architecture support (for shared NFS homes) can be enabled.
+`chezmoi apply` creates `~/.local-${ARCH}` directories and symlinks `~/.local` to the
+current architecture's directory.
 
 Improved experience
 -------------------

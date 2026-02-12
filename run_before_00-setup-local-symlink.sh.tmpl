@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+{{- if .is_multiarch_home }}
+
+# Fix ~/.local symlink direction if needed (for arch switch on shared NFS home)
+# Ensures chezmoi source is accessible via ~/.chezmoi-source (canonical location)
+
+ARCH=$(uname -m)
+TARGET="${HOME}/.local-${ARCH}"
+CHEZMOI_SOURCE="${HOME}/.chezmoi-source"
+
+# Only act if ~/.local is already a symlink (arch switch case)
+if [[ -L "${HOME}/.local" ]]; then
+    CURRENT=$(readlink "${HOME}/.local")
+    if [[ "${CURRENT}" != "${TARGET}" ]]; then
+        # Switching arches - ensure chezmoi source symlink exists in new arch dir
+        if [[ -d "${CHEZMOI_SOURCE}" ]]; then
+            mkdir -p "${TARGET}/share"
+            if [[ ! -e "${TARGET}/share/chezmoi" ]]; then
+                ln -sfn "${CHEZMOI_SOURCE}" "${TARGET}/share/chezmoi"
+            fi
+        fi
+        # Now safe to switch
+        mkdir -p "${TARGET}"
+        ln -sfn "${TARGET}" "${HOME}/.local"
+    fi
+fi
+
+# If ~/.local doesn't exist at all, create the structure
+if [[ ! -e "${HOME}/.local" ]]; then
+    mkdir -p "${TARGET}"
+    ln -sfn "${TARGET}" "${HOME}/.local"
+fi
+
+{{- if and (ne .large_install_dir "") (ne .large_install_dir .chezmoi.homeDir) }}
+
+# Same for large_install_dir on HPC systems
+LARGE_TARGET="{{ .large_install_dir }}/.local-${ARCH}"
+if [[ -L "{{ .large_install_dir }}/.local" ]]; then
+    CURRENT=$(readlink "{{ .large_install_dir }}/.local")
+    if [[ "${CURRENT}" != "${LARGE_TARGET}" ]]; then
+        mkdir -p "${LARGE_TARGET}"
+        ln -sfn "${LARGE_TARGET}" "{{ .large_install_dir }}/.local"
+    fi
+fi
+if [[ ! -e "{{ .large_install_dir }}/.local" ]]; then
+    mkdir -p "${LARGE_TARGET}"
+    ln -sfn "${LARGE_TARGET}" "{{ .large_install_dir }}/.local"
+fi
+{{- end }}
+{{- end }}

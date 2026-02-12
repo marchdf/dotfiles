@@ -26,10 +26,9 @@ jobs:
       - name: Dependencies
         run: |
           bash ./dotfiles/bin/executable_install_bootstrap_dependencies.sh
-      - name: Add arch-specific bin to PATH
+      - name: Add local bin to PATH
         run: |
-          ARCH=$(uname -m)
-          echo "$HOME/.local/${ARCH}/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Clone dotfiles
         run: |
           mkdir -p "$HOME/.local/share/chezmoi"
@@ -37,7 +36,7 @@ jobs:
           git clone --depth 1 --branch "${{ github.head_ref || github.ref_name }}" https://github.com/marchdf/dotfiles.git "$HOME/.local/share/chezmoi"
       - name: Install
         run: |
-          chezmoi init --source="$HOME/.local/share/chezmoi" --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f,use_large_install_dir=f --promptString email=""
+          chezmoi init --source="$HOME/.local/share/chezmoi" --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
           chezmoi data
           chezmoi apply
       - name: Cold start zsh

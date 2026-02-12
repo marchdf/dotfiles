@@ -23,7 +23,7 @@ docker compose run --rm ubuntu-test
 
 # Inside container - first time setup:
 chezmoi init --source /dotfiles-source \
-    --promptBool test_machine=f,"Use ZSH_ROOT_DIR for tmux shell"=f,use_large_install_dir=f \
+    --promptBool test_machine=f,"Use ZSH_ROOT_DIR for tmux shell"=f \
     --promptString email="marchdf@docker-container.com"
 chezmoi apply
 

@@ -1,37 +1,22 @@
 {{- if eq .chezmoi.os "linux" -}}
 #!/usr/bin/env bash
 
-ARCH=$(uname -m)
-ARCH_BIN="${HOME}/.local/${ARCH}/bin"
-mkdir -p "${ARCH_BIN}"
-
-# Ensure large install directory is writable
-if [[ ! -d "{{ .large_install_dir }}/.local/${ARCH}" ]]; then
-    if ! mkdir -p "{{ .large_install_dir }}/.local/${ARCH}" 2>/dev/null; then
-        echo "ERROR: Cannot create {{ .large_install_dir }}/.local/${ARCH}"
-        echo "Check that the install directory is accessible"
-        exit 1
-    fi
-fi
-
-export PYENV_ROOT="{{ .large_install_dir }}/.local/${ARCH}/pyenv"
-if [[ ! -x "$(command -v pyenv)" ]] && [[ ! -d "${PYENV_ROOT}" ]]; then
-   curl https://pyenv.run | bash
-fi
-
-if [[ ! -x "${ARCH_BIN}/fzf" ]]; then
-   if [[ ! -d "$HOME/.fzf" ]]; then
-       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+# fzf - install to ~/.local/share/fzf, symlink binaries to ~/.local/bin
+FZF_DIR="${HOME}/.local/share/fzf"
+if [[ ! -x "$(command -v fzf)" ]]; then
+   if [[ ! -d "${FZF_DIR}" ]]; then
+       mkdir -p "${HOME}/.local/share"
+       git clone --depth 1 https://github.com/junegunn/fzf.git "${FZF_DIR}"
    fi
-   ~/.fzf/install --all --bin
-   [[ -f ~/.fzf/bin/fzf ]] && mv ~/.fzf/bin/fzf "${ARCH_BIN}/"
-   [[ -f ~/.fzf/bin/fzf-tmux ]] && mv ~/.fzf/bin/fzf-tmux "${ARCH_BIN}/"
+   "${FZF_DIR}/install" --bin
+   mkdir -p "${HOME}/.local/bin"
+   [[ -f "${FZF_DIR}/bin/fzf" ]] && ln -sf "${FZF_DIR}/bin/fzf" "${HOME}/.local/bin/"
+   [[ -f "${FZF_DIR}/bin/fzf-tmux" ]] && ln -sf "${FZF_DIR}/bin/fzf-tmux" "${HOME}/.local/bin/"
 fi
 
-if [[ ! -x "${ARCH_BIN}/uv" ]]; then
+# uv
+if [[ ! -x "$(command -v uv)" ]]; then
    curl -LsSf https://astral.sh/uv/install.sh | sh
-   [[ -f "${HOME}/.local/bin/uv" ]] && mv "${HOME}/.local/bin/uv" "${ARCH_BIN}/"
-   [[ -f "${HOME}/.local/bin/uvx" ]] && mv "${HOME}/.local/bin/uvx" "${ARCH_BIN}/"
 fi
 
 {{ end -}}

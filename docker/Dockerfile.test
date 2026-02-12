@@ -62,13 +62,12 @@ RUN if ! getent group $USER_GID > /dev/null 2>&1; then groupadd --gid $USER_GID 
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
-# Install chezmoi to arch-specific bin
-RUN ARCH=$(uname -m) && \
-    mkdir -p $HOME/.local/${ARCH}/bin && \
-    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/${ARCH}/bin
+# Install chezmoi
+RUN mkdir -p $HOME/.local/bin && \
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
 
-# Ensure tools are in PATH (arch-specific first, then legacy)
-RUN ARCH=$(uname -m) && echo "export PATH=\"\$HOME/.local/\${ARCH}/bin:\$HOME/.local/bin:\$PATH\"" >> $HOME/.profile
+# Ensure local bin is in PATH
+RUN echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.profile
 ENV PATH="/home/$USERNAME/.local/bin:${PATH}"
 
 # Create directory structure for chezmoi source symlink

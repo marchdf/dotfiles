@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-ARCH=$(uname -m)
-ARCH_BIN="${HOME}/.local/${ARCH}/bin"
-mkdir -p "${ARCH_BIN}"
+LOCAL_BIN="${HOME}/.local/bin"
+mkdir -p "${LOCAL_BIN}"
 
 EMMS_DIR="${HOME}/.emacs.d/build/emms"
-EMMS_EXEC="${ARCH_BIN}/emms-print-metadata"
+EMMS_EXEC="${LOCAL_BIN}/emms-print-metadata"
 
 if [[ -x "${EMMS_EXEC}" ]]; then
     exit 0

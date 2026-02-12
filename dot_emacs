@@ -71,7 +71,20 @@
 ;; silence warnings from native-comp
 (setq native-comp-async-report-warnings-errors 'silent)
 
-(setq package-user-dir (concat "~/.emacs.d/elpa-" emacs-version))
+;; Version and arch specific package directory and native-comp cache
+(defvar my-arch (string-trim (shell-command-to-string "uname -m"))
+  "Current machine architecture (e.g., x86_64, aarch64).")
+
+(when (and (boundp 'native-comp-eln-load-path)
+           (fboundp 'native-comp-available-p)
+           (native-comp-available-p))
+  (setcar native-comp-eln-load-path
+          (expand-file-name (format "eln-cache-%s-%s/" emacs-version my-arch)
+                            user-emacs-directory)))
+
+(setq package-user-dir
+      (expand-file-name (format "elpa-%s-%s" emacs-version my-arch)
+                        user-emacs-directory))
 
 ;;================================================================================
 ;;

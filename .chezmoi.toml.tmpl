@@ -2,50 +2,34 @@
     command = "emacs"
     args = ["-nw"]
 
-{{ $use_zsh_root_dir := promptBoolOnce . "use_zsh_root_dir" "Use ZSH_ROOT_DIR for tmux shell" }}
-{{ $email := promptStringOnce . "email" "email" -}}
-{{ $test_machine := promptBoolOnce . "test_machine" "test_machine" }}
+{{ $use_zsh_root_dir := promptBoolOnce . "use_zsh_root_dir" "Use ZSH_ROOT_DIR for tmux shell" -}}
+{{- $email := promptStringOnce . "email" "email" -}}
+{{- $test_machine := promptBoolOnce . "test_machine" "test_machine" -}}
 
-{{ $nrel_hpc := false -}}
-{{ $nrel_cluster := env "NREL_CLUSTER" | quote -}}
+{{- $nrel_hpc := false -}}
+{{- $nrel_cluster := env "NREL_CLUSTER" | quote -}}
 {{- if or (eq (env "NREL_CLUSTER") "ellis") (eq (env "NREL_CLUSTER") "kestrel") -}}
-{{ $nrel_hpc = true -}}
+{{- $nrel_hpc = true -}}
 {{- end -}}
 
-{{ $ornl_hpc := false -}}
+{{- $ornl_hpc := false -}}
 {{- if eq (env "LMOD_SYSTEM_NAME") "frontier" -}}
-{{ $ornl_hpc = true -}}
+{{- $ornl_hpc = true -}}
 {{- end -}}
 
-{{/* Set scratch_root automatically based on system type */}}
-{{ $scratch_root := "${HOME}" -}}
+{{/* Scratch root for HPC systems */}}
+{{- $scratch_root := "${HOME}" -}}
 {{- if $nrel_hpc -}}
-{{ $scratch_root = "/scratch/${USER}" -}}
+{{- $scratch_root = "/scratch/${USER}" -}}
 {{- else if $ornl_hpc -}}
-{{ $scratch_root = "/lustre/orion/${USER}" -}}
+{{- $scratch_root = "/lustre/orion/${USER}" -}}
 {{- end -}}
 
-{{/* Prompt for large install directory (pyenv, virtualenvs) */}}
-{{- $use_large_install_dir := false -}}
+{{/* Large install dir for systems with small home directories */}}
 {{- $large_install_dir := "${HOME}" -}}
-{{- if stdinIsATTY -}}
-{{- $use_large_install_dir = promptBoolOnce . "use_large_install_dir" "Install large executables in non-default location" -}}
-{{- else if hasKey . "use_large_install_dir" -}}
-{{- $use_large_install_dir = .use_large_install_dir -}}
-{{- end -}}
-{{- if $use_large_install_dir -}}
-{{- $default_install_dir := printf "%s/install" $scratch_root -}}
-{{- if stdinIsATTY -}}
-{{- $large_install_dir = promptStringOnce . "large_install_dir" (printf "Large install directory [%s]" $default_install_dir) -}}
-{{- if not $large_install_dir -}}
-{{- $large_install_dir = $default_install_dir -}}
-{{- end -}}
-{{- else if and (hasKey . "large_install_dir") .large_install_dir -}}
-{{- $large_install_dir = .large_install_dir -}}
-{{- else -}}
-{{- $large_install_dir = $default_install_dir -}}
-{{- end -}}
-{{- end -}}
+
+{{/* Multi-arch home: use ~/.local symlink to ~/.local-${ARCH} for shared NFS homes */}}
+{{- $is_multiarch_home := false -}}
 
 [data]
     use_zsh_root_dir = {{ $use_zsh_root_dir }}
@@ -56,5 +40,5 @@
     nrel_cluster = {{ $nrel_cluster }}
     ornl_hpc = {{ $ornl_hpc }}
     scratch_root = {{ $scratch_root | quote }}
-    use_large_install_dir = {{ $use_large_install_dir }}
     large_install_dir = {{ $large_install_dir | quote }}
+    is_multiarch_home = {{ $is_multiarch_home }}

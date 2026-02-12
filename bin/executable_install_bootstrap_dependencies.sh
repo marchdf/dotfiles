@@ -64,11 +64,11 @@ elif [[ "$OS" == "Linux" ]]; then
     else
         echo "Linux (Unknown distro)"
     fi
-    ARCH=$(uname -m)
-    ARCH_BIN="${HOME}/.local/${ARCH}/bin"
-    mkdir -p "${ARCH_BIN}"
-    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${ARCH_BIN}"
-    export PATH="${ARCH_BIN}:${HOME}/.local/bin:$PATH"
+
+    # Install chezmoi
+    mkdir -p "${HOME}/.local/bin"
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${HOME}/.local/bin"
+    export PATH="${HOME}/.local/bin:$PATH"
 else
     echo "Unknown OS: $OS"
 fi

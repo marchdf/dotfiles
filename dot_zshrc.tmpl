@@ -34,12 +34,19 @@ if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
     fi
 fi
 
-# Architecture variable (set early, used by zinit and others)
+{{- if .is_multiarch_home }}
+# Multi-arch home: ensure ~/.local symlink points to correct arch
+# chezmoi sets this up, but check on every shell start in case arch switched
 ARCH=$(uname -m)
+LOCAL_ARCH_TARGET="${HOME}/.local-${ARCH}"
+if [[ -L "${HOME}/.local" ]] && [[ "$(readlink "${HOME}/.local")" != "${LOCAL_ARCH_TARGET}" ]]; then
+    mkdir -p "${LOCAL_ARCH_TARGET}"
+    ln -sfn "${LOCAL_ARCH_TARGET}" "${HOME}/.local"
+fi
+{{- end }}
 
 ### Added by Zinit's installer
-ZINIT_HOME="${HOME}/.local/share/zinit-${ARCH}"
-# Tell zinit to use arch-specific directory for all its data
+ZINIT_HOME="${HOME}/.local/share/zinit"
 declare -A ZINIT
 ZINIT[HOME_DIR]="${ZINIT_HOME}"
 ZINIT[BIN_DIR]="${ZINIT_HOME}/zinit.git"
@@ -68,8 +75,8 @@ zinit light-mode for \
 
 # Setup up some paths and environment variables
 
-# Architecture-specific paths
-export PATH="${HOME}/.local/${ARCH}/bin:${HOME}/bin:${HOME}/.local/bin:${PATH}"
+# Local paths
+export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
 
 # homebrew
 if [ -d "/opt/homebrew" ]; then
@@ -81,8 +88,8 @@ export COMBUSTION_DIR="${HOME}/combustion"
 export MASA_HOME="${COMBUSTION_DIR}/install/MASA"
 
 # pyenv
-export PYENV_ROOT="{{ .large_install_dir }}/.local/${ARCH}/pyenv"
-if [ -d "${PYENV_ROOT}" ]; then
+export PYENV_ROOT="{{ .large_install_dir }}/.local/pyenv"
+if [[ -d "${PYENV_ROOT}" ]]; then
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
 fi
@@ -109,7 +116,7 @@ if [[ -x "$(command -v claude)" ]]; then
     export CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS=50000
 fi
 
-export WORKON_HOME="{{ .large_install_dir }}/.local/${ARCH}/virtualenvs"
+export WORKON_HOME="{{ .large_install_dir }}/.local/virtualenvs"
 
 {{- if eq .chezmoi.os "darwin" }}
 

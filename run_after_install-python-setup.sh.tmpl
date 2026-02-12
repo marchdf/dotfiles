@@ -4,23 +4,11 @@ set -e
 
 PYTHON_VERSION="3.12.9"
 
-ARCH=$(uname -m)
-
-# Ensure large install directory is writable
-if [[ ! -d "{{ .large_install_dir }}/.local/${ARCH}" ]]; then
-    if ! mkdir -p "{{ .large_install_dir }}/.local/${ARCH}" 2>/dev/null; then
-        echo "ERROR: Cannot create {{ .large_install_dir }}/.local/${ARCH}"
-        echo "Check that the install directory is accessible"
-        exit 1
-    fi
-fi
-
-export PYENV_ROOT="{{ .large_install_dir }}/.local/${ARCH}/pyenv"
-export WORKON_HOME="{{ .large_install_dir }}/.local/${ARCH}/virtualenvs"
+export PYENV_ROOT="{{ .large_install_dir }}/.local/pyenv"
+export WORKON_HOME="{{ .large_install_dir }}/.local/virtualenvs"
 
 # Install pyenv if not present
 if [[ ! -x "$(command -v pyenv)" ]] && [[ ! -d "${PYENV_ROOT}" ]]; then
-    export PYENV_ROOT="${PYENV_ROOT}"
     curl https://pyenv.run | bash
 fi
 
@@ -39,7 +27,7 @@ if [[ ! -x "$(command -v uv)" ]]; then
 fi
 
 # Ensure uv is in PATH
-export PATH="${HOME}/.local/${ARCH}/bin:${HOME}/.local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 
 # Install poetry via uv tool
 if [[ ! -x "$(command -v poetry)" ]]; then

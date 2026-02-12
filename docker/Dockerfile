@@ -44,13 +44,13 @@ WORKDIR /home/$USERNAME
 COPY --chown=$USERNAME:$USERNAME ../bin/executable_install_bootstrap_dependencies.sh /tmp/install_bootstrap.sh
 RUN bash /tmp/install_bootstrap.sh && rm /tmp/install_bootstrap.sh
 
-# Ensure chezmoi is in PATH (arch-specific first, then legacy)
-RUN ARCH=$(uname -m) && echo "export PATH=\"\$HOME/.local/\${ARCH}/bin:\$HOME/.local/bin:\$PATH\"" >> $HOME/.profile
-ENV PATH="/home/$USERNAME/.local/bin:${PATH}"
+# Ensure local bin is in PATH for runtime
+RUN echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.profile
 
 # Initialize chezmoi with dotfiles from GitHub
-RUN chezmoi init https://github.com/marchdf/dotfiles.git \
-    --promptBool test_machine=f,"Use ZSH_ROOT_DIR for tmux shell"=f,use_large_install_dir=f \
+RUN source $HOME/.profile && \
+    chezmoi init https://github.com/marchdf/dotfiles.git \
+    --promptBool test_machine=f,"Use ZSH_ROOT_DIR for tmux shell"=f \
     --promptString email="marchdf@docker-container.com" \
     && chezmoi apply
 
