@@ -34,19 +34,9 @@ if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
     fi
 fi
 
-{{- if .is_multiarch_home }}
-# Multi-arch home: ensure ~/.local symlink points to correct arch
-# chezmoi sets this up, but check on every shell start in case arch switched
-ARCH=$(uname -m)
-LOCAL_ARCH_TARGET="${HOME}/.local-${ARCH}"
-if [[ -L "${HOME}/.local" ]] && [[ "$(readlink "${HOME}/.local")" != "${LOCAL_ARCH_TARGET}" ]]; then
-    mkdir -p "${LOCAL_ARCH_TARGET}"
-    ln -sfn "${LOCAL_ARCH_TARGET}" "${HOME}/.local"
-fi
-{{- end }}
-
 ### Added by Zinit's installer
-ZINIT_HOME="${HOME}/.local/share/zinit"
+# Arch-specific zinit for shared NFS homes with multiple architectures
+ZINIT_HOME="${HOME}/.local/share/zinit-$(uname -m)"
 declare -A ZINIT
 ZINIT[HOME_DIR]="${ZINIT_HOME}"
 ZINIT[BIN_DIR]="${ZINIT_HOME}/zinit.git"
@@ -155,6 +145,10 @@ zinit wait lucid light-mode \
        atclone'chmod +x emacsclient.sh' \
        atpull'%atclone' \
        for "OMZP::emacs"
+
+# Install fzf and zoxide binaries (arch-specific via gh-r)
+zinit from"gh-r" as"program" for @junegunn/fzf
+zinit from"gh-r" as"program" mv"zoxide -> zoxide" for @ajeetdsouza/zoxide
 
 zinit wait lucid light-mode for \
        "OMZP::fzf" \

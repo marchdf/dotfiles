@@ -24,8 +24,6 @@ Installation
 
 ### macOS
 
-Install chezmoi via Homebrew, then apply dotfiles:
-
 ```bash
 brew install chezmoi
 chezmoi init git@github.com:marchdf/dotfiles.git
@@ -52,14 +50,8 @@ chezmoi init git@github.com:marchdf/dotfiles.git
 chezmoi apply -v
 ```
 
-**Note:** Multi-architecture support (for shared NFS homes) can be enabled.
-`chezmoi apply` creates `~/.local-${ARCH}` directories and symlinks `~/.local` to the
-current architecture's directory.
-
 Improved experience
 -------------------
 
 The following will lead to an improved experience:
 - `zsh`
-- [`oh-my-zsh`](https://github.com/robbyrussell/oh-my-zsh)
-- [`fzf`](https://github.com/junegunn/fzf)

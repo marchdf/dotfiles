@@ -1,19 +1,6 @@
 {{- if eq .chezmoi.os "linux" -}}
 #!/usr/bin/env bash
 
-# fzf - install to ~/.local/share/fzf, symlink binaries to ~/.local/bin
-FZF_DIR="${HOME}/.local/share/fzf"
-if [[ ! -x "$(command -v fzf)" ]]; then
-   if [[ ! -d "${FZF_DIR}" ]]; then
-       mkdir -p "${HOME}/.local/share"
-       git clone --depth 1 https://github.com/junegunn/fzf.git "${FZF_DIR}"
-   fi
-   "${FZF_DIR}/install" --bin
-   mkdir -p "${HOME}/.local/bin"
-   [[ -f "${FZF_DIR}/bin/fzf" ]] && ln -sf "${FZF_DIR}/bin/fzf" "${HOME}/.local/bin/"
-   [[ -f "${FZF_DIR}/bin/fzf-tmux" ]] && ln -sf "${FZF_DIR}/bin/fzf-tmux" "${HOME}/.local/bin/"
-fi
-
 # uv
 if [[ ! -x "$(command -v uv)" ]]; then
    curl -LsSf https://astral.sh/uv/install.sh | sh

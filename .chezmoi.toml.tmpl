@@ -26,10 +26,7 @@
 {{- end -}}
 
 {{/* Large install dir for systems with small home directories */}}
-{{- $large_install_dir := "${HOME}" -}}
-
-{{/* Multi-arch home: use ~/.local symlink to ~/.local-${ARCH} for shared NFS homes */}}
-{{- $is_multiarch_home := false -}}
+{{- $large_install_dir := "${HOME}" }}
 
 [data]
     use_zsh_root_dir = {{ $use_zsh_root_dir }}
@@ -41,4 +38,3 @@
     ornl_hpc = {{ $ornl_hpc }}
     scratch_root = {{ $scratch_root | quote }}
     large_install_dir = {{ $large_install_dir | quote }}
-    is_multiarch_home = {{ $is_multiarch_home }}
