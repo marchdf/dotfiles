@@ -5,6 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Use single zcompdump file (avoid per-hostname files on HPC)
+export ZSH_COMPDUMP="${HOME}/.zcompdump"
+
 # Docker shares safe state from host home (cli history, zoxide, ssh)
 if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
     if [[ -f "/host-home/.zsh_history" ]] && [[ ! -L "$HOME/.zsh_history" ]]; then
@@ -238,25 +241,31 @@ if [ ! -d "${HIST_BACKUP_DIR}" ]; then
 fi
 
 function backup_zsh_history () {
-    if [ -d "${HIST_BACKUP_DIR}" ]; then
-        HISTFILE_BAK="${HIST_BACKUP_DIR}/zsh_history_$(date +\%Y_\%m_\%d).bak"
-        if [ ! -f "${HISTFILE_BAK}" ] && [ -f "${HISTFILE}" ]; then
-            cp "${HISTFILE}" "${HISTFILE_BAK}"
+    if [[ -d "${HIST_BACKUP_DIR}" ]]; then
+        local hist_pfx="zsh_history_"
+        local hist_ext=".bak"
+        local histfile_bak="${HIST_BACKUP_DIR}/${hist_pfx}$(date +\%Y_\%m_\%d)${hist_ext}"
+        if [[ ! -f "${histfile_bak}" ]] && [[ -f "${HISTFILE}" ]]; then
+            cp "${HISTFILE}" "${histfile_bak}"
         fi
+        # Keep 20 most recent backups
+        ls -t "${HIST_BACKUP_DIR}"/${hist_pfx}*${hist_ext} 2>/dev/null | tail -n +21 | xargs rm -f 2>/dev/null
     fi
 }
 
 backup_zsh_history
 
 function backup_zoxide_database () {
-    if [ -d "$_ZO_DATA_DIR" ]; then
-        ZO_DATA="${_ZO_DATA_DIR}/db.zo"
-        ZO_DATA_BAK="${_ZO_DATA_DIR}/db_$(date +\%Y_\%m_\%d)-bak.zo"
-        if [ ! -f "${ZO_DATA_BAK}" ] && [ -f "${ZO_DATA}" ]; then
-            cp "$ZO_DATA" "$ZO_DATA_BAK"
+    if [[ -d "$_ZO_DATA_DIR" ]]; then
+        local zo_pfx="db_"
+        local zo_ext="-bak.zo"
+        local zo_data="${_ZO_DATA_DIR}/db.zo"
+        local zo_data_bak="${_ZO_DATA_DIR}/${zo_pfx}$(date +\%Y_\%m_\%d)${zo_ext}"
+        if [[ ! -f "${zo_data_bak}" ]] && [[ -f "${zo_data}" ]]; then
+            cp "${zo_data}" "${zo_data_bak}"
         fi
-        unset ZO_DATA
-        unset ZO_DATA_BAK
+        # Keep 7 most recent backups
+        ls -t "${_ZO_DATA_DIR}"/${zo_pfx}*${zo_ext} 2>/dev/null | tail -n +8 | xargs rm -f 2>/dev/null
     fi
 }
 
