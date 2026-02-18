@@ -18,13 +18,13 @@ if [[ ${zsh_loaded_plugins[-1]} != */personal && -z ${fpath[(r)${0:h}]} ]] {
 typeset -gA Plugins
 Plugins[PERSONAL_DIR]="${0:h}"
 
-{{- if .nrel_hpc }}
-# Custom for NREL HPC machines
-
-# Set scratch
-if [ -d "{{ .scratch_root }}" ]; then
+# Set scratch if not already set
+if [[ -z "${SCRATCH}" ]] && [[ -d "{{ .scratch_root }}" ]]; then
     export SCRATCH="{{ .scratch_root }}"
 fi
+
+{{- if .nrel_hpc }}
+# Custom for NREL HPC machines
 
 # Set the modules
 {{- if eq .nrel_cluster "ellis" }}
