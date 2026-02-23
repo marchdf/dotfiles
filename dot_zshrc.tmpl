@@ -249,7 +249,10 @@ function backup_zsh_history () {
             cp "${HISTFILE}" "${histfile_bak}"
         fi
         # Keep 20 most recent backups
-        ls -t "${HIST_BACKUP_DIR}"/${hist_pfx}*${hist_ext} 2>/dev/null | tail -n +21 | xargs rm -f 2>/dev/null
+        local -a old_backups=("${HIST_BACKUP_DIR}"/${hist_pfx}*${hist_ext}(NOm))
+        if (( ${#old_backups[@]} > 20 )); then
+            rm -f "${old_backups[@]:20}" 2>/dev/null
+        fi
     fi
 }
 
@@ -265,7 +268,10 @@ function backup_zoxide_database () {
             cp "${zo_data}" "${zo_data_bak}"
         fi
         # Keep 7 most recent backups
-        ls -t "${_ZO_DATA_DIR}"/${zo_pfx}*${zo_ext} 2>/dev/null | tail -n +8 | xargs rm -f 2>/dev/null
+        local -a old_backups=("${_ZO_DATA_DIR}"/${zo_pfx}*${zo_ext}(NOm))
+        if (( ${#old_backups[@]} > 7 )); then
+            rm -f "${old_backups[@]:7}" 2>/dev/null
+        fi
     fi
 }
 
