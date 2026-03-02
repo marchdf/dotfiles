@@ -23,6 +23,43 @@ if [[ -z "${SCRATCH}" ]] && [[ -d "{{ .scratch_root }}" ]]; then
     export SCRATCH="{{ .scratch_root }}"
 fi
 
+function _select-compute-node() {
+  if [[ ! -x "$(command -v squeue)" ]]; then
+    echo "squeue not found." >&2
+    return 1
+  fi
+
+  if [[ ! -x "$(command -v fzf)" ]]; then
+    echo "fzf not found." >&2
+    return 1
+  fi
+
+  local node=$(squeue -u ${USER} -o "%N %j %M" -h 2>/dev/null | fzf | awk '{print $1}')
+
+  if [ -z "${node}" ]; then
+    echo "No node selected, exiting." >&2
+    return 1
+  fi
+
+  echo "${node}"
+}
+
+function compute-ssh() {
+  local node=$(_select-compute-node) || return 1
+
+  echo "Connecting to ${node}..."
+  ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node}
+}
+
+function compute-docker() {
+  local node=$(_select-compute-node) || return 1
+
+  echo "Connecting to ${node} and attaching to Docker container..."
+  ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
+    'docker exec -it `docker ps -q | head -1` /bin/zsh -l'
+}
+
+
 {{- if .nrel_hpc }}
 # Custom for NREL HPC machines
 
