@@ -49,11 +49,8 @@
 ;; dotfiles thing)
 (setq vc-follow-symlinks nil)
 
-;; Auto-refresh files when they change on disk (e.g., from external tools)
-(global-auto-revert-mode 1)
-(setq auto-revert-interval 1)           ; Check every 1 second
-(setq auto-revert-check-vc-info t)      ; Also refresh VC (git) info
-(setq global-auto-revert-non-file-buffers t) ; Also revert dired, etc.
+;;Disable suspend shortcut
+(global-unset-key (kbd "C-z"))
 
 ;; Backup. A lot.
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
