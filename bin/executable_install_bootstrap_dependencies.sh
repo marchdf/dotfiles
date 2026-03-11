@@ -8,38 +8,38 @@ elif [[ "$OS" == "Linux" ]]; then
     if [[ -f /etc/os-release ]]; then
         . /etc/os-release
         if [[ "$ID" == "ubuntu" ]]; then
-	    sudo apt-get update
-	    sudo apt install -y \
-		 git \
-		 zsh \
-		 curl \
-		 zoxide \
-		 make \
-		 wget \
-		 unzip \
-		 llvm \
+            sudo apt-get update
+            sudo apt install -y \
+                 git \
+                 zsh \
+                 curl \
+                 zoxide \
+                 make \
+                 wget \
+                 unzip \
+                 llvm \
                  clang \
                  clangd \
                  clang-format \
                  clang-tidy \
                  cmake \
                  emacs \
-		 build-essential \
-		 libbz2-dev \
-		 libreadline-dev \
-		 liblzma-dev \
-		 libsqlite3-dev \
-		 libssl-dev \
-		 zlib1g-dev \
-		 libncurses5-dev \
-		 libncursesw5-dev \
-		 libgdbm-dev \
-		 libnss3-dev \
+                 build-essential \
+                 libbz2-dev \
+                 libreadline-dev \
+                 liblzma-dev \
+                 libsqlite3-dev \
+                 libssl-dev \
+                 zlib1g-dev \
+                 libncurses5-dev \
+                 libncursesw5-dev \
+                 libgdbm-dev \
+                 libnss3-dev \
                  libtag1-dev \
                  libtagc0-dev \
-		 xz-utils \
-		 tk-dev \
-		 libffi-dev \
+                 xz-utils \
+                 tk-dev \
+                 libffi-dev \
                  npm \
                  tmux \
                  file \
@@ -57,7 +57,7 @@ elif [[ "$OS" == "Linux" ]]; then
                  bc \
                  gawk \
                  coreutils \
-		 uuid-dev
+                 uuid-dev
         else
             echo "Linux (Not Ubuntu: $NAME)"
         fi

@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     sudo \
     git \
+    gfortran \
     locales \
     hunspell-en-us \
     tzdata \
