@@ -89,11 +89,15 @@
 ;;
 ;;================================================================================
 
-;; Enable the MELPA package repo (http://melpa.org/#/getting-started)
+;; Package archives and priorities
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
+(setq package-archive-priorities
+      '(("gnu" . 30)
+        ("nongnu" . 20)
+        ("melpa" . 10)))
 (package-initialize)
 
 ;; Bootstrap `use-package'
