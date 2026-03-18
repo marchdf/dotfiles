@@ -57,7 +57,8 @@ elif [[ "$OS" == "Linux" ]]; then
                  bc \
                  gawk \
                  coreutils \
-                 uuid-dev
+                 uuid-dev \
+                 less
         else
             echo "Linux (Not Ubuntu: $NAME)"
         fi

@@ -7,12 +7,13 @@ fi
 
 export ZSH_COMPDUMP="${HOME}/.zcompdump"
 
-export HOST=$(hostname)
+[[ -z "$HOST" ]] && export HOST="$(hostname)"
+[[ -z "$USER" ]] && export USER="$(whoami)"
 
 # Docker shares safe state from host home (cli history, zoxide, ssh)
 if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
     if [[ -f "/host-home/.zsh_history" ]] && [[ ! -L "$HOME/.zsh_history" ]]; then
-        [[ -f "$HOME/.zsh_history" ]] && rm "$HOME/.zsh_history"
+        rm -f "$HOME/.zsh_history" 2>/dev/null
         ln -sf /host-home/.zsh_history "$HOME/.zsh_history"
     fi
 
