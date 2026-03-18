@@ -5,8 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Use single zcompdump file (avoid per-hostname files on HPC)
 export ZSH_COMPDUMP="${HOME}/.zcompdump"
+
+export HOST=$(hostname)
 
 # Docker shares safe state from host home (cli history, zoxide, ssh)
 if [[ -n "$IN_DOCKER" ]] && [[ -d "/host-home" ]]; then
@@ -70,6 +71,9 @@ zinit light-mode for \
 
 # Local paths
 export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
+
+# Unset XDG_RUNTIME_DIR if directory doesn't exist
+[[ -n "$XDG_RUNTIME_DIR" && ! -d "$XDG_RUNTIME_DIR" ]] && unset XDG_RUNTIME_DIR
 
 # homebrew
 if [ -d "/opt/homebrew" ]; then
@@ -152,6 +156,15 @@ zinit wait lucid light-mode \
 # Install fzf and zoxide binaries (arch-specific via gh-r)
 zinit from"gh-r" as"program" for @junegunn/fzf
 zinit from"gh-r" as"program" mv"zoxide -> zoxide" for @ajeetdsouza/zoxide
+
+# Install fnm and node LTS
+zinit from"gh-r" as"program" atload'
+    eval "$(fnm env --use-on-cd --shell zsh)"
+    if [[ -z "$(fnm list 2>/dev/null | grep -v system)" ]]; then
+        fnm install --lts
+        fnm default lts-latest
+    fi
+' light-mode for @Schniz/fnm
 
 zinit wait lucid light-mode for \
        "OMZP::fzf" \

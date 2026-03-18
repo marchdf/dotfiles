@@ -56,7 +56,7 @@ function compute-docker() {
 
   echo "Connecting to ${node} and attaching to Docker container..."
   ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
-    'docker exec -it `docker ps -q | head -1` /bin/zsh -l'
+    'docker exec -it `docker ps -q | head -1` env zsh -l'
 }
 
 
