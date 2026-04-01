@@ -45,14 +45,16 @@ function _select-compute-node() {
 }
 
 function compute-ssh() {
-  local node=$(_select-compute-node) || return 1
+  local node
+  node=$(_select-compute-node) || return 1
 
   echo "Connecting to ${node}..."
   ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node}
 }
 
 function compute-docker() {
-  local node=$(_select-compute-node) || return 1
+  local node
+  node=$(_select-compute-node) || return 1
 
   echo "Connecting to ${node} and attaching to Docker container..."
   ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
