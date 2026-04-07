@@ -34,7 +34,7 @@ function _select-compute-node() {
     return 1
   fi
 
-  local node=$(squeue -u ${USER} -o "%N %j %M" -h 2>/dev/null | fzf | awk '{print $1}')
+  local node=$(squeue -u ${USER} -o "%N %j %M" -h 2>/dev/null | fzf --select-1 --prompt="Select node: " | awk '{print $1}')
 
   if [ -z "${node}" ]; then
     echo "No node selected, exiting." >&2
@@ -56,9 +56,18 @@ function compute-docker() {
   local node
   node=$(_select-compute-node) || return 1
 
-  echo "Connecting to ${node} and attaching to Docker container..."
+  local container
+  container=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
+    'docker ps --format "{{ "{{.Names}}" }}"' 2>/dev/null | fzf --select-1 --prompt="Select container: ")
+
+  if [[ -z "$container" ]]; then
+    echo "No containers found or none selected." >&2
+    return 1
+  fi
+
+  echo "Connecting to ${node} and attaching to Docker container ${container}..."
   ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
-    'docker exec -it `docker ps -q | head -1` env zsh -l'
+    "docker exec -it ${container} zsh -l"
 }
 
 
