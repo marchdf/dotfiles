@@ -14,12 +14,12 @@ fi
 
 # Initialize pyenv
 if [[ -d "${PYENV_ROOT}" ]]; then
-    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init -)"
 fi
 
 # Install Python version and set as global
-${HOME}/bin/pyenv_python_install ${PYTHON_VERSION}
+"${HOME}/bin/pyenv_python_install" "${PYTHON_VERSION}"
 
 # Install uv if not present
 if [[ ! -x "$(command -v uv)" ]]; then

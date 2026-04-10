@@ -10,9 +10,9 @@
 
 # Then ${0:h} to get plugin's directory
 
-if [[ ${zsh_loaded_plugins[-1]} != */personal && -z ${fpath[(r)${0:h}]} ]] {
-    fpath+=( "${0:h}" )
-}
+if [[ ${zsh_loaded_plugins[-1]} != */personal && -z ${fpath[(r)${0:h}]} ]]; then
+    fpath+=("${0:h}")
+fi
 
 # Standard hash for plugins, to not pollute the namespace
 typeset -gA Plugins
@@ -25,8 +25,8 @@ alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
-alias ge="$EMACS_PLUGIN_LAUNCHER --no-wait"
-alias e="$EMACS_PLUGIN_LAUNCHER -nw"
+alias ge="${EMACS_PLUGIN_LAUNCHER} --no-wait"
+alias e="${EMACS_PLUGIN_LAUNCHER} -nw"
 alias ek='emacsclient -e "(kill-emacs)"'
 alias rmeps="rm *.eps"
 alias rmpng="rm *.png"
@@ -56,12 +56,12 @@ alias mmv="noglob zmv -W"
 
 # Cluster aliases
 if [[ -x "$(command -v qstat)" ]]; then
-    alias qs="qstat -u $USER";
-    alias job_node_ids="qstat -u $USER -f | grep -e 'Job\ Id\|exec_host\|Job_Name'"
+    alias qs="qstat -u ${USER}"
+    alias job_node_ids="qstat -u ${USER} -f | grep -e 'Job\ Id\|exec_host\|Job_Name'"
 fi
 
 if [[ -x "$(command -v squeue)" ]]; then
-    alias qs="squeue -u $USER -o '%12i %.9P %20j %.2t %.10M %.6D %r %N'"
+    alias qs="squeue -u ${USER} -o '%12i %.9P %20j %.2t %.10M %.6D %r %N'"
     alias qnodes="sinfo -o '%24P %.5a  %.12l  %.16F'"
 fi
 
@@ -71,23 +71,23 @@ fi
 function prettypath() { echo ${1-$PATH} | sed 's/:/\n/g'; }
 
 # Calls the teatimer script
-function tt() { ~/bin/teatimer.sh "$@" &}
+function tt() { ~/bin/teatimer.sh "$@" & }
 
 # Calls the pdf2eps script
-function pdf2eps() { ~/bin/pdf2eps.sh "$@" &}
+function pdf2eps() { ~/bin/pdf2eps.sh "$@" & }
 
 # refresh directory (if the directory was deleted from underneath us
 # and we are still in it, try to re-cd to the directory)
-function recd() { cd `pwd`; }
+function recd() { cd "$(pwd)"; }
 
 # Diff two files using emacs ediff
 # From: https://defunitive.wordpress.com/2011/07/23/invoking-emacs-ediff-from-the-command-line/
 function ediff() {
-    if [ "X${2}" = "X" ]; then
+    if [[ -z "${2}" ]]; then
         echo "USAGE: ediff <FILE 1> <FILE 2>"
     else
         # The --eval flag takes lisp code and evaluates it with emacs
-        "$EMACS_PLUGIN_LAUNCHER" -nw --eval "(ediff-files \"$1\" \"$2\")"
+        "${EMACS_PLUGIN_LAUNCHER}" -nw --eval "(ediff-files \"$1\" \"$2\")"
     fi
 }
 
@@ -116,15 +116,15 @@ function format-cpp() {
 # from: https://github.com/tensorflow/tensorboard/issues/179
 multitb() (
     set -eu
-    if [ $# -eq 0 ]; then
+    if [[ $# -eq 0 ]]; then
         printf >&2 'fatal: provide at least one logdir\n'
         return 1
     fi
     tmpdir="$(mktemp -d)"
     for arg; do
         case "${arg}" in
-            /*) ln -s "${arg}" "${tmpdir}/" ;;
-            *) ln -s "${PWD}/${arg}" "${tmpdir}/" ;;
+        /*) ln -s "${arg}" "${tmpdir}/" ;;
+        *) ln -s "${PWD}/${arg}" "${tmpdir}/" ;;
         esac
     done
     exit_code=0
@@ -141,24 +141,24 @@ multitb() (
     return "${exit_code}"
 )
 
-function conda-start(){
+function conda-start() {
     CONDA_EXEC=""
     CONDA_DIR=""
     if [[ -x "$(command -v conda)" ]]; then
         CONDA_DIR="$(conda info --base)"
         CONDA_EXEC="conda"
-    elif [ -d "${HOME}/miniconda3" ]; then
+    elif [[ -d "${HOME}/miniconda3" ]]; then
         CONDA_DIR="${HOME}/miniconda3"
         CONDA_EXEC="${CONDA_DIR}/conda"
     fi
 
-    if [ -d "${CONDA_DIR}" ]; then
+    if [[ -d "${CONDA_DIR}" ]]; then
         # >>> conda initialize >>>
-        __conda_setup="$('${CONDA_EXEC}' 'shell.zsh' 'hook' 2> /dev/null)"
-        if [ $? -eq 0 ]; then
-            eval "$__conda_setup"
+        __conda_setup="$('${CONDA_EXEC}' 'shell.zsh' 'hook' 2>/dev/null)"
+        if [[ $? -eq 0 ]]; then
+            eval "${__conda_setup}"
         else
-            if [ -f "${CONDA_DIR}/etc/profile.d/conda.sh" ]; then
+            if [[ -f "${CONDA_DIR}/etc/profile.d/conda.sh" ]]; then
                 . "${CONDA_DIR}/etc/profile.d/conda.sh"
             else
                 export PATH="${CONDA_DIR}/bin:$PATH"
@@ -189,7 +189,7 @@ tab-reset() {
 # Change the color of the tab when using SSH
 # reset the color after the connection closes
 color-ssh() {
-    if [[ -n "$ITERM_SESSION_ID" ]]; then
+    if [[ -n "${ITERM_SESSION_ID}" ]]; then
         trap "tab-reset" INT EXIT
         if [[ "$*" =~ "dav1|dav2|dav3" ]]; then
             tab-color 24 90 169

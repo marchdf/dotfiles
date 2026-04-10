@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 
-myHelp () {
+myHelp() {
     cat <<-END
 Usage:
 ------
@@ -14,16 +14,16 @@ END
 }
 
 case "$1" in
-    -h | --help)
-        myHelp
-        exit
-        ;;
-    *)
-	echo "Converting $1.pdf to an eps file called $2."
-	pdf2ps "$1" "$1-temp.ps";
-	ps2eps -f "$1-temp.ps" ;
-	mv "$1-temp.eps" "$2";
-	rm -f "$1-temp.ps";
-	shift
-	;;
-esac 
+-h | --help)
+    myHelp
+    exit
+    ;;
+*)
+    echo "Converting $1.pdf to an eps file called $2."
+    pdf2ps "$1" "$1-temp.ps"
+    ps2eps -f "$1-temp.ps"
+    mv "$1-temp.eps" "$2"
+    rm -f "$1-temp.ps"
+    shift
+    ;;
+esac

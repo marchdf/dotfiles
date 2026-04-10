@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 
-myHelp () {
+myHelp() {
     cat <<-END
 Usage:
 ------
@@ -16,16 +16,16 @@ END
 
 while [ -n "$1" ]; do
     case "$1" in
-        -h | --help)
-            myHelp
-            exit
-            ;;
-	*)
-	    echo "Converting $1.pdf to an eps file."
-	    pdfcrop "$1.pdf" "$1-temp.pdf"
-	    gs -q -dNOCACHE -dNOPAUSE -dBATCH -dSAFER -sDEVICE=eps2write -sOutputFile="$1.eps" "$1-temp.pdf"
-	    rm  "$1-temp.pdf"
-	    shift
-	    ;;
-    esac 
-done 
+    -h | --help)
+        myHelp
+        exit
+        ;;
+    *)
+        echo "Converting $1.pdf to an eps file."
+        pdfcrop "$1.pdf" "$1-temp.pdf"
+        gs -q -dNOCACHE -dNOPAUSE -dBATCH -dSAFER -sDEVICE=eps2write -sOutputFile="$1.eps" "$1-temp.pdf"
+        rm "$1-temp.pdf"
+        shift
+        ;;
+    esac
+done

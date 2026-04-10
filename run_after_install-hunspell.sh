@@ -12,8 +12,8 @@ if [[ -x "$(command -v hunspell)" ]]; then
     HUNSPELL_EN_US_NAME="hunspell-en_US-2020.12.07.zip"
 
     mkdir -p "${HUNSPELL_DICT_LOCATION}"
-    cd "${HUNSPELL_DICT_LOCATION}"
+    cd "${HUNSPELL_DICT_LOCATION}" || exit 1
     wget "${HUNSPELL_EN_US_BASE_URL}${HUNSPELL_EN_US_NAME}"
-    unzip "${HUNSPELL_EN_US_NAME}" *.aff *.dic -d "${HUNSPELL_DICT_LOCATION}"
+    unzip "${HUNSPELL_EN_US_NAME}" -- "*.aff" "*.dic" -d "${HUNSPELL_DICT_LOCATION}"
     rm "${HUNSPELL_EN_US_NAME}"
 fi
