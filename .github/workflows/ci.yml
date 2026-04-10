@@ -20,7 +20,7 @@ jobs:
           - os: ubuntu-latest
             install_linters: sudo apt-get update && sudo apt-get install -y shellcheck
           - os: macos-latest
-            install_linters: brew install shellcheck
+            install_linters: brew install shellcheck bash
     steps:
       - name: Checkout
         uses: actions/checkout@v4
