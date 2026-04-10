@@ -16,11 +16,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        include:
-          - os: ubuntu-latest
-            install_linters: sudo apt-get update && sudo apt-get install -y shellcheck
-          - os: macos-latest
-            install_linters: brew install shellcheck bash
+        os: [ubuntu-latest, macos-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +27,12 @@ jobs:
         run: |
           bash ./dotfiles/bin/executable_install_bootstrap_dependencies.sh
           curl -sS https://webi.sh/shfmt | sh
-          ${{matrix.install_linters}}
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get update && sudo apt-get install -y shellcheck
+          else
+            brew install shellcheck bash
+          fi
+        shell: bash
       - name: Add local bin to PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
