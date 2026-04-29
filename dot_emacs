@@ -1082,6 +1082,7 @@
     :bind
     ("C-c e b" . emms-smart-browse)
     ("C-c e p" . emms-pause)
+    ("C-c e q" . emms-stop)
     ("C-c e n" . emms-next)
     ("C-c e t" . emms-previous)
     :config
