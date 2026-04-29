@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
-# 
 #
-function myHelp () {
+#
+function myHelp() {
     cat <<-END
 Usage:
 ------
@@ -14,17 +14,14 @@ END
 }
 
 case "$1" in
-    -h | --help)
-        myHelp
-        exit
-        ;;
-    *)
-	echo "Converting $1 to an eps file."
-	file=$1
-	convert "$file" eps2:$(echo "$file" | sed 's/\.jpg$/\.eps/')
-	shift
-	;;
-esac 
-
-
-
+-h | --help)
+    myHelp
+    exit
+    ;;
+*)
+    echo "Converting $1 to an eps file."
+    file=$1
+    convert "$file" "eps2:${file%.jpg}.eps"
+    shift
+    ;;
+esac

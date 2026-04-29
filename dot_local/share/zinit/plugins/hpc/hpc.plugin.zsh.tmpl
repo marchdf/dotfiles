@@ -1,4 +1,4 @@
-# -*- mode: sh; sh-indentation: 4; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+# -*- mode: sh; sh-shell: bash; sh-indentation: 4; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
 
 # Copyright (c) 2024 Marc Henry de Frahan
 
@@ -10,9 +10,9 @@
 
 # Then ${0:h} to get hpc's directory
 
-if [[ ${zsh_loaded_plugins[-1]} != */personal && -z ${fpath[(r)${0:h}]} ]] {
-    fpath+=( "${0:h}" )
-}
+if [[ ${zsh_loaded_plugins[-1]} != */personal && -z ${fpath[(r)${0:h}]} ]]; then
+    fpath+=("${0:h}")
+fi
 
 # Standard hash for plugins, to not pollute the namespace
 typeset -gA Plugins
@@ -24,50 +24,50 @@ if [[ -z "${SCRATCH}" ]] && [[ -d "{{ .scratch_root }}" ]]; then
 fi
 
 function _select-compute-node() {
-  if [[ ! -x "$(command -v squeue)" ]]; then
-    echo "squeue not found." >&2
-    return 1
-  fi
+    if [[ ! -x "$(command -v squeue)" ]]; then
+        echo "squeue not found." >&2
+        return 1
+    fi
 
-  if [[ ! -x "$(command -v fzf)" ]]; then
-    echo "fzf not found." >&2
-    return 1
-  fi
+    if [[ ! -x "$(command -v fzf)" ]]; then
+        echo "fzf not found." >&2
+        return 1
+    fi
 
-  local node=$(squeue -u ${USER} -o "%N %j %M" -h 2>/dev/null | fzf --select-1 --prompt="Select node: " | awk '{print $1}')
+    local node=$(squeue -u ${USER} -o "%N %j %M" -h 2>/dev/null | fzf --select-1 --prompt="Select node: " | awk '{print $1}')
 
-  if [ -z "${node}" ]; then
-    echo "No node selected, exiting." >&2
-    return 1
-  fi
+    if [[ -z "${node}" ]]; then
+        echo "No node selected, exiting." >&2
+        return 1
+    fi
 
-  echo "${node}"
+    echo "${node}"
 }
 
 function compute-ssh() {
-  local node
-  node=$(_select-compute-node) || return 1
+    local node
+    node=$(_select-compute-node) || return 1
 
-  echo "Connecting to ${node}..."
-  ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node}
+    echo "Connecting to ${node}..."
+    ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node}
 }
 
 function compute-docker() {
-  local node
-  node=$(_select-compute-node) || return 1
+    local node
+    node=$(_select-compute-node) || return 1
 
-  local container
-  container=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
-    'docker ps --format "{{ "{{.Names}}" }}"' 2>/dev/null | fzf --select-1 --prompt="Select container: ")
+    local container
+    container=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
+        'docker ps --format "{{ "{{.Names}}" }}"' 2>/dev/null | fzf --select-1 --prompt="Select container: ")
 
-  if [[ -z "$container" ]]; then
-    echo "No containers found or none selected." >&2
-    return 1
-  fi
+    if [[ -z "${container}" ]]; then
+        echo "No containers found or none selected." >&2
+        return 1
+    fi
 
-  echo "Connecting to ${node} and attaching to Docker container ${container}..."
-  ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
-    "docker exec -it ${container} zsh -l"
+    echo "Connecting to ${node} and attaching to Docker container ${container}..."
+    ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} \
+        "docker exec -it ${container} zsh -l"
 }
 
 

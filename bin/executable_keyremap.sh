@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Key remappings
 #
@@ -18,15 +18,15 @@ action=$1
 
 # Set productid variable, as per example below, to remap only specific
 # keyboard, or leave empty to remap all connected keyboards
-productid_external='{"ProductID":0x23a}'
-productid_builtin='{"ProductID":0x340}'
+# productid_external='{"ProductID":0x23a}'
+# productid_builtin='{"ProductID":0x340}'
 # productid="-m \'${productid_builtin}\'"
 productid=""
 
 if [[ ${action} =~ ^(e|en|ena|ena.*)$ ]]; then
     # 1. map right command (aka Right GUI) to Application (aka menu key)
     # 2. map caps lock to left control
-    hidutil property ${productid} --set '{"UserKeyMapping":[
+    hidutil property "${productid}" --set '{"UserKeyMapping":[
         {
             "HIDKeyboardModifierMappingSrc": 0x7000000E7,
             "HIDKeyboardModifierMappingDst": 0x700000065

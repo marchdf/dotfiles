@@ -45,15 +45,15 @@ OPTIMIZE=false
 
 while getopts ":o" opt; do
     case ${opt} in
-        o)
-            OPTIMIZE=true
-            ;;
-        \?)
-            usage
-            ;;
+    o)
+        OPTIMIZE=true
+        ;;
+    \?)
+        usage
+        ;;
     esac
 done
-shift $((OPTIND -1))
+shift $((OPTIND - 1))
 
 PYTHON_VERSION="${1}"
 if [[ -z "$PYTHON_VERSION" ]]; then
@@ -61,7 +61,7 @@ if [[ -z "$PYTHON_VERSION" ]]; then
 fi
 
 # Skip if already installed
-if [[ -n "$(pyenv versions --bare | grep "^${PYTHON_VERSION}$")" ]]; then
+if pyenv versions --bare | grep -q "^${PYTHON_VERSION}$"; then
     exit 0
 fi
 

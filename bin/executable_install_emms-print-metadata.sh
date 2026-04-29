@@ -30,7 +30,7 @@ else
     git clone --quiet https://git.savannah.gnu.org/git/emms.git "${EMMS_DIR}"
 fi
 
-cd "${EMMS_DIR}/src"
+cd "${EMMS_DIR}/src" || exit 1
 if cc ${TAGLIB_INCLUDE} emms-print-metadata.c -ltag_c -ltag -lz -o "${EMMS_EXEC}" 2>/dev/null; then
     echo "Installed emms-print-metadata to ${EMMS_EXEC}"
 fi

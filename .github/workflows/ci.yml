@@ -26,6 +26,13 @@ jobs:
       - name: Dependencies
         run: |
           bash ./dotfiles/bin/executable_install_bootstrap_dependencies.sh
+          curl -sS https://webi.sh/shfmt | sh
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get update && sudo apt-get install -y shellcheck
+          else
+            brew install shellcheck bash
+          fi
+        shell: bash
       - name: Add local bin to PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
@@ -34,6 +41,9 @@ jobs:
           mkdir -p "$HOME/.local/share/chezmoi"
           git config --global --add safe.directory "$HOME/.local/share/chezmoi"
           git clone --depth 1 --branch "${{ github.head_ref || github.ref_name }}" https://github.com/marchdf/dotfiles.git "$HOME/.local/share/chezmoi"
+      - name: Lint shell scripts
+        run: |
+          bash "$HOME/.local/share/chezmoi/bin/chezmoi_shell_linter.sh"
       - name: Install
         run: |
           chezmoi init --source="$HOME/.local/share/chezmoi" --promptBool test_machine=t,"Use ZSH_ROOT_DIR for tmux shell"=f --promptString email=""
