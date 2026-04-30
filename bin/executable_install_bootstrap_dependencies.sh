@@ -43,6 +43,7 @@ elif [[ "${OS}" == "Linux" ]]; then
                 libffi-dev \
                 npm \
                 tmux \
+                htop \
                 file \
                 ripgrep \
                 ccls \
