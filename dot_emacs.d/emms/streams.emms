@@ -1,11 +1,11 @@
 ;;; This is an EMMS playlist file
 
 (
-(*track* (type . streamlist) (name . "https://ais-sa1.streamon.fm/7891_96k.aac/playlist.m3u8"))
-(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/lapremiere/m3u/lapremiere-mp3.m3u"))
-(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/purefm/m3u/pure-mp3.m3u"))
-(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/classic21/m3u/classic21-mp3.m3u"))
-(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/musiq3/m3u/musiq3-mp3.m3u"))
-(*track* (type . streamlist) (name . "https://stream1.cprnetwork.org/2199_128.aac/playlist.m3u8"))
-(*track* (type . streamlist) (name . "https://stream1.cprnetwork.org/2198_128.aac/playlist.m3u8"))
-(*track* (type . streamlist) (name . "https://stream1.cprnetwork.org/2110_128.aac/playlist.m3u8")))
+(*track* (type . streamlist) (name . "https://ais-sa1.streamon.fm/7891_96k.aac/playlist.m3u8") (info-title . "Colorado Sound"))
+(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/lapremiere/m3u/lapremiere-mp3.m3u") (info-title . "RTBF La Première"))
+(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/purefm/m3u/pure-mp3.m3u") (info-title . "RTBF Pure FM"))
+(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/classic21/m3u/classic21-mp3.m3u") (info-title . "RTBF Classic 21"))
+(*track* (type . streamlist) (name . "https://www.static.rtbf.be/radio/musiq3/m3u/musiq3-mp3.m3u") (info-title . "RTBF Musiq3"))
+(*track* (type . streamlist) (name . "https://stream1.cprnetwork.org/2199_128.aac/playlist.m3u8") (info-title . "CPR Indie"))
+(*track* (type . streamlist) (name . "https://stream1.cprnetwork.org/2198_128.aac/playlist.m3u8") (info-title . "CPR News"))
+(*track* (type . streamlist) (name . "https://stream1.cprnetwork.org/2110_128.aac/playlist.m3u8") (info-title . "CPR Classical")))
