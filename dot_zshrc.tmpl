@@ -92,10 +92,10 @@ if [[ -d "${PYENV_ROOT}" ]]; then
     eval "$(pyenv init -)"
 fi
 
-# exawind-manager
-if [[ -d "${HOME}/exawind/exawind-manager" ]]; then
-    export EXAWIND_MANAGER=${HOME}/exawind/exawind-manager
-    source ${EXAWIND_MANAGER}/start.sh
+# kynema-manager
+if [[ -d "${HOME}/kynema/kynema-manager" ]]; then
+    export KYNEMA_MANAGER=${HOME}/kynema/kynema-manager
+    source ${KYNEMA_MANAGER}/start.sh
 fi
 
 # zoxide
