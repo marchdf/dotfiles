@@ -165,6 +165,9 @@ zinit from"gh-r" as"program" atload'
         fnm install --lts
         fnm default lts-latest
     fi
+    if [[ ! -x "$(command -v codex)" ]]; then
+        npm install -g @openai/codex@latest
+    fi
 ' light-mode for @Schniz/fnm
 
 zinit wait lucid light-mode for \
