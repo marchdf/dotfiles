@@ -37,6 +37,11 @@ if [[ -n "${IN_DOCKER}" ]] && [[ -d "/host-home" ]]; then
         [[ -d "${HOME}/.claude" ]] && rm -rf "${HOME}/.claude"
         ln -sf /host-home/.claude "${HOME}/.claude"
     fi
+
+    if [[ -d "/host-home/.codex" ]] && [[ ! -L "${HOME}/.codex" ]]; then
+        [[ -d "${HOME}/.codex" ]] && rm -rf "${HOME}/.codex"
+        ln -sf /host-home/.codex "${HOME}/.codex"
+    fi
 fi
 
 ### Added by Zinit's installer
@@ -165,7 +170,7 @@ zinit from"gh-r" as"program" atload'
         fnm install --lts
         fnm default lts-latest
     fi
-    if [[ ! -x "$(command -v codex)" ]]; then
+    if [[ ! -x "$(command -v codex)" ]] && [[ -z "$(npm list -g --depth=0 --parseable @openai/codex 2>/dev/null)" ]]; then
         npm install -g @openai/codex@latest
     fi
 ' light-mode for @Schniz/fnm
