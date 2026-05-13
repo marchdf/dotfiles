@@ -46,6 +46,7 @@ elif [[ "${OS}" == "Linux" ]]; then
                 htop \
                 file \
                 ripgrep \
+                rsync \
                 ccls \
                 mp3info \
                 mpv \
