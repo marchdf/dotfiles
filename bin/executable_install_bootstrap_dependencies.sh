@@ -12,6 +12,7 @@ elif [[ "${OS}" == "Linux" ]]; then
             sudo apt-get update
             sudo apt install -y \
                 git \
+                git-lfs \
                 zsh \
                 curl \
                 zoxide \
