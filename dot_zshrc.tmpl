@@ -164,7 +164,19 @@ zinit from"gh-r" as"program" for @junegunn/fzf
 zinit from"gh-r" as"program" mv"zoxide -> zoxide" for @ajeetdsouza/zoxide
 
 # Install fnm and node LTS
-zinit from"gh-r" as"program" atload'
+_fnm_bpick=""
+case "$(uname -s)-$(uname -m)" in
+    Linux-x86_64)  _fnm_bpick="fnm-linux.zip" ;;
+    Linux-aarch64) _fnm_bpick="fnm-arm64.zip" ;;
+    Darwin-*)      _fnm_bpick="fnm-macos.zip" ;;
+    *) echo "fnm: unsupported platform $(uname -s)-$(uname -m)" ;;
+esac
+if [[ -n "${_fnm_bpick}" ]]; then
+    zinit ice from"gh-r" as"program" bpick"${_fnm_bpick}"
+    zinit light @Schniz/fnm
+fi
+unset _fnm_bpick
+if [[ -x "$(command -v fnm)" ]]; then
     eval "$(fnm env --use-on-cd --shell zsh)"
     if [[ -z "$(fnm list 2>/dev/null | grep -v system)" ]]; then
         fnm install --lts
@@ -173,7 +185,7 @@ zinit from"gh-r" as"program" atload'
     if [[ ! -x "$(command -v codex)" ]] && [[ -z "$(npm list -g --depth=0 --parseable @openai/codex 2>/dev/null)" ]]; then
         npm install -g @openai/codex@latest
     fi
-' light-mode for @Schniz/fnm
+fi
 
 zinit wait lucid light-mode for \
     "OMZP::fzf" \
