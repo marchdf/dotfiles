@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,7 +66,7 @@ jobs:
         shell: zsh {0}
         run: |
           source ~/.zshrc
-          for TOOL in python pyenv uv poetry zoxide fzf bat; do
+          for TOOL in python pyenv uv poetry zoxide fzf bat fnm node; do
             if [[ ! $(type ${TOOL} 2>/dev/null) ]]; then
               echo "${TOOL} not found!"
               exit 1
