@@ -280,7 +280,11 @@ function backup_zsh_history() {
         local hist_ext=".bak"
         local histfile_bak="${HIST_BACKUP_DIR}/${hist_pfx}$(date +\%Y_\%m_\%d)${hist_ext}"
         if [[ -f "${HISTFILE}" ]]; then
+{{- if eq .chezmoi.os "darwin" }}
             cp -n "${HISTFILE}" "${histfile_bak}"
+{{- else }}
+            cp --update=none "${HISTFILE}" "${histfile_bak}"
+{{- end }}
         fi
         # Keep 20 most recent backups
         local -a old_backups=("${HIST_BACKUP_DIR}"/${hist_pfx}*${hist_ext}(NOm))
@@ -299,7 +303,11 @@ function backup_zoxide_database() {
         local zo_data="${_ZO_DATA_DIR}/db.zo"
         local zo_data_bak="${_ZO_DATA_DIR}/${zo_pfx}$(date +\%Y_\%m_\%d)${zo_ext}"
         if [[ -f "${zo_data}" ]]; then
+{{- if eq .chezmoi.os "darwin" }}
             cp -n "${zo_data}" "${zo_data_bak}"
+{{- else }}
+            cp --update=none "${zo_data}" "${zo_data_bak}"
+{{- end }}
         fi
         # Keep 7 most recent backups
         local -a old_backups=("${_ZO_DATA_DIR}"/${zo_pfx}*${zo_ext}(NOm))
