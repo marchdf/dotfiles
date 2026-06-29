@@ -177,6 +177,7 @@ if [[ -n "${_fnm_bpick}" ]]; then
 fi
 unset _fnm_bpick
 if [[ -x "$(command -v fnm)" ]]; then
+    export FNM_DIR="${HOME}/.local/share/fnm-$(uname -m)"
     eval "$(fnm env --use-on-cd --shell zsh)"
     if [[ -z "$(fnm list 2>/dev/null | grep -v system)" ]]; then
         fnm install --lts
