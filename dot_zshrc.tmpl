@@ -38,6 +38,11 @@ if [[ -n "${IN_DOCKER}" ]] && [[ -d "/host-home" ]]; then
         ln -sfn /host-home/.claude "${HOME}/.claude"
     fi
 
+    if [[ -d "/host-home/.agents" ]] && [[ ! -L "${HOME}/.agents" ]]; then
+        [[ -d "${HOME}/.agents" ]] && rm -rf "${HOME}/.agents"
+        ln -sfn /host-home/.agents "${HOME}/.agents"
+    fi
+
     if [[ -d "/host-home/.codex" ]] && [[ ! -L "${HOME}/.codex" ]]; then
         [[ -d "${HOME}/.codex" ]] && rm -rf "${HOME}/.codex"
         ln -sfn /host-home/.codex "${HOME}/.codex"
