@@ -70,6 +70,13 @@ function compute-docker() {
         "docker exec -it ${container} zsh -l"
 }
 
+# Cache directories on scratch
+{{- if ne .scratch_root "${HOME}" }}
+export UV_CACHE_DIR="{{ .scratch_root }}/.cache/uv"
+export PIP_CACHE_DIR="{{ .scratch_root }}/.cache/pip"
+export npm_config_cache="{{ .scratch_root }}/.npm"
+{{- end }}
+
 
 {{- if .nrel_hpc }}
 # Custom for NREL HPC machines

@@ -17,6 +17,8 @@
 {{- $ornl_hpc = true -}}
 {{- end -}}
 
+{{- $disable_p10k_gitstatus := false -}}
+
 {{/* Scratch root for HPC systems */}}
 {{- $scratch_root := "${HOME}" -}}
 {{- if $nrel_hpc -}}
@@ -36,5 +38,6 @@
     nrel_hpc = {{ $nrel_hpc }}
     nrel_cluster = {{ $nrel_cluster }}
     ornl_hpc = {{ $ornl_hpc }}
+    disable_p10k_gitstatus = {{ $disable_p10k_gitstatus }}
     scratch_root = {{ $scratch_root | quote }}
     large_install_dir = {{ $large_install_dir | quote }}

@@ -152,6 +152,10 @@ fi
 
 {{- end }}
 
+{{- if .disable_p10k_gitstatus }}
+export DOTFILES_DISABLE_P10K_GITSTATUS=1
+{{- end }}
+
 # towards the beginning to make sure some software is loaded
 zinit lucid atload'unalias zi' light-mode for "${HOME}/.local/share/zinit/plugins/hpc"
 
