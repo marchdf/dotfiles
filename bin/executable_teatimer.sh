@@ -3,6 +3,8 @@
 # Make a tea timer display a notification
 # Input the time, defaults to 3 minutes
 
+OS="$(uname -s)"
+
 if [[ -z "$1" ]]; then
     TIME="3m"
 else
@@ -10,7 +12,7 @@ else
 fi
 
 # Notification for Mac platform
-if [[ "$(uname)" == "Darwin" ]]; then
+if [[ "${OS}" == "Darwin" ]]; then
 
     # Wait the specified time (need to brew install coreutils)
     gsleep "${TIME}"
@@ -36,7 +38,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
     osascript -e "set Volume 0"
 
 # Notification for GNU/Linux platform
-elif [[ "$(uname -s)" == "Linux" ]]; then
+elif [[ "${OS}" == "Linux" ]]; then
 
     # Wait the specified time
     sleep "${TIME}"

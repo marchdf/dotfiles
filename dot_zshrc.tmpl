@@ -10,6 +10,8 @@ export ZSH_COMPDUMP="${HOME}/.zcompdump"
 [[ -z "$HOST" ]] && export HOST="$(hostname)"
 [[ -z "$USER" ]] && export USER="$(whoami)"
 
+export ARCH_LOCAL="${HOME}/.local/arch/${CPUTYPE}"
+
 # Docker shares safe state from host home (cli history, zoxide, ssh)
 if [[ -n "${IN_DOCKER}" ]] && [[ -d "/host-home" ]]; then
     if [[ -f "/host-home/.zsh_history" ]] && [[ ! -L "${HOME}/.zsh_history" ]]; then
@@ -51,7 +53,7 @@ fi
 
 ### Added by Zinit's installer
 # Arch-specific zinit for shared NFS homes with multiple architectures
-ZINIT_HOME="${HOME}/.local/share/zinit-$(uname -m)"
+ZINIT_HOME="${HOME}/.local/share/zinit-${CPUTYPE}"
 declare -A ZINIT
 ZINIT[HOME_DIR]="${ZINIT_HOME}"
 ZINIT[BIN_DIR]="${ZINIT_HOME}/zinit.git"
@@ -81,7 +83,7 @@ zinit light-mode for \
 # Setup up some paths and environment variables
 
 # Local paths
-export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
+export PATH="${ARCH_LOCAL}/bin:${HOME}/.local/bin:${HOME}/bin:${PATH}"
 
 # Unset XDG_RUNTIME_DIR if directory doesn't exist
 [[ -n "${XDG_RUNTIME_DIR}" && ! -d "${XDG_RUNTIME_DIR}" ]] && unset XDG_RUNTIME_DIR
@@ -174,11 +176,11 @@ zinit from"gh-r" as"program" mv"zoxide -> zoxide" for @ajeetdsouza/zoxide
 
 # Install fnm and node LTS
 _fnm_bpick=""
-case "$(uname -s)-$(uname -m)" in
-    Linux-x86_64)  _fnm_bpick="fnm-linux.zip" ;;
-    Linux-aarch64) _fnm_bpick="fnm-arm64.zip" ;;
-    Darwin-*)      _fnm_bpick="fnm-macos.zip" ;;
-    *) echo "fnm: unsupported platform $(uname -s)-$(uname -m)" ;;
+case "${OSTYPE}-${CPUTYPE}" in
+    linux*-x86_64)  _fnm_bpick="fnm-linux.zip" ;;
+    linux*-aarch64) _fnm_bpick="fnm-arm64.zip" ;;
+    darwin*-*)      _fnm_bpick="fnm-macos.zip" ;;
+    *) echo "fnm: unsupported platform ${OSTYPE}-${CPUTYPE}" ;;
 esac
 if [[ -n "${_fnm_bpick}" ]]; then
     zinit ice from"gh-r" as"program" bpick"${_fnm_bpick}"
@@ -186,7 +188,7 @@ if [[ -n "${_fnm_bpick}" ]]; then
 fi
 unset _fnm_bpick
 if [[ -x "$(command -v fnm)" ]]; then
-    export FNM_DIR="${HOME}/.local/share/fnm-$(uname -m)"
+    export FNM_DIR="${HOME}/.local/share/fnm-${CPUTYPE}"
     eval "$(fnm env --use-on-cd --shell zsh)"
     if [[ -z "$(fnm list 2>/dev/null | grep -v system)" ]]; then
         fnm install --lts
