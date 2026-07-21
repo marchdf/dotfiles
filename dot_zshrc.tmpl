@@ -282,9 +282,7 @@ setopt HIST_FIND_NO_DUPS
 
 # zsh history backups
 export HIST_BACKUP_DIR="${HOME}/.zsh_history_backups"
-if [[ ! -d "${HIST_BACKUP_DIR}" ]]; then
-    mkdir "${HIST_BACKUP_DIR}"
-fi
+mkdir -p "${HIST_BACKUP_DIR}"
 
 function backup_zsh_history() {
     if [[ -d "${HIST_BACKUP_DIR}" ]]; then
