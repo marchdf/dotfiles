@@ -49,7 +49,7 @@ function compute-ssh() {
     node=$(_select-compute-node) || return 1
 
     echo "Connecting to ${node}..."
-    ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node}
+    ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${node} "$@"
 }
 
 function compute-docker() {
