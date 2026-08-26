@@ -29,6 +29,8 @@
   (load custom-file 'noerror))
 (setq inhibit-startup-screen t)
 (setq kill-ring-max 200)
+(transient-mark-mode 1)
+(setq mouse-drag-copy-region t)
 (setq user-full-name "Marc Henry de Frahan")
 (set-face-attribute 'default nil :height 110 :font "MesloLGL Nerd Font Mono-14")
 
