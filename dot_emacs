@@ -797,7 +797,16 @@
 (use-package zenburn-theme
   :ensure t
   :init
-  (load-theme 'zenburn t))
+  (load-theme 'zenburn t)
+  (zenburn-with-color-variables
+    (custom-theme-set-faces
+     'zenburn
+     `(tty-menu-enabled-face
+       ((t (:foreground ,zenburn-fg :background ,zenburn-bg+1 :weight normal))))
+     `(tty-menu-disabled-face
+       ((t (:foreground ,zenburn-green :background ,zenburn-bg+1))))
+     `(tty-menu-selected-face
+       ((t (:foreground ,zenburn-yellow :background ,zenburn-bg+3)))))))
 
 
 ;;================================================================================
